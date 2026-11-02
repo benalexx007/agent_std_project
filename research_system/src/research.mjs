@@ -100,6 +100,7 @@ function checkMeaning(state, r) {
 export function recordResearch(store, input, owner, epoch, attemptId) {
   contract('research-record', input);
   return store.transaction((state) => {
+    requireThat(state.project.domain === 'research' && state.config.project.domain === 'research', 'Research record requires a Research project');
     ownerCheck(state, owner, epoch);
     const r = clone(input), task = state.tasks[r.task_id];
     requireThat(task && task.revision === r.task_revision && task.spec.protocol_version === r.protocol_version, 'Research task/revision/protocol mismatch');

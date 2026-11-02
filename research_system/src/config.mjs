@@ -8,6 +8,7 @@ import { unitSpecs } from './work.mjs';
 import { applyModelOverride, selectModel, taskBackend, validateModelPolicy } from './models.mjs';
 
 import { extensionDocuments, resolveExtensions } from './extensions.mjs';
+import { activeDomain } from './domains.mjs';
 
 export function loadConfig(file) {
   const absolute = path.resolve(file);
@@ -16,7 +17,8 @@ export function loadConfig(file) {
 
 export function normalizeConfig(input, sourceFile) {
   const absolute = path.resolve(sourceFile);
-  const raw = contract('config', clone(input));
+  const domain = activeDomain(input?.project?.domain);
+  const raw = contract(domain.config_schema, clone(input));
   const config = resourceDefaults(clone(raw));
   config.project.workspace = path.resolve(path.dirname(absolute), raw.project.workspace);
   config.bundle_root = path.resolve(path.dirname(absolute), raw.bundle_root || ROOT);
@@ -26,7 +28,7 @@ export function normalizeConfig(input, sourceFile) {
     requireThat(!config.research_profile.output.venue || config.research_profile.output.format === 'paper', 'Venue is only applicable to paper output');
   }
   requireThat(Object.hasOwn(config.backends, config.orchestrator.backend), 'Unknown orchestrator backend');
-  for (const required of ['researcher', 'implementer', 'evaluator']) requireThat(Object.hasOwn(config.roles, required), 'Missing research responsibility: ' + required);
+  for (const required of domain.required_roles) requireThat(Object.hasOwn(config.roles, required), 'Missing research responsibility: ' + required);
   for (const [name, role] of Object.entries(config.roles)) {
     requireThat(Object.hasOwn(config.backends, role.backend), 'Unknown role backend: ' + name);
     confined(config.bundle_root, role.profile);
@@ -51,9 +53,11 @@ export function normalizeConfig(input, sourceFile) {
 }
 
 export function resolveTask(config, input, override = {}) {
+  const domain = activeDomain(config.project.domain);
   const allowed = new Set(['role', 'backend', 'model', 'reasoning_effort', 'task_class', 'model_tier', 'skills', 'budget', 'research_profile', 'research_record_ids', 'extension_profile', 'extension_scope']);
   for (const key of Object.keys(override)) requireThat(allowed.has(key), 'Unsupported task override: ' + key);
-  const task = contract('task', applyModelOverride(input, override));
+  requireThat(input?.domain === domain.id, 'Task domain differs from project');
+  const task = contract(domain.task_schema, applyModelOverride(input, override));
   const role = Object.hasOwn(config.roles, task.role) ? config.roles[task.role] : null;
   requireThat(role, 'Undefined role: ' + task.role);
   task.backend = taskBackend(config, task, role.backend);

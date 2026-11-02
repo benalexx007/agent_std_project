@@ -8,8 +8,12 @@ import { isPlanning, PLANNING_REQUIREMENTS } from './planning.mjs';
 import { readBundleText } from './bundle-cache.mjs';
 
 import { resolveExtensions } from './extensions.mjs';
+import { activeDomain, projectDomain } from './domains.mjs';
 
 export function buildContext(config, task, decisions = [], updates = [], state = null) {
+  const domain = activeDomain(config.project.domain);
+  requireThat(task.domain === domain.id, 'Task domain differs from project');
+  if (state) projectDomain(state);
   const role = config.roles[task.role];
   const bundleRefs = new Map();
   const readBundle = (ref) => {
@@ -74,6 +78,7 @@ export function buildContext(config, task, decisions = [], updates = [], state =
   return { packet, text, sha256: hash(text), characters: text.length, tokenizer_tokens: null };
 }
 export function buildOrchestratorContext(state, taskClass, options = {}) {
+  projectDomain(state);
   const config = state.config;
   const selected = orchestratorModel(config, taskClass);
   const ids = options.taskIds || Object.keys(state.tasks).filter((tid) => !['completed', 'cancelled'].includes(state.tasks[tid].status));

@@ -19,7 +19,7 @@ function validateTarget(s, patch, restoreRevision) {
   const archived = restoreRevision === undefined ? null : s.gui.revisions.find((r) => r.revision === restoreRevision);
   requireThat(restoreRevision === undefined || archived, 'Unknown rollback revision');
   const loaded = normalizeConfig(archived ? inputConfig(archived.config) : mergePatch(inputConfig(s.config), patch), path.join(s.project.workspace, 'project-config.json'));
-  requireThat(loaded.config.project.id === s.project.id && path.resolve(loaded.config.project.workspace) === path.resolve(s.project.workspace) && loaded.config.bundle_root === s.config.bundle_root,
+  requireThat(loaded.config.project.id === s.project.id && loaded.config.project.domain === s.project.domain && path.resolve(loaded.config.project.workspace) === path.resolve(s.project.workspace) && loaded.config.bundle_root === s.config.bundle_root,
     'Project identity/workspace/bundle cannot be changed through GUI configuration');
   for (const t of Object.values(s.tasks)) resolveTask(loaded.config, t.spec);
   return loaded;

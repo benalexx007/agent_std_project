@@ -11,6 +11,7 @@ import { estimateUnit, budgetAdmission, poolIds, settleUsage } from './resources
 import { loadCheckpoint } from './checkpoints.mjs';
 import { classifyFailure } from './failures.mjs';
 import { researchState } from './research.mjs';
+import { projectDomain } from './domains.mjs';
 import { benchmarkAdmission, benchmarkDispatchAllowed, benchmarkFinished } from './benchmarks.mjs';
 import { modelForBackend } from './models.mjs';
 import { validatePlanningReview } from './planning.mjs';
@@ -72,6 +73,7 @@ export function scopeTasks(state, target) {
 }
 export function registerTask(store, input, override = {}, options = {}) {
   return store.transaction((state) => {
+    projectDomain(state);
     if (options.parentAttemptId) {
       const parent = state.attempts[options.parentAttemptId];
       requireThat(parent && !parent.settled && parent.effective_config.role === 'orchestrator' && dispatchAllowed(state, parent.attempt_id, parent.runner_token), 'Stale orchestration parent');
@@ -88,6 +90,7 @@ export function registerTask(store, input, override = {}, options = {}) {
 }
 export function reviseTask(store, input, owner, epoch) {
   return store.transaction((state) => {
+    projectDomain(state);
     checkOwner(state, owner, epoch);
     const existing = taskAt(state, input.task_id);
     requireThat(!existing.attempts.some((aid) => ACTIVE.has(state.attempts[aid].observed_state) || state.attempts[aid].observed_state === 'unknown'), 'Resolve active/unknown attempts before revising');

@@ -7,8 +7,10 @@ import { assignmentCurrent, workKey } from './work.mjs';
 import { contract } from './schema.mjs';
 import { researchSnapshot, checkResearchSnapshot } from './research.mjs';
 import { bundleResource } from './improvements.mjs';
+import { projectDomain } from './domains.mjs';
 
 export function loadCheckpoint(state, checkpointId) {
+  projectDomain(state);
   const record = state.checkpoints[checkpointId];
   requireThat(record?.durable_at, 'No durable checkpoint');
   const file = confined(state.project.workspace, record.manifest_path);
@@ -45,6 +47,7 @@ export function saveFinalCheckpoint(store, attemptId) {
 function persistCheckpoint(store, attemptId, progress, afterWrite, final) {
   if (!final) contract('checkpoint-progress', progress);
   return store.transaction((state) => {
+    projectDomain(state);
     const a = state.attempts[attemptId]; requireThat(a && assignmentCurrent(state, a), 'Stale assignment cannot checkpoint');
     const task = state.tasks[a.task_id], unit = state.work_units[workKey(a.task_id, a.work_unit_id)];
     if (final) {

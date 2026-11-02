@@ -6,6 +6,8 @@ README này là điểm bắt đầu để hiểu và review domain Research. To
 
 **Dành cho người dùng:** đọc [hướng dẫn sử dụng từng bước](docs/user-guide.md) để chuẩn bị project, kết nối GUI, giao việc qua orchestrator, tùy chỉnh cấu hình, xem tiến độ và xử lý lỗi. Có prompt mẫu và phần terminal tùy chọn.
 
+**Plan 02/11/2026 — đang triển khai trên nhánh `feat/multi-domain-foundation`:** [refactor đa domain Research/Application](docs/multi-domain-integration-plan.md). Nhánh hiện có registry và chặn sai domain cho Research; Application chưa được kích hoạt. Plan gồm writer isolation, checkpoint/GUI compatibility, extension reuse, rollout và rollback.
+
 **Implementation 0.7.0, 29/10/2026:** [kết nối GUI, cấu hình qua hội thoại và inspect](docs/gui-integration.md), [plan và trạng thái](docs/plugin-integration-plan.md), [nghiên cứu xác minh](docs/gui-integration-validation.md) và [nghiệm thu tối thiểu](docs/plugin-acceptance-plan.md). GUI làm orchestrator, shared core giữ managed workers liên backend. Chọn entry skill + bound CLI; không cần runtime ngoài/plugin/MCP. State v4 tương thích; GUI services cần explicit upgrade v5. Live GUI/backend acceptance còn pending.
 
 Đã có project connections cho Codex/Claude/Antigravity, attachment fencing, config preview/CAS/rollback và immutable overlays, async managed handles, native-observed result bridge, bounded reads/redacted logs và terminal inspect. [Evidence 0.7.0](docs/verification/gui-evidence.json) là software checks; generation/fixtures không chứng nhận host loader, model hoặc native permissions. Không có live benchmark trong đợt implementation này.

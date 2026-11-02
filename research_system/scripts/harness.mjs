@@ -17,6 +17,7 @@ import { capabilities } from '../adapters/index.mjs';
 import { collectResults, checkEvidence, verifyArtifacts } from '../src/artifacts.mjs';
 import { usageReport } from '../src/report.mjs';
 import { recordResearch, researchEntry, researchValidity, researchReview, renderResearch } from '../src/research.mjs';
+import { projectDomain, availableDomains } from '../src/domains.mjs';
 import { proposeImprovement, activateImprovement } from '../src/improvements.mjs';
 import { requestBenchmark, confirmBenchmark, supersedeBenchmark } from '../src/benchmarks.mjs';
 import { selectModel } from '../src/models.mjs';
@@ -87,6 +88,7 @@ export const HELP = [
   'record-research --file record.json --owner ID --epoch N [--attempt ID]',
   'read-research --record ID [--revision N] | review-research [--task ID]',
   'export-research --task ID [--format json|markdown] [--out FILE]',
+  'record-domain/read-domain/review-domain/export-domain: domain-neutral aliases for the matching record commands',
   'hash-artifact --file WORKSPACE_RELATIVE_PATH',
   'propose-improvement --file change.json --owner ID --epoch N',
   'activate-improvement --change ID|original --owner ID --epoch N | list-improvements',
@@ -115,6 +117,7 @@ export async function main(argv = process.argv.slice(2)) {
   const o = parsed.values;
   if (!command || o.help) return HELP;
   if (command === 'gui-catalog') return { request_schema: GUI_REQUEST_SCHEMA, actions: GUI_ACTIONS, data_fields: GUI_DATA_FIELDS,
+    domains: availableDomains(),
     transport: 'project-bound CLI; no extra runtime or MCP required', human_only: ['confirm-gui-change', 'answer-decision', 'confirm-benchmark'],
     documentation: path.join(ROOT, 'docs/gui-integration.md') };
   if (['connect-gui', 'disconnect-gui'].includes(command)) {
@@ -325,14 +328,26 @@ export async function main(argv = process.argv.slice(2)) {
       case 'reconcile-state': return reconcile(store, o.file ? readJSON(o.file) : []);
       case 'record-run': return recordRun(store, readJSON(o.file));
       case 'record-claim': return recordClaim(store, readJSON(o.file));
-      case 'record-research': return recordResearch(store, readJSON(o.file), o.owner, o.epoch, o.attempt);
-      case 'read-research': {
-        const s = store.read(), entry = researchEntry(s, o.record, o.revision ? Number(o.revision) : undefined);
-        return { ...entry, validity: researchValidity(s, entry) };
+      case 'record-research': case 'record-domain': {
+        const domain = projectDomain(store.read());
+        requireThat(command === 'record-domain' || domain.id === 'research', 'Research command requires a Research project');
+        return domain.record(store, readJSON(o.file), o.owner, o.epoch, o.attempt);
       }
-      case 'review-research': return researchReview(store.read(), o.task);
-      case 'export-research': {
-        const result = renderResearch(store.read(), o.task);
+      case 'read-research': case 'read-domain': {
+        const s = store.read(), domain = projectDomain(s);
+        requireThat(command === 'read-domain' || domain.id === 'research', 'Research command requires a Research project');
+        const entry = domain.entry(s, o.record, o.revision ? Number(o.revision) : undefined);
+        return { ...entry, validity: domain.validity(s, entry) };
+      }
+      case 'review-research': case 'review-domain': {
+        const s = store.read(), domain = projectDomain(s);
+        requireThat(command === 'review-domain' || domain.id === 'research', 'Research command requires a Research project');
+        return domain.review(s, o.task);
+      }
+      case 'export-research': case 'export-domain': {
+        const s = store.read(), domain = projectDomain(s);
+        requireThat(command === 'export-domain' || domain.id === 'research', 'Research command requires a Research project');
+        const result = domain.render(s, o.task);
         requireThat(!o.format || ['json', 'markdown'].includes(o.format), 'Unknown export format');
         if (o.out) {
           if (o.format === 'markdown') writeText(path.resolve(o.out), result.markdown);
