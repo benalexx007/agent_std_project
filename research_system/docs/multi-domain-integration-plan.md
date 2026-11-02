@@ -1,6 +1,6 @@
 # Refactor đa domain — kế hoạch triển khai và nghiệm thu
 
-Ngày: **02/11/2026**. Trạng thái: **kế hoạch triển khai; F1 và một phần F2/F3 đang được thực hiện trên nhánh `feat/multi-domain-foundation`**. Application activation chưa hoàn thành.
+Ngày: **02/11/2026**. Trạng thái: **Foundation (shared harness và Research façade) đã triển khai trên nhánh `feat/multi-domain-foundation`; Application activation để đợt sau**. Application chưa được phép khởi tạo/chạy. Xem [báo cáo kiểm thử Foundation](verification/multi-domain-foundation-2026-11-02.md).
 
 Baseline: source 0.7.0, Git commit `9d73de585b27b98836789c7fad2a896924d6911f`. Bản này thay thế phạm vi triển khai của draft `multi_domain_integration_plan.md` người dùng cung cấp trong Downloads; không sửa bản gốc. Các đường dẫn code dưới đây tính từ `research_system/`.
 

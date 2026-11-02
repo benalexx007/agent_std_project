@@ -8,6 +8,7 @@ import { assignmentCurrent } from './work.mjs';
 import { finishAttempt, validateResult, hasLiveJobs, currentTaskResult, checkOwner } from './engine.mjs';
 
 import { extensionArtifacts } from './extension-runner.mjs';
+import { projectDomain } from './domains.mjs';
 
 function guard(s, attempt) {
   requireThat(attempt && !attempt.settled && assignmentCurrent(s, attempt) && attempt.owner_epoch === s.owner.epoch &&
@@ -34,7 +35,7 @@ export async function completeAttempt(store, attemptId, outcome, hooks = {}) {
   const baseline = workspaceManifest(initial, a);
   const allowed = new Map(baseline.outputs.map((r) => [r.path, r]));
   for (const ref of extensionArtifacts(initial, a)) {
-    requireThat(ref.path.startsWith('research-artifacts/extension_'), 'Invalid helper publication namespace');
+    requireThat(ref.path.startsWith(projectDomain(initial).extension_namespace + '/extension_'), 'Invalid helper publication namespace');
     requireThat(fileHash(workspacePath(a.workspace.root, ref.path)) === ref.sha256, 'Helper output changed');
     allowed.set(ref.path, { path: ref.path, sha256: null, blob: null });
   }

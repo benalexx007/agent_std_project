@@ -23,10 +23,7 @@ export function normalizeConfig(input, sourceFile) {
   config.project.workspace = path.resolve(path.dirname(absolute), raw.project.workspace);
   config.bundle_root = path.resolve(path.dirname(absolute), raw.bundle_root || ROOT);
   requireThat(fs.existsSync(config.bundle_root), 'Bundle root does not exist');
-  if (config.research_profile) {
-    requireThat(new Set(config.research_profile.reasoning_modes).size === config.research_profile.reasoning_modes.length, 'Duplicate reasoning mode');
-    requireThat(!config.research_profile.output.venue || config.research_profile.output.format === 'paper', 'Venue is only applicable to paper output');
-  }
+  domain.validateConfig(config);
   requireThat(Object.hasOwn(config.backends, config.orchestrator.backend), 'Unknown orchestrator backend');
   for (const required of domain.required_roles) requireThat(Object.hasOwn(config.roles, required), 'Missing research responsibility: ' + required);
   for (const [name, role] of Object.entries(config.roles)) {
@@ -54,7 +51,7 @@ export function normalizeConfig(input, sourceFile) {
 
 export function resolveTask(config, input, override = {}) {
   const domain = activeDomain(config.project.domain);
-  const allowed = new Set(['role', 'backend', 'model', 'reasoning_effort', 'task_class', 'model_tier', 'skills', 'budget', 'research_profile', 'research_record_ids', 'extension_profile', 'extension_scope']);
+  const allowed = new Set(['role', 'backend', 'model', 'reasoning_effort', 'task_class', 'model_tier', 'skills', 'budget', 'extension_profile', 'extension_scope', ...domain.task_override_keys]);
   for (const key of Object.keys(override)) requireThat(allowed.has(key), 'Unsupported task override: ' + key);
   requireThat(input?.domain === domain.id, 'Task domain differs from project');
   const task = contract(domain.task_schema, applyModelOverride(input, override));
@@ -63,11 +60,7 @@ export function resolveTask(config, input, override = {}) {
   task.backend = taskBackend(config, task, role.backend);
   Object.assign(task, selectModel(config, task));
   task.skills = task.skills || role.skills.slice(0, 1);
-  for (const profile of [config.research_profile, task.research_profile].filter(Boolean)) {
-    requireThat(new Set(profile.reasoning_modes).size === profile.reasoning_modes.length, 'Duplicate reasoning mode');
-    requireThat(!profile.output.venue || profile.output.format === 'paper', 'Venue is only applicable to paper output');
-  }
-  requireThat(new Set(task.research_record_ids || []).size === (task.research_record_ids || []).length, 'Duplicate research record selection');
+  domain.validateTask(config, task);
   requireThat((task.analysis_input_paths || []).every((p) => task.inputs.some((r) => r.path === p)), 'Declared analysis inputs must be task inputs');
   requireThat(task.purpose !== 'benchmark' || task.benchmark_request_id, 'Benchmark task needs a per-run request');
   requireThat(!task.benchmark_request_id || task.purpose === 'benchmark', 'Benchmark request requires explicit benchmark purpose');

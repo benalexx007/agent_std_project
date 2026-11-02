@@ -5,7 +5,6 @@ import path from 'node:path';
 import { now, id, clone, requireThat, hash, artifactCheck, confined } from './util.mjs';
 import { assignmentCurrent, workKey } from './work.mjs';
 import { contract } from './schema.mjs';
-import { researchSnapshot, checkResearchSnapshot } from './research.mjs';
 import { bundleResource } from './improvements.mjs';
 import { projectDomain } from './domains.mjs';
 
@@ -24,7 +23,8 @@ export function loadCheckpoint(state, checkpointId) {
     artifactCheck(ref.root === 'workspace' ? state.project.workspace : state.config.bundle_root, ref);
     requireThat(bundleResource(state.config, state, ref.target || ref.path).ref.sha256 === ref.sha256, 'Checkpoint bundle policy changed');
   }
-  checkResearchSnapshot(state, manifest.research_refs);
+  const domain = projectDomain(state);
+  domain.checkSnapshot(state, manifest[domain.snapshot_key]);
   return manifest;
 }
 export function usableCheckpoint(state, taskId, unitId) {
@@ -68,10 +68,10 @@ function persistCheckpoint(store, attemptId, progress, afterWrite, final) {
       task_id: a.task_id, task_revision: a.task_revision, work_unit_id: a.work_unit_id,
       attempt_id: a.attempt_id, assignment_generation: a.assignment_generation, protocol_version: a.protocol_version,
       role: task.spec.role, skills: task.spec.skills, config_hash: a.config_hash,
-      research_refs: researchSnapshot(state, task.spec),
+      [projectDomain(state).snapshot_key]: projectDomain(state).snapshot(state, task.spec),
       bundle_refs: a.bundle_refs || [state.config.roles[task.spec.role].profile,
         ...task.spec.skills.map((skill) => path.join(state.config.skills[skill], 'SKILL.md')),
-        'domains/research/rubrics/' + task.spec.study_type + '.md'].map((ref) => ({
+        projectDomain(state).rubric(task.spec)].map((ref) => ({
           path: ref, sha256: hash(fs.readFileSync(confined(state.config.bundle_root, ref)))
         })),
       completed_units: task.unit_ids.filter((uid) => state.work_units[workKey(a.task_id, uid)].status === 'completed'),

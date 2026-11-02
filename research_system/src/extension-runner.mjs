@@ -6,6 +6,7 @@ import { validateExtensionCall, EXTENSION_OPERATIONS, checkExtensionBinding } fr
 import { assignmentCurrent } from './work.mjs';
 import { executionRoot, workspacePath, currentHash } from './workspaces.mjs';
 import { pinFile } from './blobs.mjs';
+import { projectDomain } from './domains.mjs';
 
 function active(s, a) {
   requireThat(a && !a.settled && assignmentCurrent(s, a) && a.owner_epoch === s.owner.epoch &&
@@ -50,7 +51,7 @@ export async function runExtension(store, attemptId, callKey, operation, args, t
   requireThat(!testTransport || initial.config.backends[attempt.backend].kind === 'mock', 'Fixture transport requires a mock backend');
   const { binding, docs } = validateExtensionCall(initial.config, attempt, operation, args);
   const route = EXTENSION_OPERATIONS[operation], provider = route.provider || 'local';
-  const root = executionRoot(initial, attempt), relative = 'research-artifacts/' + callId;
+  const root = executionRoot(initial, attempt), relative = projectDomain(initial).extension_namespace + '/' + callId;
   requireThat(currentHash(initial.project.workspace, relative + '/receipt.json') === null, 'Extension output namespace already exists');
   const folder = confined(store.directory, 'extension-work/' + callId, false);
   const publishedFolder = workspacePath(root, relative, false);
@@ -124,8 +125,9 @@ export async function runExtension(store, attemptId, callKey, operation, args, t
     };
     const runPython = async (action, arguments_) => {
       const request = path.join(folder, 'request.json'); writeJSON(request, { action, arguments: arguments_ });
-      const script = confined(initial.config.bundle_root, 'extensions/research/worker.py');
-      requireThat(Object.hasOwn(docs.lock.files, 'extensions/research/worker.py'), 'Unpinned helper entrypoint');
+      const workerPath = projectDomain(initial).helper_worker;
+      const script = confined(initial.config.bundle_root, workerPath);
+      requireThat(Object.hasOwn(docs.lock.files, workerPath), 'Unpinned helper entrypoint');
       const env = { SystemRoot: process.env.SystemRoot || '', WINDIR: process.env.WINDIR || process.env.SystemRoot || '', TEMP: folder, TMP: folder,
         MPLCONFIGDIR: path.join(folder, 'matplotlib-cache'), PYTHONDONTWRITEBYTECODE: '1', PYTHONIOENCODING: 'utf-8' };
       const python = docs.environment.python;

@@ -111,7 +111,7 @@ export async function main(argv = process.argv.slice(2)) {
     record: { type: 'string' }, change: { type: 'string' }, request: { type: 'string' }, format: { type: 'string' },
     full: { type: 'boolean', default: false }, section: { type: 'string' },
     auth: { type: 'string' },
-    backend: { type: 'string' }, 'task-class': { type: 'string' }, 'model-tier': { type: 'string' }, tasks: { type: 'string' }
+    backend: { type: 'string' }, domain: { type: 'string' }, 'task-class': { type: 'string' }, 'model-tier': { type: 'string' }, tasks: { type: 'string' }
   } });
   const command = parsed.positionals[0];
   const o = parsed.values;
@@ -122,7 +122,7 @@ export async function main(argv = process.argv.slice(2)) {
     documentation: path.join(ROOT, 'docs/gui-integration.md') };
   if (['connect-gui', 'disconnect-gui'].includes(command)) {
     requireThat(o.workspace && !o.config && o.backend, 'Connection requires --workspace and --backend');
-    return command === 'connect-gui' ? connectGui(o.workspace, o.backend) : disconnectGui(o.workspace, o.backend);
+    return command === 'connect-gui' ? connectGui(o.workspace, o.backend, o.domain) : disconnectGui(o.workspace, o.backend);
   }
   if (['upgrade-gui', 'gui-attach', 'gui-action', 'confirm-gui-change'].includes(command)) {
     requireThat(o.workspace && !o.config, 'GUI commands require one fixed --workspace');

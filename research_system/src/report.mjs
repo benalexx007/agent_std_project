@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { currentTaskResult, reservations } from './engine.mjs';
+import { projectDomain } from './domains.mjs';
 
 export function usageReport(state) {
   const byBackend = {};
@@ -57,7 +58,7 @@ export function usageReport(state) {
       }))
     },
     limitations: [
-      'A structurally accepted task is not a scientifically accepted research outcome.',
+      projectDomain(state).usage_limitation,
       'Fixture usage is synthetic. Unknown usage is retained as unknown; reservations are labeled estimates.',
       'Different providers may tokenize differently; compare quality and actual/estimated cost, not raw token totals alone.',
       'Elapsed decision wait does not measure the human time spent actively reviewing.',

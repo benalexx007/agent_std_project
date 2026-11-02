@@ -10,7 +10,6 @@ import { installUnits, getUnit, workKey, assignmentCurrent, completeUnit, public
 import { estimateUnit, budgetAdmission, poolIds, settleUsage } from './resources.mjs';
 import { loadCheckpoint } from './checkpoints.mjs';
 import { classifyFailure } from './failures.mjs';
-import { researchState } from './research.mjs';
 import { projectDomain } from './domains.mjs';
 import { benchmarkAdmission, benchmarkDispatchAllowed, benchmarkFinished } from './benchmarks.mjs';
 import { modelForBackend } from './models.mjs';
@@ -277,7 +276,7 @@ export function beginAttempt(store, taskId, owner, epoch, dispatchKey, options =
         model_tier: task.model_tier || null, model_selection: task.model_selection, skills: task.skills, budget: task.budget },
       ...(task.extension_profile && task.extension_profile !== 'none' ? { extension_binding: resolveExtensions(state.config, task) } : {}),
       config_hash: state.config_hash, work_unit_id: unit.spec.work_unit_id,
-      research_refs: (context.packet.research?.records || []).map((e) => ({ record_id: e.record.record_id, revision: e.record.revision, sha256: e.sha256 })),
+      [projectDomain(state).snapshot_key]: (context.packet[projectDomain(state).packet_key]?.records || []).map((e) => ({ record_id: e.record.record_id, revision: e.record.revision, sha256: e.sha256 })),
       bundle_refs: context.packet.bundle_refs,
       ...(benchmark ? { benchmark_request_id: benchmark.request_id } : {}),
       assignment_id: assignmentId, assignment_generation: unit.generation + 1,
@@ -612,7 +611,7 @@ export function handoff(state) {
     work_units: clone(state.work_units), assignments: clone(state.assignments), checkpoints: clone(state.checkpoints),
     extension_calls: clone(state.extension_calls), extension_usage: clone(state.extension_usage),
     recoveries: clone(state.recoveries), pools: clone(state.pools),
-    research: clone(researchState(state)), improvements: clone(state.improvements || {}), benchmarks: clone(state.benchmarks || {}),
+    [projectDomain(state).handoff_key]: clone(projectDomain(state).state(state)), improvements: clone(state.improvements || {}), benchmarks: clone(state.benchmarks || {}),
     next_actions: Object.values(state.tasks).filter((t) => t.status !== 'completed').map((t) => t.spec.task_id + ': ' + t.status) });
 }
 export function reconcile(store, observations = []) {

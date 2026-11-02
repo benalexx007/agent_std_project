@@ -1,12 +1,11 @@
 import { requireThat } from './util.mjs';
 import * as research from './research.mjs';
+import { researchDomain } from './research-domain.mjs';
 
 // Built-in domains only. A project cannot load executable domain code from config.
 const registry = Object.freeze({
   research: Object.freeze({
-    id: 'research', contract_version: 1, enabled: true,
-    config_schema: 'config', task_schema: 'task',
-    required_roles: Object.freeze(['researcher', 'implementer', 'evaluator']),
+    ...researchDomain,
     record: research.recordResearch, entry: research.researchEntry,
     validity: research.researchValidity, review: research.researchReview,
     render: research.renderResearch, packet: research.researchPacket,

@@ -3,6 +3,7 @@ import { normalizeConfig, resolveTask } from './config.mjs';
 import { checkedAttachment, guiBusy } from './gui-state.mjs';
 import { clone, requireThat, hash, now, id, artifactCheck } from './util.mjs';
 import { initialPools } from './resources.mjs';
+import { activeDomain } from './domains.mjs';
 
 // JSON Merge Patch: objects merge; null removes a key; arrays replace atomically.
 export function mergePatch(value, patch) {
@@ -26,7 +27,8 @@ function validateTarget(s, patch, restoreRevision) {
 }
 function protectedChange(old, next) {
   // Conservative classification, with explicit approval outside model-authored payloads.
-  return ['execution', 'autonomy', 'backends', 'extensions', 'budget_reserves', 'quota_pools', 'workspace_policy', 'project', 'research_profile']
+  return ['execution', 'autonomy', 'backends', 'extensions', 'budget_reserves', 'quota_pools', 'workspace_policy', 'project',
+    ...activeDomain(old.project.domain).protected_config_keys]
     .some((key) => JSON.stringify(old[key]) !== JSON.stringify(next[key]));
 }
 export function proposeGuiChange(store, auth, input) {

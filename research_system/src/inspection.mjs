@@ -5,6 +5,7 @@ import { DatabaseSync } from 'node:sqlite';
 import { loadConfig } from './config.mjs';
 import { capabilities } from '../adapters/index.mjs';
 import { readJSON, requireThat } from './util.mjs';
+import { domainFor } from './domains.mjs';
 
 export const INSPECT_SECTIONS = ['project', 'config', 'models', 'roles', 'skills', 'capabilities', 'policy', 'runtime'];
 const sensitive = (key) => /(?:apikey|password|passwd|secret|authorization|accesstoken|refreshtoken|idtoken|privatekey|credential|token)$/.test(key.replace(/[^a-z]/gi, '').toLowerCase());
@@ -30,7 +31,7 @@ export function redactInspection(value, key = '') {
     .replace(/(https?:\/\/)[^\s/@]+:[^\s/@]+@/gi, '$1[REDACTED]@'));
 }
 
-function readState(workspace) {
+export function readProjectState(workspace) {
   const file = path.join(workspace, '.agentic', 'state.sqlite');
   if (!fs.existsSync(file)) return null;
   const db = new DatabaseSync(file, { readOnly: true });
@@ -62,12 +63,14 @@ export function inspectProject(options = {}) {
     } catch (error) { errors.push({ source: 'candidate_config', message: error.message }); }
   }
   if (workspace) {
-    try { state = readState(workspace); }
+    try { state = readProjectState(workspace); }
     catch (error) { errors.push({ source: 'state', message: error.message }); }
   } else errors.push({ source: 'workspace', message: 'Cannot resolve workspace; use --workspace to inspect persisted state' });
   const supported = state && [1, 2, 3, 4, 5].includes(state.schema_version);
   if (state && !supported) errors.push({ source: 'state_version', message: 'Unsupported state version: ' + state.schema_version });
   const config = state?.config || candidate?.config || null;
+  let domainPolicyKeys = [];
+  try { domainPolicyKeys = domainFor(config?.project?.domain).inspect_policy_keys || []; } catch { /* Preserve read-only diagnostics for invalid/legacy config. */ }
   if (!config) errors.push({ source: 'config', message: 'No registered or valid candidate config available' });
   const drift = state && candidate ? state.config_hash !== candidate.config_hash : null;
   if (drift) warnings.push('Candidate config differs from registered state; no synchronization performed.');
@@ -107,7 +110,7 @@ export function inspectProject(options = {}) {
     native_worker_observations: page(scopes, options.full),
     gui_reported_observations: page(values(state?.gui?.observations).map((o) => ({ ...o,
       status: o.config_hash === state.config_hash ? 'recorded_attestation_not_live_verification' : 'stale_config' })), options.full) },
-    policy: Object.fromEntries(['execution', 'autonomy', 'control', 'context', 'budget_reserves', 'quota_pools', 'recovery_policy', 'checkpoint_policy', 'workspace_policy', 'research_profile'].map((k) => [k, config?.[k] ?? null])),
+    policy: Object.fromEntries(['execution', 'autonomy', 'control', 'context', 'budget_reserves', 'quota_pools', 'recovery_policy', 'checkpoint_policy', 'workspace_policy', ...domainPolicyKeys].map((k) => [k, config?.[k] ?? null])),
     runtime: { desired_state: state?.desired_state ?? null, usage: state?.usage ?? null, pools: state?.pools ?? {},
       publication: state?.publication ?? null,
       gui_operations: page(values(state?.gui?.operations).map((op) => ({ operation_id: op.operation_id, task_id: op.task_id, state: op.state,
