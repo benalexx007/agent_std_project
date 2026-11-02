@@ -1,0 +1,12 @@
+{
+  "summary": "Partial implementation saved; not a completed work unit.",
+  "remaining_actions": [
+    "Inspect current diff",
+    "Run the remaining acceptance checks"
+  ],
+  "artifacts": [],
+  "checks": [],
+  "uncertainties": [
+    "Fill in actual evidence and checks before using this record."
+  ]
+}

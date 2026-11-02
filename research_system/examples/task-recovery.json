@@ -1,0 +1,75 @@
+{
+  "task_id": "parser_recovery",
+  "domain": "research",
+  "study_type": "reproduction",
+  "task_revision": 1,
+  "role": "implementer",
+  "skills": [
+    "research-experiment"
+  ],
+  "objective": "Verify a synthetic two-unit workflow with a quota failure and worker takeover.",
+  "inputs": [],
+  "dependencies": [],
+  "acceptance": [
+    "A schema-valid synthetic result is recorded; no research claim is inferred."
+  ],
+  "expected_artifacts": [],
+  "protocol_version": "fixture-v1",
+  "capabilities": [],
+  "budget": {
+    "max_attempts": 6,
+    "timeout_ms": 5000,
+    "reservation_tokens": 500,
+    "reservation_cost_usd": 0,
+    "max_total_tokens": 10000
+  },
+  "stop_conditions": [
+    "Stop on timeout or cancellation; no automatic retry."
+  ],
+  "required_actions": [
+    "local_review"
+  ],
+  "writes_workspace": false,
+  "work_units": [
+    {
+      "work_unit_id": "define_contract",
+      "objective": "Verify the synthetic result contract.",
+      "dependencies": [],
+      "expected_artifacts": [],
+      "estimate_key": "fixture-parser",
+      "estimate": {
+        "work_tokens": 800,
+        "validation_tokens": 100,
+        "checkpoint_tokens": 100,
+        "margin_tokens": 100,
+        "cost_usd": 0,
+        "context_growth_tokens": 1000
+      },
+      "mock": {
+        "duration_ms": 50
+      }
+    },
+    {
+      "work_unit_id": "parse_results",
+      "objective": "Verify the synthetic parser and missing-output check.",
+      "dependencies": [
+        "define_contract"
+      ],
+      "expected_artifacts": [],
+      "estimate_key": "fixture-parser",
+      "estimate": {
+        "work_tokens": 800,
+        "validation_tokens": 100,
+        "checkpoint_tokens": 100,
+        "margin_tokens": 100,
+        "cost_usd": 0,
+        "context_growth_tokens": 1000
+      },
+      "mock": {
+        "duration_ms": 300,
+        "checkpoint_after_ms": 20,
+        "failure_code": "quota_exhausted"
+      }
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+# Local interpreter environments are rebuilt from the checked-in provisioning scripts.
+/research_system/.research-environment/
+
+# Local secrets; sanitized templates may be committed.
+.env
+.env.*
+!.env.example
+!.env.sample
+!.env.template
+*.pem
+*.key
+*.p12
+*.pfx
+id_rsa
+id_ed25519
+
+# Machine-local caches.
+.DS_Store
+Thumbs.db
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/

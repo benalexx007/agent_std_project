@@ -1,0 +1,117 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-31",
+  "generated_at": "2026-10-31T13:29:09.5973565Z",
+  "package_version": "0.7.0",
+  "scope": "Separate analysis orchestrator and scientific advisor; default automation to Antigravity Gemini 3.8 Flash High",
+  "model_defaults": {
+    "orchestrator": {
+      "task_class": "analysis",
+      "backend": "codex",
+      "reasoning_effort": "high",
+      "model": "gpt-6.1-sol"
+    },
+    "advisor": {
+      "task_class": "synthesis_planning",
+      "backend": "codex",
+      "reasoning_effort": "high",
+      "model": "gpt-6-astra"
+    },
+    "automation": {
+      "task_class": "automation",
+      "backend": "antigravity",
+      "reasoning_effort": "high",
+      "model": "gemini-3.8-flash-high"
+    }
+  },
+  "relevant_regressions": {
+    "tests": 42,
+    "skipped": 0,
+    "fail": 0,
+    "pass": 42
+  },
+  "full_regressions": {
+    "skipped": 0,
+    "exit_code": 1,
+    "fail": 13,
+    "tests": 231,
+    "sha256": "0bb99618e94624fa113c93178e6add9bea21c3f80c3a8a22ad8c76fa3a61bf03",
+    "pass": 218,
+    "log": "docs/verification/advisor-routing-2026-10-31-tests.tap",
+    "failures": [
+      "not ok 42 - extension profiles are opt-in, scoped, immutable and absent from plain-task context",
+      "not ok 43 - native helper contract discovery is cheap and execution uses the same scoped dispatcher",
+      "not ok 44 - symbolic AST handles assumptions and rejects executable expressions; duplicate IDs do not rerun",
+      "not ok 45 - paired statistics match independent exact oracles and report degenerate bootstrap uncertainty",
+      "not ok 46 - bibliography keeps distinct DOI records with colliding keys and exposes raw failed blocks",
+      "not ok 47 - retrieval fixtures preserve raw bytes/version and distinguish HTTP200 errors from an empty search",
+      "not ok 48 - OpenAlex/DOI fixtures report bounded paging and reject redirects outside the route",
+      "not ok 49 - provider admission and cancellation retain accounting and fence unresolved extension jobs",
+      "not ok 50 - extension output publication uses the existing journal and detects post-call tampering",
+      "not ok 51 - changed helper output cannot be published as the pinned result",
+      "not ok 52 - a helper spawn commit failure stops the known process and retains the failed call evidence",
+      "not ok 53 - bounded retrieval records HTTP and malformed/oversized-response failures without live services",
+      "not ok 54 - PDF reuse extracts page locators and renders the same source with the pinned existing renderer"
+    ]
+  },
+  "static": {
+    "python_checked_files": 4,
+    "log": "docs/verification/advisor-routing-2026-10-31-static.json",
+    "valid": true,
+    "sha256": "519c654c2c10efb29faa244cc02a231e6026c6d52ee2c39a75a2a0ba11a36c6a",
+    "syntax_checked_files": 74
+  },
+  "model_policy_schemas_match": true,
+  "environment_blocker": {
+    "environment_modified": false,
+    "expected_base_python_sha256": "73dbf1f40507275d6fa636b49eb80b4753e313f649f52591abba86b31f1a1bce",
+    "error": "Base Python binding changed",
+    "actual_base_python_sha256": "f8b45d63047da9d9adf09892e4cc4317b859e86a93a478cc9616bc69d3b176e5"
+  },
+  "live_model_executed": false,
+  "benchmark_executed": false,
+  "existing_project_state_modified": false,
+  "limitations": [
+    "Antigravity flags checked using local CLI help and official docs; account/model inventory and live inference unverified.",
+    "Full suite is not accepted: thirteen scientific-helper tests fail before execution at the existing Python integrity check.",
+    "Skill-creator quick validator unavailable because interpreter lacks PyYAML; project static skill checks passed.",
+    "Config defaults do not migrate frozen tasks or switch GUI model pickers."
+  ],
+  "sources": [
+    "https://antigravity.google/docs/cli/headless/",
+    "https://antigravity.google/docs/cli/reference/",
+    "https://antigravity.google/blog/gemini-3-8-flash-in-google-antigravity",
+    "https://ai.google.dev/gemini-api/docs/models/gemini-3.8-flash"
+  ],
+  "source_sha256": {
+    "src/models.mjs": "af3d78cf055edc9a5466223c19781d63ffcfcf3723d10c0130f1f72d793f1055",
+    "src/config.mjs": "7c0022b927b0d419279c82187269bdeae218ce1809201df9073e276a7e599748",
+    "src/planning.mjs": "f32ff532c9edd3cad00b83e52204c16de8213070c91c3e31850072a0743c4f47",
+    "adapters/index.mjs": "117b0538178664df6fc3151fa0f6acedcdf278bbcf6a0d30af11ce3d4b6d9c6f",
+    "schemas/model-policy.schema.json": "dc4b070a7d16a14d52725a7dc3b7b3c05893381228b3da3ef7c251daa62662dc",
+    "schemas/config.schema.json": "ea78878d15cf3028c1f4a74b8db5229b732e0527bc492810fdb36ecf58ebd2fe",
+    "benchmarks/b01/prepare.mjs": "e47a984e2abb475c03ec0362d9d70bc6606878306724d79b5011f21b78b10274",
+    "scripts/check-project.mjs": "9697d57769775d1a9378e58c79db8880967b4dd53565c79abb3fc906212fae80",
+    "test/helpers.mjs": "0947700ca9985a454cee2aaedc436aa76fe4e4e70f350d4452898946a2f3819a",
+    "test/model-routing.test.mjs": "c2ef1d0b5b5388e19941c2e79daee8b5e52075bacd65728dc451ff05cf21ed0e",
+    "test/planning.test.mjs": "36aae867ab87ae2a8e16acb24533dac27d6755ae5f6287483a94181152458cf9",
+    "test/runner.test.mjs": "a44d7541bb9ac151963b971cd9efee5ba9ca23b80e962e6cd8e2f829aa90d031",
+    "test/benchmark-preparation.test.mjs": "ce37e2127486d971f95754ff9324aaeb5a48cb9c1f84818ff353ec232d8b4d4c",
+    "AGENTS.md": "bb9dddf13dc077c173c7bc2f8161dd913960cd54c92d545112af347c5a3a7e67",
+    "domains/research/domain.md": "f19d7665012ed8a7908062150ec51759a0853872dc1104c992976fa3d90c34e9",
+    "domains/research/roles/orchestrator.md": "339ab7ad459636bff685aa8cd2cc733856693fae2e0708ac64c5f588c9838d4d",
+    "domains/research/roles/researcher.md": "a9352e81c41fe94a6f80920ea4743f211d6e20109544cba6e57b83c0c872f49d",
+    "integrations/research-project/SKILL.md": "9309e23e6201984f01ea9683e76047a4a0798c5187d0a4d6051d0670b6e0c288",
+    "skills/research-design/references/planning-verification.md": "30b8cd2f35dae1ecee5ca32fa7e84786c2810c96a080d24c092e7ba08fb50607",
+    "examples/research.json": "676fb8968dccf2ecc326efc027247dd94a38940ac677038f3698fa643997cc6c",
+    "examples/recovery.json": "4448537453c637de9a5178495fbc0b424029fd7e3cb9dca0ee9faed96fbfb052",
+    "examples/research-paper.json": "40e8d09fac597558b008a6d330a621c1ea3e13bc0700e22bfe61749f9bdb889a",
+    "examples/research-isolated.json": "b7c1917f74a648dbb5711c02c690fecec68c775e857b261878396d4cdffb10bf",
+    "examples/research-extensions.json": "ab22cfe119dbdfcb9498d7f28e39c6d1974db271b9e21a98d001c1604d669d5b",
+    "examples/codex-native.json": "402a216e31ba1b049c66af95c6a01dac0704f20fcdc499aa73dc6c806afa7a5a",
+    "examples/codex-native-extensions.json": "cb1454eb12e2cfaf4a2a34acd398624ab7657be41e863d0e9a330ed87b277124",
+    "examples/task-orchestrator.json": "3f8a704e7a48d6a10bfdf7f53fd111183ffb9a38ad00cce2afed560831ea4e8f",
+    "examples/task-synthesis-planning.json": "799247c61c808e0ed1ca3c2a3607653287bdb54ac095402536d43a13e8e174c8",
+    "examples/override-automation.json": "e1788f452949a28334b526f37bb9a22c54dde344579ddff5089f7fd0eeac90cb"
+  }
+}

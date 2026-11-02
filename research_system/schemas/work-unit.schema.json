@@ -1,0 +1,172 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "task_id": {
+      "type": "string",
+      "pattern": "^(?!(?:constructor|prototype|__proto__)$)[A-Za-z0-9][A-Za-z0-9_-]{0,95}$"
+    },
+    "task_revision": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "spec": {
+      "type": "object",
+      "properties": {
+        "work_unit_id": {
+          "type": "string",
+          "pattern": "^(?!(?:constructor|prototype|__proto__)$)[A-Za-z0-9][A-Za-z0-9_-]{0,95}$"
+        },
+        "estimate_key": {
+          "type": "string",
+          "minLength": 1
+        },
+        "objective": {
+          "type": "string",
+          "minLength": 1
+        },
+        "dependencies": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "expected_artifacts": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "estimate": {
+          "type": "object",
+          "properties": {
+            "work_tokens": {
+              "type": "number",
+              "minimum": 0
+            },
+            "validation_tokens": {
+              "type": "number",
+              "minimum": 0
+            },
+            "checkpoint_tokens": {
+              "type": "number",
+              "minimum": 0
+            },
+            "margin_tokens": {
+              "type": "number",
+              "minimum": 0
+            },
+            "cost_usd": {
+              "type": "number",
+              "minimum": 0
+            },
+            "context_growth_tokens": {
+              "type": "number",
+              "minimum": 0
+            }
+          },
+          "required": [
+            "work_tokens",
+            "validation_tokens",
+            "checkpoint_tokens",
+            "margin_tokens",
+            "cost_usd",
+            "context_growth_tokens"
+          ],
+          "additionalProperties": false
+        },
+        "mock": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "work_unit_id",
+        "objective",
+        "dependencies",
+        "expected_artifacts",
+        "estimate"
+      ],
+      "additionalProperties": false
+    },
+    "status": {
+      "type": "string",
+      "minLength": 1
+    },
+    "generation": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "assignment_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "attempts": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "checkpoint_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "transfers": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "retries": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "yields": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "result": {
+      "type": "object"
+    },
+    "checkpoint_sequence": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "progress_fingerprint": {
+      "type": "string",
+      "minLength": 1
+    },
+    "no_progress_recoveries": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "history": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "publication_sequence": {
+      "type": "integer",
+      "minimum": 1
+    }
+  },
+  "required": [
+    "task_id",
+    "task_revision",
+    "spec",
+    "status",
+    "generation",
+    "assignment_id",
+    "attempts",
+    "checkpoint_id",
+    "transfers",
+    "retries",
+    "yields"
+  ],
+  "additionalProperties": false
+}

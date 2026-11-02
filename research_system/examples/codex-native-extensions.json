@@ -1,0 +1,332 @@
+{
+  "schema_version": 1,
+  "bundle_root": "..",
+  "project": {
+    "id": "codex_native_extensions",
+    "domain": "research",
+    "study_type": "reproduction",
+    "objective": "Coordinate research with Codex while preserving scientific evidence and human decisions.",
+    "workspace": "../workspaces/codex-native-extensions"
+  },
+  "orchestrator": {
+    "backend": "codex_native",
+    "model": null,
+    "task_class": "analysis"
+  },
+  "roles": {
+    "researcher": {
+      "profile": "domains/research/roles/researcher.md",
+      "skills": [
+        "research-scope",
+        "research-literature",
+        "research-design",
+        "research-evaluate",
+        "research-write"
+      ],
+      "backend": "codex_native"
+    },
+    "implementer": {
+      "profile": "domains/research/roles/implementer.md",
+      "skills": [
+        "research-experiment",
+        "research-evaluate"
+      ],
+      "backend": "codex_writer"
+    },
+    "evaluator": {
+      "profile": "domains/research/roles/evaluator.md",
+      "skills": [
+        "research-evaluate",
+        "research-design"
+      ],
+      "backend": "codex_native"
+    },
+    "orchestrator": {
+      "profile": "domains/research/roles/orchestrator.md",
+      "skills": [
+        "research-scope",
+        "research-design",
+        "research-evaluate"
+      ],
+      "backend": "codex_native"
+    }
+  },
+  "skills": {
+    "research-scope": "skills/research-scope",
+    "research-literature": "skills/research-literature",
+    "research-design": "skills/research-design",
+    "research-experiment": "skills/research-experiment",
+    "research-evaluate": "skills/research-evaluate",
+    "research-write": "skills/research-write"
+  },
+  "backends": {
+    "mock": {
+      "kind": "mock",
+      "allow_execute": true
+    },
+    "manual": {
+      "kind": "manual",
+      "allow_execute": false,
+      "model_family": "codex"
+    },
+    "codex": {
+      "kind": "codex-cli",
+      "command": "codex",
+      "sandbox": "read-only",
+      "model": null,
+      "allow_execute": false
+    },
+    "claude": {
+      "kind": "claude-cli",
+      "command": "claude",
+      "model": null,
+      "allow_execute": false
+    },
+    "antigravity": {
+      "kind": "agy-cli",
+      "command": "agy",
+      "model": null,
+      "allow_execute": false
+    },
+    "codex_native": {
+      "kind": "codex-app-server",
+      "command": "codex",
+      "sandbox": "read-only",
+      "allow_execute": false,
+      "quota_pool_ids": [
+        "codex_account"
+      ],
+      "native": {
+        "version": "codex-cli 0.164.0-alpha.11.1",
+        "delegation_mode": "harness_workers",
+        "request_timeout_ms": 30000,
+        "input_timeout_ms": 120000,
+        "max_frame_bytes": 1048576,
+        "max_tool_calls": 32,
+        "input_overhead_tokens": 4000
+      }
+    },
+    "codex_writer": {
+      "kind": "codex-app-server",
+      "command": "codex",
+      "sandbox": "workspace-write",
+      "allow_execute": false,
+      "quota_pool_ids": [
+        "codex_account"
+      ],
+      "native": {
+        "version": "codex-cli 0.164.0-alpha.11.1",
+        "delegation_mode": "harness_workers",
+        "request_timeout_ms": 30000,
+        "input_timeout_ms": 120000,
+        "max_frame_bytes": 1048576,
+        "max_tool_calls": 32,
+        "input_overhead_tokens": 4000
+      }
+    }
+  },
+  "execution": {
+    "mode": "adaptive",
+    "allow_external": false,
+    "max_concurrent": 3,
+    "max_attempts": 12,
+    "max_tokens": 200000,
+    "max_cost_usd": null,
+    "poll_ms": 250,
+    "max_output_bytes": 1048576
+  },
+  "context": {
+    "max_chars": 96000
+  },
+  "autonomy": {
+    "grants": [
+      {
+        "id": "local-work",
+        "actions": [
+          "local_review"
+        ],
+        "task_ids": [
+          "*"
+        ]
+      }
+    ],
+    "require_decision_for": [
+      "change_main_question",
+      "change_success_criteria",
+      "increase_budget",
+      "publish"
+    ]
+  },
+  "control": {
+    "cancel_grace_ms": 2000,
+    "force_kill": false
+  },
+  "model_policy": {
+    "default_task_class": "analysis",
+    "orchestrator_task_class": "analysis",
+    "task_class_backends": {
+      "automation": "antigravity"
+    },
+    "task_class_tiers": {
+      "synthesis_planning": "highest",
+      "analysis": "medium",
+      "automation": "low"
+    },
+    "backends": {
+      "codex": {
+        "highest": {
+          "model": "gpt-6-astra",
+          "reasoning_effort": "high"
+        },
+        "medium": {
+          "model": "gpt-6.1-sol",
+          "reasoning_effort": "high"
+        },
+        "low": {
+          "model": "gpt-6.1-sol",
+          "reasoning_effort": "medium"
+        }
+      },
+      "claude": null,
+      "antigravity": {
+        "low": {
+          "model": "gemini-3.8-flash-high",
+          "reasoning_effort": "high"
+        }
+      }
+    },
+    "planning_verification": {
+      "independent_research": true,
+      "primary_source_checks": true,
+      "attempt_scoped_evidence": true
+    }
+  },
+  "quota_pools": {
+    "codex_account": {
+      "max_concurrent": 3,
+      "reserve_tokens": 0,
+      "max_snapshot_age_ms": 300000,
+      "unknown_policy": "allow_bounded"
+    }
+  },
+  "workspace_policy": {
+    "mode": "snapshot_directory",
+    "include": [],
+    "max_files": 100,
+    "max_bytes": 67108864,
+    "max_writers": 2
+  },
+  "extensions": {
+    "enabled": false,
+    "manifest": "extensions/research/manifest.json",
+    "lock": "extensions/research/lock.json",
+    "profiles": {
+      "literature": {
+        "roles": [
+          "researcher",
+          "implementer",
+          "evaluator"
+        ],
+        "backends": [
+          "mock",
+          "codex_native",
+          "codex_writer"
+        ],
+        "operations": [
+          "scholarly.arxiv",
+          "scholarly.openalex",
+          "scholarly.crossref",
+          "scholarly.download",
+          "bibliography.doi",
+          "bibliography.validate",
+          "paper.read",
+          "paper.render"
+        ],
+        "network": true,
+        "limits": {
+          "http_calls": 12,
+          "max_records": 50,
+          "max_papers": 2,
+          "max_bytes": 26214400,
+          "timeout_ms": 60000,
+          "max_calls": 24
+        },
+        "native_policy": {
+          "skills": [],
+          "hooks": [],
+          "mcp_servers": []
+        }
+      },
+      "analysis": {
+        "roles": [
+          "researcher",
+          "implementer",
+          "evaluator"
+        ],
+        "backends": [
+          "mock",
+          "codex_native",
+          "codex_writer"
+        ],
+        "operations": [
+          "math.check",
+          "statistics.paired",
+          "figure.plot"
+        ],
+        "network": false,
+        "limits": {
+          "http_calls": 12,
+          "max_records": 50,
+          "max_papers": 2,
+          "max_bytes": 26214400,
+          "timeout_ms": 60000,
+          "max_calls": 24
+        },
+        "native_policy": {
+          "skills": [],
+          "hooks": [],
+          "mcp_servers": []
+        }
+      },
+      "research": {
+        "roles": [
+          "researcher",
+          "implementer",
+          "evaluator"
+        ],
+        "backends": [
+          "mock",
+          "codex_native",
+          "codex_writer"
+        ],
+        "operations": [
+          "scholarly.arxiv",
+          "scholarly.openalex",
+          "scholarly.crossref",
+          "scholarly.download",
+          "bibliography.doi",
+          "bibliography.validate",
+          "math.check",
+          "statistics.paired",
+          "figure.plot",
+          "paper.read",
+          "paper.render"
+        ],
+        "network": true,
+        "limits": {
+          "http_calls": 12,
+          "max_records": 50,
+          "max_papers": 2,
+          "max_bytes": 26214400,
+          "timeout_ms": 60000,
+          "max_calls": 24
+        },
+        "native_policy": {
+          "skills": [],
+          "hooks": [],
+          "mcp_servers": []
+        }
+      }
+    }
+  }
+}

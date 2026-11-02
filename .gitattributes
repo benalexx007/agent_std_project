@@ -1,0 +1,2 @@
+# Preserve exact bytes: artifacts, manifests and verification records pin SHA-256.
+* -text

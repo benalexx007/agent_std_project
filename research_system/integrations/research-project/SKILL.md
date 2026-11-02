@@ -1,0 +1,22 @@
+---
+name: research-project
+description: Use the local Research Harness from a backend GUI to manage a research project, change its settings, coordinate native or cross-backend workers, and inspect evidence and progress.
+---
+
+Use `connection.json` beside this skill for the absolute workspace, Node executable and harness script. The current GUI agent is the orchestrator; do not launch a second managed orchestrator. This entry is shared across hosts; it does not grant permissions or certify host loading.
+
+Discover actions on demand with `node <harness> gui-catalog`. Calls use `node <harness> gui-action --workspace <workspace> --auth <binding-file> --file <request-file>`. Requests are JSON `{ "group": "...", "action": "...", "data": {} }`; quote paths for the current shell. Keep binding credentials in files, never conversation text. Use `gui-attach --file <host_file>` to obtain a binding after explicit `upgrade-gui` on an idle initialized project. A new binding after an explicit owner takeover is required for writes.
+
+Start with project status and a small frontier or inspect section. Read role instructions, references and capabilities only when needed. Unknown native inventory means unknown; attaching, changing config or generating files does not reload the GUI or verify its tools/model. Host observations must identify source, session and scope. Never claim inherited permissions or effective MCP/skills from a CLI version.
+
+For conversational customization, prepare a change on the current revision, present its effect, then apply it. Objects merge, arrays replace and null removes an override where the schema permits. Active/unknown work defers activation. Protected permission/model-provider/budget changes require the exact human CLI confirmation; never author a human confirmation yourself. Rollback creates a new revision. Stage instruction changes as immutable overlays through change.overlay, then activate their ID in change.prepare. Do not edit global host settings.
+
+Researcher, implementer and evaluator are logical roles, not a mandatory count of processes. The GUI orchestrator defaults to analysis/medium for user interaction and coordination. For substantive scientific planning or replanning, delegate a separate synthesis_planning/highest advisor task, usually researcher: supply analyses and original evidence, including counterevidence; require independent current-attempt research/checks and a detailed plan returned to the orchestrator. The advisor does not take over orchestration. Implement the plan through bounded tasks; routine/small work need not call the advisor. Preserve assumptions, proof obligations and negative results. Execution completion does not establish scientific support, proof or novelty.
+
+Choose native inline/subagent only after work.native_assess passes with the observed model/effort. Use work.native_prepare BEFORE invoking host-native work, then consume its context file and exact execution workspace once. Bind the actual native handle with work.native_observe. Lost spawn replies remain unknown: inspect/reconcile, never blindly resubmit. Terminal observations need descendant termination evidence and a result satisfying the core contract. Host-authored observations are attestations, not independent isolation or usage receipts. Hard budget, separate sandbox, guaranteed interrupt, scoped extension or benchmark requirements use the managed route.
+
+Use work.dispatch for a managed/cross-backend worker and keep its operation ID. Reuse the same key only for the identical request. Poll the operation/status without model-driven loops. Work control changes desired state; a stopped parent is not proof its children stopped. Unresolved work blocks re-dispatch and configuration activation. Use rescue CLI reconciliation when a GUI disconnects.
+
+Automation defaults to Antigravity Gemini 3.8 Flash High via task_class_backends; explicit/frozen selections retain precedence. From a Codex GUI this is a managed cross-backend worker, not a Codex native child. Missing mapping/access remains blocked; never silently substitute Codex or enable execution. Deterministic scripts need no model.
+
+Use paged evidence reads and references for large results. Reuse provisioned research helpers instead of installing environments on attach. Run local software checks as needed. Every deliberate live benchmark needs a separate human-approved protocol and purpose=benchmark; implementation permission is not benchmark permission.

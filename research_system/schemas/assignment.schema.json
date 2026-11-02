@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "assignment_id": {
+      "type": "string",
+      "pattern": "^(?!(?:constructor|prototype|__proto__)$)[A-Za-z0-9][A-Za-z0-9_-]{0,95}$"
+    },
+    "task_id": {
+      "type": "string",
+      "pattern": "^(?!(?:constructor|prototype|__proto__)$)[A-Za-z0-9][A-Za-z0-9_-]{0,95}$"
+    },
+    "work_unit_id": {
+      "type": "string",
+      "pattern": "^(?!(?:constructor|prototype|__proto__)$)[A-Za-z0-9][A-Za-z0-9_-]{0,95}$"
+    },
+    "generation": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "backend": {
+      "type": "string",
+      "minLength": 1
+    },
+    "attempt_id": {
+      "type": "string",
+      "pattern": "^(?!(?:constructor|prototype|__proto__)$)[A-Za-z0-9][A-Za-z0-9_-]{0,95}$"
+    },
+    "owner_epoch": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "lease_expires_at": {
+      "type": "string",
+      "minLength": 1
+    },
+    "heartbeat_at": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "required": [
+    "assignment_id",
+    "task_id",
+    "work_unit_id",
+    "generation",
+    "backend",
+    "attempt_id",
+    "owner_epoch",
+    "lease_expires_at",
+    "heartbeat_at",
+    "status"
+  ],
+  "additionalProperties": false
+}

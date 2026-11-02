@@ -1,0 +1,34 @@
+{
+  "record_id": "H1",
+  "revision": 1,
+  "task_id": "review_scope",
+  "task_revision": 1,
+  "protocol_version": "fixture-v1",
+  "change_reason": "Initialize a synthetic walkthrough, not a scientific finding",
+  "kind": "hypothesis",
+  "refs": [],
+  "artifacts": [],
+  "run_ids": [],
+  "legacy_claim_ids": [],
+  "data": {
+    "statement": "A synthetic positive-slope hypothesis",
+    "scope": "Supplied walkthrough fixture only",
+    "assumptions": [
+      "The fixture measurement mechanism is correct"
+    ],
+    "alternatives": [
+      "A flat response"
+    ],
+    "prior_work": [
+      "Synthetic fixture authored for software testing"
+    ],
+    "origin": "user",
+    "predictions": [
+      "y increases with x"
+    ],
+    "proof_obligations": [],
+    "support": "untested",
+    "novelty": "unassessed",
+    "decision": "Design a discriminating check"
+  }
+}

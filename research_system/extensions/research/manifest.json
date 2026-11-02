@@ -1,0 +1,386 @@
+{
+  "schema_version": 1,
+  "operations": {
+    "scholarly.arxiv": {
+      "description": "Bounded arXiv search or identifier lookup with error-feed and version parsing.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1000
+          },
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 80
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 50
+          },
+          "start": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 10000
+          }
+        },
+        "required": [],
+        "additionalProperties": false,
+        "oneOf": [
+          {
+            "required": [
+              "query"
+            ]
+          },
+          {
+            "required": [
+              "id"
+            ]
+          }
+        ]
+      },
+      "guidance": "skills/research-literature/references/retrieval-tools.md"
+    },
+    "scholarly.openalex": {
+      "description": "One bounded OpenAlex scholarly metadata page; no account or key provisioning.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1000
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 50
+          },
+          "cursor": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          }
+        },
+        "required": [
+          "query"
+        ],
+        "additionalProperties": false
+      },
+      "guidance": "skills/research-literature/references/retrieval-tools.md"
+    },
+    "scholarly.crossref": {
+      "description": "One bounded Crossref metadata page with explicit continuation.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1000
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 50
+          },
+          "cursor": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          }
+        },
+        "required": [
+          "query"
+        ],
+        "additionalProperties": false
+      },
+      "guidance": "skills/research-literature/references/retrieval-tools.md"
+    },
+    "scholarly.download": {
+      "description": "Download one versioned arXiv PDF or HTML within the profile envelope.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 80
+          },
+          "format": {
+            "enum": [
+              "pdf",
+              "html"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "format"
+        ],
+        "additionalProperties": false
+      },
+      "guidance": "skills/research-literature/references/retrieval-tools.md"
+    },
+    "bibliography.doi": {
+      "description": "Retrieve DOI BibTeX and validate its bibliographic identity without rewriting.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "doi": {
+            "type": "string",
+            "pattern": "^10\\.[0-9]{4,9}/[^\\s?#]+$",
+            "maxLength": 250
+          }
+        },
+        "required": [
+          "doi"
+        ],
+        "additionalProperties": false
+      },
+      "guidance": "skills/research-literature/references/retrieval-tools.md"
+    },
+    "bibliography.validate": {
+      "description": "Read-only bibliography audit; preserve collisions and failed/raw blocks.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "path": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1024
+          }
+        },
+        "required": [
+          "path"
+        ],
+        "additionalProperties": false
+      },
+      "guidance": "skills/research-literature/references/retrieval-tools.md"
+    },
+    "math.check": {
+      "description": "Bounded symbolic AST and assumptions; not a general proof verifier.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "symbols": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object",
+              "properties": {
+                "real": {
+                  "type": "boolean"
+                },
+                "positive": {
+                  "type": "boolean"
+                },
+                "nonnegative": {
+                  "type": "boolean"
+                },
+                "integer": {
+                  "type": "boolean"
+                },
+                "nonzero": {
+                  "type": "boolean"
+                }
+              },
+              "required": [],
+              "additionalProperties": false
+            }
+          },
+          "expression": {
+            "type": "object"
+          },
+          "compare": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "symbols",
+          "expression"
+        ],
+        "additionalProperties": false
+      },
+      "guidance": "skills/research-design/references/scientific-tools.md"
+    },
+    "statistics.paired": {
+      "description": "Explicit paired summary, bounded exact sign flip or seeded bootstrap.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "a": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "minItems": 2,
+            "maxItems": 10000
+          },
+          "b": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "minItems": 2,
+            "maxItems": 10000
+          },
+          "method": {
+            "enum": [
+              "summary",
+              "bootstrap",
+              "sign_flip_exact"
+            ]
+          },
+          "unit_of_analysis": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 300
+          },
+          "seed": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2147483647
+          },
+          "n_resamples": {
+            "type": "integer",
+            "minimum": 99,
+            "maximum": 10000
+          }
+        },
+        "required": [
+          "a",
+          "b",
+          "method",
+          "unit_of_analysis"
+        ],
+        "additionalProperties": false,
+        "oneOf": [
+          {
+            "properties": {
+              "method": {
+                "const": "bootstrap"
+              }
+            },
+            "required": [
+              "seed"
+            ]
+          },
+          {
+            "properties": {
+              "method": {
+                "enum": [
+                  "summary",
+                  "sign_flip_exact"
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "guidance": "skills/research-experiment/references/analysis-tools.md"
+    },
+    "figure.plot": {
+      "description": "Headless labelled PNG/SVG from bounded numeric coordinates.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "x": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "minItems": 1,
+            "maxItems": 10000
+          },
+          "y": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "minItems": 1,
+            "maxItems": 10000
+          },
+          "xlabel": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "ylabel": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 300
+          }
+        },
+        "required": [
+          "x",
+          "y",
+          "xlabel",
+          "ylabel"
+        ],
+        "additionalProperties": false
+      },
+      "guidance": "skills/research-experiment/references/analysis-tools.md"
+    },
+    "paper.read": {
+      "description": "Extract selected PDF pages with locators; visual fidelity remains unchecked.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "path": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1024
+          },
+          "pages": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100000
+            },
+            "minItems": 1,
+            "maxItems": 20
+          }
+        },
+        "required": [
+          "path",
+          "pages"
+        ],
+        "additionalProperties": false
+      },
+      "guidance": "skills/research-literature/references/retrieval-tools.md"
+    },
+    "paper.render": {
+      "description": "Render one source PDF page with a pinned existing Poppler executable.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "path": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1024
+          },
+          "page": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100000
+          }
+        },
+        "required": [
+          "path",
+          "page"
+        ],
+        "additionalProperties": false
+      },
+      "guidance": "skills/research-literature/references/retrieval-tools.md"
+    }
+  }
+}

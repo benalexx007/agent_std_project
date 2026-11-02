@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "checkpoint_id": {
+      "type": "string",
+      "pattern": "^(?!(?:constructor|prototype|__proto__)$)[A-Za-z0-9][A-Za-z0-9_-]{0,95}$"
+    },
+    "task_id": {
+      "type": "string",
+      "pattern": "^(?!(?:constructor|prototype|__proto__)$)[A-Za-z0-9][A-Za-z0-9_-]{0,95}$"
+    },
+    "work_unit_id": {
+      "type": "string",
+      "pattern": "^(?!(?:constructor|prototype|__proto__)$)[A-Za-z0-9][A-Za-z0-9_-]{0,95}$"
+    },
+    "sequence": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "manifest_path": {
+      "type": "string",
+      "minLength": 1
+    },
+    "manifest_sha256": {
+      "type": "string",
+      "minLength": 1
+    },
+    "durable_at": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "required": [
+    "checkpoint_id",
+    "task_id",
+    "work_unit_id",
+    "sequence",
+    "manifest_path",
+    "manifest_sha256",
+    "durable_at"
+  ],
+  "additionalProperties": false
+}

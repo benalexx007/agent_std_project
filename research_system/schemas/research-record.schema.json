@@ -1,0 +1,1297 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "research-record",
+  "oneOf": [
+    {
+      "type": "object",
+      "properties": {
+        "record_id": {
+          "type": "string",
+          "pattern": "^(?!(?:constructor|prototype|__proto__)$)[A-Za-z0-9][A-Za-z0-9_-]{0,95}$"
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "task_id": {
+          "type": "string",
+          "pattern": "^(?!(?:constructor|prototype|__proto__)$)[A-Za-z0-9][A-Za-z0-9_-]{0,95}$"
+        },
+        "task_revision": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "protocol_version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "change_reason": {
+          "type": "string",
+          "minLength": 1
+        },
+        "refs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "record_id": {
+                "type": "string",
+                "pattern": "^(?!(?:constructor|prototype|__proto__)$)[A-Za-z0-9][A-Za-z0-9_-]{0,95}$"
+              },
+              "revision": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              },
+              "relation": {
+                "type": "string",
+                "enum": [
+                  "dependency",
+                  "subject"
+                ]
+              }
+            },
+            "required": [
+              "record_id",
+              "revision",
+              "sha256"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "artifacts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "path": {
+                "type": "string",
+                "minLength": 1
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              }
+            },
+            "required": [
+              "path",
+              "sha256"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "run_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^(?!(?:constructor|prototype|__proto__)$)[A-Za-z0-9][A-Za-z0-9_-]{0,95}$"
+          }
+        },
+        "legacy_claim_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^(?!(?:constructor|prototype|__proto__)$)[A-Za-z0-9][A-Za-z0-9_-]{0,95}$"
+          }
+        },
+        "kind": {
+          "const": "hypothesis"
+        },
+        "data": {
+          "type": "object",
+          "properties": {
+            "statement": {
+              "type": "string",
+              "minLength": 1
+            },
+            "scope": {
+              "type": "string",
+              "minLength": 1
+            },
+            "assumptions": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "alternatives": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "prior_work": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "origin": {
+              "type": "string",
+              "enum": [
+                "source",
+                "user",
+                "agent",
+                "derived"
+              ]
+            },
+            "predictions": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "proof_obligations": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "support": {
+              "type": "string",
+              "enum": [
+                "untested",
+                "supported",
+                "contradicted",
+                "inconclusive"
+              ]
+            },
+            "novelty": {
+              "type": "string",
+              "enum": [
+                "unassessed",
+                "related_work_found",
+                "candidate_within_search_scope"
+              ]
+            },
+            "novelty_basis": {
+              "type": "string",
+              "minLength": 1
+            },
+            "decision": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "statement",
+            "scope",
+            "assumptions",
+            "alternatives",
+            "prior_work",
+            "origin",
+            "predictions",
+            "proof_obligations",
+            "support",
+            "novelty",
+            "decision"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "record_id",
+        "revision",
+        "task_id",
+        "task_revision",
+        "protocol_version",
+        "change_reason",
+        "refs",
+        "artifacts",
+        "run_ids",
+        "legacy_claim_ids",
+        "kind",
+        "data"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "record_id": {
+          "type": "string",
+          "pattern": "^(?!(?:constructor|prototype|__proto__)$)[A-Za-z0-9][A-Za-z0-9_-]{0,95}$"
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "task_id": {
+          "type": "string",
+          "pattern": "^(?!(?:constructor|prototype|__proto__)$)[A-Za-z0-9][A-Za-z0-9_-]{0,95}$"
+        },
+        "task_revision": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "protocol_version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "change_reason": {
+          "type": "string",
+          "minLength": 1
+        },
+        "refs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "record_id": {
+                "type": "string",
+                "pattern": "^(?!(?:constructor|prototype|__proto__)$)[A-Za-z0-9][A-Za-z0-9_-]{0,95}$"
+              },
+              "revision": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              },
+              "relation": {
+                "type": "string",
+                "enum": [
+                  "dependency",
+                  "subject"
+                ]
+              }
+            },
+            "required": [
+              "record_id",
+              "revision",
+              "sha256"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "artifacts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "path": {
+                "type": "string",
+                "minLength": 1
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              }
+            },
+            "required": [
+              "path",
+              "sha256"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "run_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^(?!(?:constructor|prototype|__proto__)$)[A-Za-z0-9][A-Za-z0-9_-]{0,95}$"
+          }
+        },
+        "legacy_claim_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^(?!(?:constructor|prototype|__proto__)$)[A-Za-z0-9][A-Za-z0-9_-]{0,95}$"
+          }
+        },
+        "kind": {
+          "const": "derivation"
+        },
+        "data": {
+          "type": "object",
+          "properties": {
+            "statement": {
+              "type": "string",
+              "minLength": 1
+            },
+            "definitions": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "assumptions": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "steps": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "open_obligations": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "level": {
+              "type": "string",
+              "enum": [
+                "conjecture",
+                "unchecked_derivation",
+                "proof_sketch",
+                "reviewed_proof",
+                "verified_proof"
+              ]
+            },
+            "verification": {
+              "type": "object",
+              "properties": {
+                "kind": {
+                  "type": "string",
+                  "enum": [
+                    "review",
+                    "formal",
+                    "symbolic",
+                    "numerical"
+                  ]
+                },
+                "reviewer": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "tool_version": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "statement_checked": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "admitted_goals": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "outcome": {
+                  "type": "string",
+                  "enum": [
+                    "passed",
+                    "failed",
+                    "inconclusive"
+                  ]
+                }
+              },
+              "required": [
+                "kind",
+                "reviewer",
+                "tool_version",
+                "statement_checked",
+                "admitted_goals",
+                "outcome"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "statement",
+            "definitions",
+            "assumptions",
+            "steps",
+            "open_obligations",
+            "level"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "record_id",
+        "revision",
+        "task_id",
+        "task_revision",
+        "protocol_version",
+        "change_reason",
+        "refs",
+        "artifacts",
+        "run_ids",
+        "legacy_claim_ids",
+        "kind",
+        "data"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "record_id": {
+          "type": "string",
+          "pattern": "^(?!(?:constructor|prototype|__proto__)$)[A-Za-z0-9][A-Za-z0-9_-]{0,95}$"
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "task_id": {
+          "type": "string",
+          "pattern": "^(?!(?:constructor|prototype|__proto__)$)[A-Za-z0-9][A-Za-z0-9_-]{0,95}$"
+        },
+        "task_revision": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "protocol_version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "change_reason": {
+          "type": "string",
+          "minLength": 1
+        },
+        "refs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "record_id": {
+                "type": "string",
+                "pattern": "^(?!(?:constructor|prototype|__proto__)$)[A-Za-z0-9][A-Za-z0-9_-]{0,95}$"
+              },
+              "revision": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              },
+              "relation": {
+                "type": "string",
+                "enum": [
+                  "dependency",
+                  "subject"
+                ]
+              }
+            },
+            "required": [
+              "record_id",
+              "revision",
+              "sha256"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "artifacts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "path": {
+                "type": "string",
+                "minLength": 1
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              }
+            },
+            "required": [
+              "path",
+              "sha256"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "run_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^(?!(?:constructor|prototype|__proto__)$)[A-Za-z0-9][A-Za-z0-9_-]{0,95}$"
+          }
+        },
+        "legacy_claim_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^(?!(?:constructor|prototype|__proto__)$)[A-Za-z0-9][A-Za-z0-9_-]{0,95}$"
+          }
+        },
+        "kind": {
+          "const": "experiment"
+        },
+        "data": {
+          "type": "object",
+          "properties": {
+            "question": {
+              "type": "string",
+              "minLength": 1
+            },
+            "mode": {
+              "type": "string",
+              "enum": [
+                "exploratory",
+                "confirmatory"
+              ]
+            },
+            "predictions": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "variables": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "controls": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "measurement": {
+              "type": "string",
+              "minLength": 1
+            },
+            "analysis": {
+              "type": "string",
+              "minLength": 1
+            },
+            "stop_conditions": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "limitations": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          },
+          "required": [
+            "question",
+            "mode",
+            "predictions",
+            "variables",
+            "controls",
+            "measurement",
+            "analysis",
+            "stop_conditions",
+            "limitations"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "record_id",
+        "revision",
+        "task_id",
+        "task_revision",
+        "protocol_version",
+        "change_reason",
+        "refs",
+        "artifacts",
+        "run_ids",
+        "legacy_claim_ids",
+        "kind",
+        "data"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "record_id": {
+          "type": "string",
+          "pattern": "^(?!(?:constructor|prototype|__proto__)$)[A-Za-z0-9][A-Za-z0-9_-]{0,95}$"
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "task_id": {
+          "type": "string",
+          "pattern": "^(?!(?:constructor|prototype|__proto__)$)[A-Za-z0-9][A-Za-z0-9_-]{0,95}$"
+        },
+        "task_revision": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "protocol_version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "change_reason": {
+          "type": "string",
+          "minLength": 1
+        },
+        "refs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "record_id": {
+                "type": "string",
+                "pattern": "^(?!(?:constructor|prototype|__proto__)$)[A-Za-z0-9][A-Za-z0-9_-]{0,95}$"
+              },
+              "revision": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              },
+              "relation": {
+                "type": "string",
+                "enum": [
+                  "dependency",
+                  "subject"
+                ]
+              }
+            },
+            "required": [
+              "record_id",
+              "revision",
+              "sha256"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "artifacts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "path": {
+                "type": "string",
+                "minLength": 1
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              }
+            },
+            "required": [
+              "path",
+              "sha256"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "run_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^(?!(?:constructor|prototype|__proto__)$)[A-Za-z0-9][A-Za-z0-9_-]{0,95}$"
+          }
+        },
+        "legacy_claim_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^(?!(?:constructor|prototype|__proto__)$)[A-Za-z0-9][A-Za-z0-9_-]{0,95}$"
+          }
+        },
+        "kind": {
+          "const": "evidence"
+        },
+        "data": {
+          "type": "object",
+          "properties": {
+            "observation": {
+              "type": "string",
+              "minLength": 1
+            },
+            "outcome": {
+              "type": "string",
+              "enum": [
+                "supports",
+                "contradicts",
+                "inconclusive",
+                "failed_run"
+              ]
+            },
+            "prediction_comparison": {
+              "type": "string",
+              "minLength": 1
+            },
+            "interpretation": {
+              "type": "string",
+              "minLength": 1
+            },
+            "limitations": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "next_check": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "observation",
+            "outcome",
+            "prediction_comparison",
+            "interpretation",
+            "limitations",
+            "next_check"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "record_id",
+        "revision",
+        "task_id",
+        "task_revision",
+        "protocol_version",
+        "change_reason",
+        "refs",
+        "artifacts",
+        "run_ids",
+        "legacy_claim_ids",
+        "kind",
+        "data"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "record_id": {
+          "type": "string",
+          "pattern": "^(?!(?:constructor|prototype|__proto__)$)[A-Za-z0-9][A-Za-z0-9_-]{0,95}$"
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "task_id": {
+          "type": "string",
+          "pattern": "^(?!(?:constructor|prototype|__proto__)$)[A-Za-z0-9][A-Za-z0-9_-]{0,95}$"
+        },
+        "task_revision": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "protocol_version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "change_reason": {
+          "type": "string",
+          "minLength": 1
+        },
+        "refs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "record_id": {
+                "type": "string",
+                "pattern": "^(?!(?:constructor|prototype|__proto__)$)[A-Za-z0-9][A-Za-z0-9_-]{0,95}$"
+              },
+              "revision": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              },
+              "relation": {
+                "type": "string",
+                "enum": [
+                  "dependency",
+                  "subject"
+                ]
+              }
+            },
+            "required": [
+              "record_id",
+              "revision",
+              "sha256"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "artifacts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "path": {
+                "type": "string",
+                "minLength": 1
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              }
+            },
+            "required": [
+              "path",
+              "sha256"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "run_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^(?!(?:constructor|prototype|__proto__)$)[A-Za-z0-9][A-Za-z0-9_-]{0,95}$"
+          }
+        },
+        "legacy_claim_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^(?!(?:constructor|prototype|__proto__)$)[A-Za-z0-9][A-Za-z0-9_-]{0,95}$"
+          }
+        },
+        "kind": {
+          "const": "review"
+        },
+        "data": {
+          "type": "object",
+          "properties": {
+            "scope": {
+              "type": "string",
+              "minLength": 1
+            },
+            "reviewer": {
+              "type": "string",
+              "minLength": 1
+            },
+            "checks": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "verdict": {
+              "type": "string",
+              "enum": [
+                "supported",
+                "contradicted",
+                "inconclusive"
+              ]
+            },
+            "findings": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "location": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "evidence": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "impact": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "certainty": {
+                    "type": "string",
+                    "enum": [
+                      "high",
+                      "medium",
+                      "low"
+                    ]
+                  },
+                  "resolved": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "location",
+                  "evidence",
+                  "impact",
+                  "certainty",
+                  "resolved"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "open_obligations": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          },
+          "required": [
+            "scope",
+            "reviewer",
+            "checks",
+            "verdict",
+            "findings",
+            "open_obligations"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "record_id",
+        "revision",
+        "task_id",
+        "task_revision",
+        "protocol_version",
+        "change_reason",
+        "refs",
+        "artifacts",
+        "run_ids",
+        "legacy_claim_ids",
+        "kind",
+        "data"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "record_id": {
+          "type": "string",
+          "pattern": "^(?!(?:constructor|prototype|__proto__)$)[A-Za-z0-9][A-Za-z0-9_-]{0,95}$"
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "task_id": {
+          "type": "string",
+          "pattern": "^(?!(?:constructor|prototype|__proto__)$)[A-Za-z0-9][A-Za-z0-9_-]{0,95}$"
+        },
+        "task_revision": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "protocol_version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "change_reason": {
+          "type": "string",
+          "minLength": 1
+        },
+        "refs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "record_id": {
+                "type": "string",
+                "pattern": "^(?!(?:constructor|prototype|__proto__)$)[A-Za-z0-9][A-Za-z0-9_-]{0,95}$"
+              },
+              "revision": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              },
+              "relation": {
+                "type": "string",
+                "enum": [
+                  "dependency",
+                  "subject"
+                ]
+              }
+            },
+            "required": [
+              "record_id",
+              "revision",
+              "sha256"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "artifacts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "path": {
+                "type": "string",
+                "minLength": 1
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              }
+            },
+            "required": [
+              "path",
+              "sha256"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "run_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^(?!(?:constructor|prototype|__proto__)$)[A-Za-z0-9][A-Za-z0-9_-]{0,95}$"
+          }
+        },
+        "legacy_claim_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^(?!(?:constructor|prototype|__proto__)$)[A-Za-z0-9][A-Za-z0-9_-]{0,95}$"
+          }
+        },
+        "kind": {
+          "const": "claim"
+        },
+        "data": {
+          "type": "object",
+          "properties": {
+            "statement": {
+              "type": "string",
+              "minLength": 1
+            },
+            "scope": {
+              "type": "string",
+              "minLength": 1
+            },
+            "support": {
+              "type": "string",
+              "enum": [
+                "untested",
+                "supported",
+                "contradicted",
+                "inconclusive"
+              ]
+            },
+            "limitations": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          },
+          "required": [
+            "statement",
+            "scope",
+            "support",
+            "limitations"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "record_id",
+        "revision",
+        "task_id",
+        "task_revision",
+        "protocol_version",
+        "change_reason",
+        "refs",
+        "artifacts",
+        "run_ids",
+        "legacy_claim_ids",
+        "kind",
+        "data"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "record_id": {
+          "type": "string",
+          "pattern": "^(?!(?:constructor|prototype|__proto__)$)[A-Za-z0-9][A-Za-z0-9_-]{0,95}$"
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "task_id": {
+          "type": "string",
+          "pattern": "^(?!(?:constructor|prototype|__proto__)$)[A-Za-z0-9][A-Za-z0-9_-]{0,95}$"
+        },
+        "task_revision": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "protocol_version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "change_reason": {
+          "type": "string",
+          "minLength": 1
+        },
+        "refs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "record_id": {
+                "type": "string",
+                "pattern": "^(?!(?:constructor|prototype|__proto__)$)[A-Za-z0-9][A-Za-z0-9_-]{0,95}$"
+              },
+              "revision": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              },
+              "relation": {
+                "type": "string",
+                "enum": [
+                  "dependency",
+                  "subject"
+                ]
+              }
+            },
+            "required": [
+              "record_id",
+              "revision",
+              "sha256"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "artifacts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "path": {
+                "type": "string",
+                "minLength": 1
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              }
+            },
+            "required": [
+              "path",
+              "sha256"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "run_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^(?!(?:constructor|prototype|__proto__)$)[A-Za-z0-9][A-Za-z0-9_-]{0,95}$"
+          }
+        },
+        "legacy_claim_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^(?!(?:constructor|prototype|__proto__)$)[A-Za-z0-9][A-Za-z0-9_-]{0,95}$"
+          }
+        },
+        "kind": {
+          "const": "feedback"
+        },
+        "data": {
+          "type": "object",
+          "properties": {
+            "observation": {
+              "type": "string",
+              "minLength": 1
+            },
+            "category": {
+              "type": "string",
+              "enum": [
+                "reasoning",
+                "context",
+                "tool",
+                "protocol",
+                "model",
+                "useful",
+                "unknown"
+              ]
+            },
+            "config_hash": {
+              "type": "string",
+              "minLength": 1
+            },
+            "bundle_version": {
+              "type": "string",
+              "minLength": 1
+            },
+            "proposed_change": {
+              "type": "string",
+              "minLength": 1
+            },
+            "review_outcome": {
+              "type": "string",
+              "enum": [
+                "pending",
+                "accepted",
+                "declined",
+                "inconclusive"
+              ]
+            }
+          },
+          "required": [
+            "observation",
+            "category",
+            "config_hash",
+            "bundle_version",
+            "proposed_change",
+            "review_outcome"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "record_id",
+        "revision",
+        "task_id",
+        "task_revision",
+        "protocol_version",
+        "change_reason",
+        "refs",
+        "artifacts",
+        "run_ids",
+        "legacy_claim_ids",
+        "kind",
+        "data"
+      ],
+      "additionalProperties": false
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "skills": ["research-design"],
+  "research_profile": {
+    "goal": "extension",
+    "reasoning_modes": [
+      "mathematical",
+      "verification"
+    ],
+    "output": {
+      "format": "proof",
+      "language": "vi"
+    }
+  }
+}

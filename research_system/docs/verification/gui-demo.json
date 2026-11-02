@@ -1,0 +1,89 @@
+{
+  "kind": "local_software_fixture_verification",
+  "generated_at": "2026-10-29T14:24:27.074Z",
+  "node_version": "v24.22.1",
+  "package_version": "0.7.0",
+  "source_hashes": {
+    "src/engine.mjs": "75a1156b82f27850a884a1697777c58c00ee174acfea2d00dd910783d5652dba",
+    "src/runner.mjs": "67ff74af257252329be7caf97b5c5b2dd0d8f56e9b7c2335a706fa21b456beac",
+    "src/resources.mjs": "da15053280cf8932d60dcc2010167f1f4059132ff1ae32d2855af561d3c667a0",
+    "src/checkpoints.mjs": "2191c42c5cb07312693a9fb3ddbbc981cb08c0ead1cb1f82fe75024bd5ed79a3",
+    "src/recovery.mjs": "d3a2ee552aaac1d7bd13e1c7b424c639ddc5db65332c80d9bc872d57b88c945f",
+    "src/work.mjs": "08cf8c32cab2bd2d4e3ea31683b3fe8e3659c6d121860a7c0ae388c2bba3ad44"
+  },
+  "external_execution_enabled": false,
+  "scientific_evaluation_performed": false,
+  "final_task_status": "completed",
+  "work_units": [
+    {
+      "id": "define_contract",
+      "status": "completed",
+      "attempts": 1,
+      "generation": 1,
+      "transfers": 0
+    },
+    {
+      "id": "parse_results",
+      "status": "completed",
+      "attempts": 2,
+      "generation": 2,
+      "transfers": 1
+    }
+  ],
+  "attempts": [
+    {
+      "id": "attempt_36eaffad-5fdc-4add-be0d-a9640801af39",
+      "unit": "define_contract",
+      "backend": "mock",
+      "state": "completed",
+      "failure": null,
+      "has_final_answer": true,
+      "checkpoint_id": "checkpoint_fac21060-74ee-40bf-ade5-2c37034186a4",
+      "resumed_from_checkpoint": null,
+      "supersedes_attempt_id": null,
+      "usage_basis": {
+        "tokens": "reported",
+        "cost": "reported"
+      }
+    },
+    {
+      "id": "attempt_aa58c203-1b67-4897-b6d9-1f329091e9f3",
+      "unit": "parse_results",
+      "backend": "mock",
+      "state": "failed",
+      "failure": "quota_exhausted",
+      "has_final_answer": false,
+      "checkpoint_id": "checkpoint_ed0e30b7-70a7-402f-a220-c5f1a75a7365",
+      "resumed_from_checkpoint": null,
+      "supersedes_attempt_id": null,
+      "usage_basis": {
+        "tokens": "reservation_estimate",
+        "cost": "reservation_estimate"
+      }
+    },
+    {
+      "id": "attempt_4f127b6c-d7b1-4625-8ac2-d630e2d8d96e",
+      "unit": "parse_results",
+      "backend": "mock_backup",
+      "state": "completed",
+      "failure": null,
+      "has_final_answer": true,
+      "checkpoint_id": "checkpoint_b9120cfa-8865-4380-ab76-bd705d9e7cf5",
+      "resumed_from_checkpoint": "checkpoint_ed0e30b7-70a7-402f-a220-c5f1a75a7365",
+      "supersedes_attempt_id": "attempt_aa58c203-1b67-4897-b6d9-1f329091e9f3",
+      "usage_basis": {
+        "tokens": "reported",
+        "cost": "reported"
+      }
+    }
+  ],
+  "usage": {
+    "known_tokens": 60,
+    "estimated_tokens": 1100,
+    "known_cost_usd": 0,
+    "estimated_cost_usd": 0
+  },
+  "limitations": [
+    "Deterministic Node fixtures only; no claim about research quality, live provider compatibility or token savings."
+  ]
+}

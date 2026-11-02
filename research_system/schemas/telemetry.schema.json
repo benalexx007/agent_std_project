@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "event_id": {
+      "type": "string",
+      "pattern": "^(?!(?:constructor|prototype|__proto__)$)[A-Za-z0-9][A-Za-z0-9_-]{0,95}$"
+    },
+    "sequence": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "scope": {
+      "const": "attempt"
+    },
+    "mode": {
+      "type": "string",
+      "enum": [
+        "delta",
+        "cumulative"
+      ]
+    },
+    "includes_children": {
+      "const": true
+    },
+    "input_tokens": {
+      "type": "number",
+      "minimum": 0
+    },
+    "output_tokens": {
+      "type": "number",
+      "minimum": 0
+    },
+    "cost_usd": {
+      "type": "number",
+      "minimum": 0
+    },
+    "context_headroom_tokens": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "next_step_tokens": {
+      "type": "number",
+      "minimum": 0
+    }
+  },
+  "required": [
+    "event_id",
+    "sequence",
+    "scope",
+    "mode",
+    "includes_children",
+    "input_tokens",
+    "output_tokens",
+    "cost_usd",
+    "context_headroom_tokens"
+  ],
+  "additionalProperties": false
+}

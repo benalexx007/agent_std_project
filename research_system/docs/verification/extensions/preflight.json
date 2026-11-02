@@ -1,0 +1,45 @@
+{
+  "kind": "extension_static_preflight_no_inference",
+  "date": "2026-10-28T00:41:05.128Z",
+  "codex": {
+    "version": "codex-cli 0.164.0-alpha.11.1",
+    "binary_sha256": "1103e9e09c71fa2cd0afd6d8f3b9a2d63174fe8efd7cb5bd09f1cb14ef58a098",
+    "schema_hashes": {
+      "ClientRequest.json": "503d09a12ae36fca152e044877d22e93b0094c2d08c3a53ed731f3c8cf33b9ce",
+      "ServerRequest.json": "3d7bc481f84dc042984a74420e65c5a8d3c423f37a91b7d5df2365c903a12ac6",
+      "v2/ThreadStartParams.json": "80a40a7fac15b4bf70efb7f893fb353acc0a0d30c68f54aee4f01923deca85de",
+      "v2/ThreadStartResponse.json": "41018fddb542a8443654fdbd6acce52c51318251cc1ccbf918999354e35f60f7",
+      "v2/SkillsListParams.json": "1d245374e64c5acc9739dfc68a4fe5114c6c9147af04c480886f1846d2ca6239",
+      "v2/HooksListParams.json": "07638c3a8a3690cf368fa92c7ff697fdd0132865e8c59d53f6e5789e5a260053",
+      "v2/ListMcpServerStatusParams.json": "30b978c6502b37c9f0002aeba241f41c91d4c6adf0f92d89242b62ffde415a2d"
+    },
+    "required_methods": [
+      "skills/list",
+      "hooks/list",
+      "mcpServerStatus/list",
+      "thread/start",
+      "item/tool/call"
+    ],
+    "skills_list_has_per_cwd_extra_user_roots": false
+  },
+  "environment": {
+    "packages": {
+      "sympy": "1.14.0",
+      "numpy": "2.5.4",
+      "scipy": "1.18.1",
+      "matplotlib": "3.11.2",
+      "bibtexparser": "2.1.0",
+      "pypdf": "6.21.3"
+    },
+    "python_sha256": "c49b78600378516325b650d2e8bff40c2c50567281d7933069c4dd37cc472517",
+    "requirements_sha256": "d14887d640c3766a50436a0c7b9b0f6493aaca84455df0b7d006fec992630836",
+    "pinned_files": 6604,
+    "renderer": true
+  },
+  "native_scope_verified": false,
+  "model_calls": 0,
+  "limitations": [
+    "Schema and binary metadata only; no thread or turn created.",
+    "Installed/global plugins do not prove effective worker capability."
+  ]
+}

@@ -1,0 +1,126 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "handoff",
+  "type": "object",
+  "properties": {
+    "gui": { "type": "object" },
+    "schema_version": {
+      "enum": [4, 5]
+    },
+    "created_at": {
+      "type": "string",
+      "minLength": 1
+    },
+    "project": {
+      "type": "object"
+    },
+    "owner": {
+      "type": "object"
+    },
+    "desired_state": {
+      "type": "string",
+      "minLength": 1
+    },
+    "tasks": {
+      "type": "object"
+    },
+    "attempts": {
+      "type": "object"
+    },
+    "decisions": {
+      "type": "object"
+    },
+    "authorizations": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "pending_events": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "usage": {
+      "type": "object"
+    },
+    "reservations": {
+      "type": "object"
+    },
+    "next_actions": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "config_hash": {
+      "type": "string",
+      "minLength": 1
+    },
+    "work_units": {
+      "type": "object"
+    },
+    "assignments": {
+      "type": "object"
+    },
+    "checkpoints": {
+      "type": "object"
+    },
+    "recoveries": {
+      "type": "object"
+    },
+    "pools": {
+      "type": "object"
+    },
+    "research": {
+      "type": "object"
+    },
+    "improvements": {
+      "type": "object"
+    },
+    "benchmarks": {
+      "type": "object"
+    },
+    "publication": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "publications": {
+      "type": "object"
+    },
+    "extension_calls": {
+      "type": "object"
+    },
+    "extension_usage": {
+      "type": "object"
+    }
+  },
+  "required": [
+    "schema_version",
+    "created_at",
+    "project",
+    "owner",
+    "desired_state",
+    "tasks",
+    "attempts",
+    "decisions",
+    "authorizations",
+    "pending_events",
+    "usage",
+    "reservations",
+    "next_actions",
+    "config_hash",
+    "work_units",
+    "assignments",
+    "checkpoints",
+    "recoveries",
+    "pools",
+    "extension_calls",
+    "extension_usage"
+  ],
+  "additionalProperties": false
+}

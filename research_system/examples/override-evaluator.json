@@ -1,0 +1,7 @@
+{
+  "role": "evaluator",
+  "skills": [
+    "research-evaluate"
+  ],
+  "backend": "mock"
+}

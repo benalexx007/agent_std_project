@@ -1,0 +1,1234 @@
+TAP version 13
+# Subtest: benchmark dispatch is blocked until a scoped protocol confirmation exists
+ok 1 - benchmark dispatch is blocked until a scoped protocol confirmation exists
+  ---
+  duration_ms: 55.1781
+  type: 'test'
+  ...
+# Subtest: blanket approval, changed protocol and missing human text do not grant execution
+ok 2 - blanket approval, changed protocol and missing human text do not grant execution
+  ---
+  duration_ms: 44.7257
+  type: 'test'
+  ...
+# Subtest: each request is single-use and completed approval cannot be reused
+ok 3 - each request is single-use and completed approval cannot be reused
+  ---
+  duration_ms: 45.5855
+  type: 'test'
+  ...
+# Subtest: approved benchmark limits include retries and reserved tokens before dispatch
+ok 4 - approved benchmark limits include retries and reserved tokens before dispatch
+  ---
+  duration_ms: 62.7604
+  type: 'test'
+  ...
+# Subtest: protocol mutation after approval is checked again at the final dispatch barrier
+ok 5 - protocol mutation after approval is checked again at the final dispatch barrier
+  ---
+  duration_ms: 38.9291
+  type: 'test'
+  ...
+# Subtest: ordinary implementation tasks do not need benchmark approval
+ok 6 - ordinary implementation tasks do not need benchmark approval
+  ---
+  duration_ms: 32.0613
+  type: 'test'
+  ...
+# Subtest: execution manifest is pinned through confirmation and final dispatch
+ok 7 - execution manifest is pinned through confirmation and final dispatch
+  ---
+  duration_ms: 59.7466
+  type: 'test'
+  ...
+# Subtest: superseding an unapproved campaign preserves history and grants no execution
+ok 8 - superseding an unapproved campaign preserves history and grants no execution
+  ---
+  duration_ms: 45.5397
+  type: 'test'
+  ...
+# Subtest: B01 preparation pins seventeen tiered tasks and creates only a pending permission request
+ok 9 - B01 preparation pins seventeen tiered tasks and creates only a pending permission request
+  ---
+  duration_ms: 469.6507
+  type: 'test'
+  ...
+# Subtest: B01 integrity checks detect changed manifest, raw inputs and derived evidence
+ok 10 - B01 integrity checks detect changed manifest, raw inputs and derived evidence
+  ---
+  duration_ms: 855.6976
+  type: 'test'
+  ...
+# Subtest: C2 release uses only the final planner probe, not preliminary analysis
+ok 11 - C2 release uses only the final planner probe, not preliminary analysis
+  ---
+  duration_ms: 0.2182
+  type: 'test'
+  ...
+# Subtest: B01 execution refuses a prepared but unapproved campaign before any worker launch
+ok 12 - B01 execution refuses a prepared but unapproved campaign before any worker launch
+  ---
+  duration_ms: 327.2612
+  type: 'test'
+  ...
+# Subtest: B01 numeric grader detects wrong rates and an invalid selected probe without judging prose
+ok 13 - B01 numeric grader detects wrong rates and an invalid selected probe without judging prose
+  ---
+  duration_ms: 0.4948
+  type: 'test'
+  ...
+# Subtest: B01 handoff selects stage dependencies while evaluator retains all case evidence and audit
+ok 14 - B01 handoff selects stage dependencies while evaluator retains all case evidence and audit
+  ---
+  duration_ms: 1.4758
+  type: 'test'
+  ...
+# Subtest: B01 archived campaign manifests remain immutable when source has changed
+ok 15 - B01 archived campaign manifests remain immutable when source has changed
+  ---
+  duration_ms: 424.2626
+  type: 'test'
+  ...
+# Subtest: strict contracts reject unknown fields, invalid budgets and invalid IDs
+ok 16 - strict contracts reject unknown fields, invalid budgets and invalid IDs
+  ---
+  duration_ms: 2.5961
+  type: 'test'
+  ...
+# Subtest: orchestrator context provides ownership and handoff references without loading all skills
+ok 17 - orchestrator context provides ownership and handoff references without loading all skills
+  ---
+  duration_ms: 46.5133
+  type: 'test'
+  ...
+# Subtest: role/backend overrides are scoped and capabilities fail closed
+ok 18 - role/backend overrides are scoped and capabilities fail closed
+  ---
+  duration_ms: 26.7365
+  type: 'test'
+  ...
+# Subtest: context loads only selected skills and detects hash changes
+ok 19 - context loads only selected skills and detects hash changes
+  ---
+  duration_ms: 38.1534
+  type: 'test'
+  ...
+# Subtest: context limits fail without silently discarding evidence
+ok 20 - context limits fail without silently discarding evidence
+  ---
+  duration_ms: 32.5394
+  type: 'test'
+  ...
+# Subtest: paths cannot escape the workspace
+ok 21 - paths cannot escape the workspace
+  ---
+  duration_ms: 33.6529
+  type: 'test'
+  ...
+# Subtest: human decision blocks only its tasks, approval persists for its revision
+ok 22 - human decision blocks only its tasks, approval persists for its revision
+  ---
+  duration_ms: 64.3411
+  type: 'test'
+  ...
+# Subtest: silence and status requests do not answer pending decisions
+ok 23 - silence and status requests do not answer pending decisions
+  ---
+  duration_ms: 35.9316
+  type: 'test'
+  ...
+# Subtest: dispatch keys are idempotent and ownership epochs fence stale dispatch
+ok 24 - dispatch keys are idempotent and ownership epochs fence stale dispatch
+  ---
+  duration_ms: 51.7627
+  type: 'test'
+  ...
+# Subtest: budget reservations serialize concurrent allocation
+ok 25 - budget reservations serialize concurrent allocation
+  ---
+  duration_ms: 42.229
+  type: 'test'
+  ...
+# Subtest: external agents remain disabled by default even with explicit execute
+ok 26 - external agents remain disabled by default even with explicit execute
+  ---
+  duration_ms: 30.2603
+  type: 'test'
+  ...
+# Subtest: writer overlap and unresolved jobs block new dispatch
+ok 27 - writer overlap and unresolved jobs block new dispatch
+  ---
+  duration_ms: 38.2534
+  type: 'test'
+  ...
+# Subtest: late results from previous owner require explicit adoption
+ok 28 - late results from previous owner require explicit adoption
+  ---
+  duration_ms: 48.2282
+  type: 'test'
+  ...
+# Subtest: duplicate terminal delivery does not double-count usage
+ok 29 - duplicate terminal delivery does not double-count usage
+  ---
+  duration_ms: 29.3869
+  type: 'test'
+  ...
+# Subtest: revision invalidates dependent evidence and retains raw results
+ok 30 - revision invalidates dependent evidence and retains raw results
+  ---
+  duration_ms: 38.2107
+  type: 'test'
+  ...
+# Subtest: changed input blocks reuse by dependent tasks
+ok 31 - changed input blocks reuse by dependent tasks
+  ---
+  duration_ms: 41.6167
+  type: 'test'
+  ...
+# Subtest: event IDs reject conflicting replay and status does not undo pause
+ok 32 - event IDs reject conflicting replay and status does not undo pause
+  ---
+  duration_ms: 27.6262
+  type: 'test'
+  ...
+# Subtest: unknown cancellation retains budget and requires evidence to reconcile
+ok 33 - unknown cancellation retains budget and requires evidence to reconcile
+  ---
+  duration_ms: 39.0948
+  type: 'test'
+  ...
+# Subtest: artifact hashes and claim links detect changed files without claiming scientific validity
+ok 34 - artifact hashes and claim links detect changed files without claiming scientific validity
+  ---
+  duration_ms: 26.1877
+  type: 'test'
+  ...
+# Subtest: run records are immutable and handoff includes pending events and authority
+ok 35 - run records are immutable and handoff includes pending events and authority
+  ---
+  duration_ms: 31.1068
+  type: 'test'
+  ...
+# Subtest: upstream drift invalidates the entire dependency lineage
+ok 36 - upstream drift invalidates the entire dependency lineage
+  ---
+  duration_ms: 43.8606
+  type: 'test'
+  ...
+# Subtest: reconciliation updates an unresolved cancel event after evidence is supplied
+ok 37 - reconciliation updates an unresolved cancel event after evidence is supplied
+  ---
+  duration_ms: 38.0179
+  type: 'test'
+  ...
+# Subtest: native extension scope rejects inherited extras, discovery errors and repeated MCP pagination
+ok 38 - native extension scope rejects inherited extras, discovery errors and repeated MCP pagination
+  ---
+  duration_ms: 2.064
+  type: 'test'
+  ...
+# Subtest: dependency integrity rejects modified files and v4 migration fences a real writer3 connection
+ok 39 - dependency integrity rejects modified files and v4 migration fences a real writer3 connection
+  ---
+  duration_ms: 63.9223
+  type: 'test'
+  ...
+# Subtest: v3 emergency controls can close old work before explicit migration without enabling v3 dispatch
+ok 40 - v3 emergency controls can close old work before explicit migration without enabling v3 dispatch
+  ---
+  duration_ms: 66.0082
+  type: 'test'
+  ...
+# Subtest: failed dependency staging never activates a partial environment
+ok 41 - failed dependency staging never activates a partial environment
+  ---
+  duration_ms: 228.9942
+  type: 'test'
+  ...
+# Subtest: extension profiles are opt-in, scoped, immutable and absent from plain-task context
+ok 42 - extension profiles are opt-in, scoped, immutable and absent from plain-task context
+  ---
+  duration_ms: 1855.3991
+  type: 'test'
+  ...
+# Subtest: native helper contract discovery is cheap and execution uses the same scoped dispatcher
+ok 43 - native helper contract discovery is cheap and execution uses the same scoped dispatcher
+  ---
+  duration_ms: 2052.6996
+  type: 'test'
+  ...
+# Subtest: symbolic AST handles assumptions and rejects executable expressions; duplicate IDs do not rerun
+ok 44 - symbolic AST handles assumptions and rejects executable expressions; duplicate IDs do not rerun
+  ---
+  duration_ms: 6105.9814
+  type: 'test'
+  ...
+# Subtest: paired statistics match independent exact oracles and report degenerate bootstrap uncertainty
+ok 45 - paired statistics match independent exact oracles and report degenerate bootstrap uncertainty
+  ---
+  duration_ms: 5137.4139
+  type: 'test'
+  ...
+# Subtest: bibliography keeps distinct DOI records with colliding keys and exposes raw failed blocks
+ok 46 - bibliography keeps distinct DOI records with colliding keys and exposes raw failed blocks
+  ---
+  duration_ms: 649.1183
+  type: 'test'
+  ...
+# Subtest: retrieval fixtures preserve raw bytes/version and distinguish HTTP200 errors from an empty search
+ok 47 - retrieval fixtures preserve raw bytes/version and distinguish HTTP200 errors from an empty search
+  ---
+  duration_ms: 3622.5233
+  type: 'test'
+  ...
+# Subtest: OpenAlex/DOI fixtures report bounded paging and reject redirects outside the route
+ok 48 - OpenAlex/DOI fixtures report bounded paging and reject redirects outside the route
+  ---
+  duration_ms: 656.1082
+  type: 'test'
+  ...
+# Subtest: provider admission and cancellation retain accounting and fence unresolved extension jobs
+ok 49 - provider admission and cancellation retain accounting and fence unresolved extension jobs
+  ---
+  duration_ms: 253.1386
+  type: 'test'
+  ...
+# Subtest: extension output publication uses the existing journal and detects post-call tampering
+ok 50 - extension output publication uses the existing journal and detects post-call tampering
+  ---
+  duration_ms: 2777.8813
+  type: 'test'
+  ...
+# Subtest: changed helper output cannot be published as the pinned result
+ok 51 - changed helper output cannot be published as the pinned result
+  ---
+  duration_ms: 2148.2786
+  type: 'test'
+  ...
+# Subtest: a helper spawn commit failure stops the known process and retains the failed call evidence
+ok 52 - a helper spawn commit failure stops the known process and retains the failed call evidence
+  ---
+  duration_ms: 220.8064
+  type: 'test'
+  ...
+# Subtest: bounded retrieval records HTTP and malformed/oversized-response failures without live services
+ok 53 - bounded retrieval records HTTP and malformed/oversized-response failures without live services
+  ---
+  duration_ms: 417.629
+  type: 'test'
+  ...
+# Subtest: PDF reuse extracts page locators and renders the same source with the pinned existing renderer
+ok 54 - PDF reuse extracts page locators and renders the same source with the pinned existing renderer
+  ---
+  duration_ms: 1300.2312
+  type: 'test'
+  ...
+# Subtest: terminal job observation is required to reconcile a lost extension reply
+ok 55 - terminal job observation is required to reconcile a lost extension reply
+  ---
+  duration_ms: 47.4624
+  type: 'test'
+  ...
+# Subtest: session accounting subtracts baseline, deduplicates scoped events and rejects silent resets/overlap
+ok 56 - session accounting subtracts baseline, deduplicates scoped events and rejects silent resets/overlap
+  ---
+  duration_ms: 48.758
+  type: 'test'
+  ...
+# Subtest: bundle cache rechecks identity, rejects changed reads and stays bounded
+ok 57 - bundle cache rechecks identity, rejects changed reads and stays bounded
+  ---
+  duration_ms: 42.1641
+  type: 'test'
+  ...
+# Subtest: native ranged reads preserve exact bytes and explicit baselines without loading an oversized file
+ok 58 - native ranged reads preserve exact bytes and explicit baselines without loading an oversized file
+  ---
+  duration_ms: 56.6086
+  type: 'test'
+  ...
+# Subtest: native exhausted percentages block admission without converting percent to token counts
+ok 59 - native exhausted percentages block admission without converting percent to token counts
+  ---
+  duration_ms: 35.8133
+  type: 'test'
+  ...
+# Subtest: unknown recovered output requires owner and descendant evidence and does not settle during reconciliation
+ok 60 - unknown recovered output requires owner and descendant evidence and does not settle during reconciliation
+  ---
+  duration_ms: 43.6502
+  type: 'test'
+  ...
+# Subtest: feedback leads to immutable project overlays with an actual rollback path
+ok 61 - feedback leads to immutable project overlays with an actual rollback path
+  ---
+  duration_ms: 81.551
+  type: 'test'
+  ...
+# Subtest: improvements require checked evidence, valid targets and current ownership
+ok 62 - improvements require checked evidence, valid targets and current ownership
+  ---
+  duration_ms: 60.1755
+  type: 'test'
+  ...
+# Subtest: active work fences bundle activation and immutable overlay tampering is detected
+ok 63 - active work fences bundle activation and immutable overlay tampering is detected
+  ---
+  duration_ms: 75.3888
+  type: 'test'
+  ...
+# Subtest: checkpoint policy fingerprints reject a changed overlay and accept explicit rollback
+ok 64 - checkpoint policy fingerprints reject a changed overlay and accept explicit rollback
+  ---
+  duration_ms: 78.7017
+  type: 'test'
+  ...
+# Subtest: a fresh improvement version can be activated and rolled back without losing prior versions
+ok 65 - a fresh improvement version can be activated and rolled back without losing prior versions
+  ---
+  duration_ms: 100.8637
+  type: 'test'
+  ...
+# Subtest: the three requested Codex task classes resolve the exact model and effort pair
+ok 66 - the three requested Codex task classes resolve the exact model and effort pair
+  ---
+  duration_ms: 49.8557
+  type: 'test'
+  ...
+# Subtest: normal analysis is the default while plan synthesis uses the highest orchestrator tier
+ok 67 - normal analysis is the default while plan synthesis uses the highest orchestrator tier
+  ---
+  duration_ms: 36.0822
+  type: 'test'
+  ...
+# Subtest: Codex invocation passes effort as a real configuration argument rather than prompt text
+ok 68 - Codex invocation passes effort as a real configuration argument rather than prompt text
+  ---
+  duration_ms: 21.0186
+  type: 'test'
+  ...
+# Subtest: scoped class/tier overrides replace a resolved pair without mutating the original task
+ok 69 - scoped class/tier overrides replace a resolved pair without mutating the original task
+  ---
+  duration_ms: 32.1941
+  type: 'test'
+  ...
+# Subtest: explicit model/effort overrides have visible provenance and do not retain a misleading tier label
+ok 70 - explicit model/effort overrides have visible provenance and do not retain a misleading tier label
+  ---
+  duration_ms: 31.9095
+  type: 'test'
+  ...
+# Subtest: unconfigured providers cannot silently borrow the Codex tier model or effort
+ok 71 - unconfigured providers cannot silently borrow the Codex tier model or effort
+  ---
+  duration_ms: 28.5589
+  type: 'test'
+  ...
+# Subtest: fallback keeps the requested tier and rebinds only through a configured target family
+ok 72 - fallback keeps the requested tier and rebinds only through a configured target family
+  ---
+  duration_ms: 26.8181
+  type: 'test'
+  ...
+# Subtest: attempt snapshots retain model/tier/effort without changing permission, budget or quota identity
+ok 73 - attempt snapshots retain model/tier/effort without changing permission, budget or quota identity
+  ---
+  duration_ms: 40.6241
+  type: 'test'
+  ...
+# Subtest: command adapters require explicit model/effort templates and never silently drop routed settings
+ok 74 - command adapters require explicit model/effort templates and never silently drop routed settings
+  ---
+  duration_ms: 19.0368
+  type: 'test'
+  ...
+# Subtest: legacy configs without a policy preserve explicit model selection
+ok 75 - legacy configs without a policy preserve explicit model selection
+  ---
+  duration_ms: 18.7101
+  type: 'test'
+  ...
+# Subtest: CLI model preview is read-only and allows the three classes without running a model
+ok 76 - CLI model preview is read-only and allows the three classes without running a model
+  ---
+  duration_ms: 23.1347
+  type: 'test'
+  ...
+# Subtest: historical estimates keep Sol High and Sol Medium samples separate
+ok 77 - historical estimates keep Sol High and Sol Medium samples separate
+  ---
+  duration_ms: 27.9922
+  type: 'test'
+  ...
+# Subtest: native bridge keeps the control store outside an isolated execution root
+ok 78 - native bridge keeps the control store outside an isolated execution root
+  ---
+  duration_ms: 472.7125
+  type: 'test'
+  ...
+# Subtest: native history collection requires the exact terminal turn and never starts inference or trusts model counters
+ok 79 - native history collection requires the exact terminal turn and never starts inference or trusts model counters
+  ---
+  duration_ms: 262.8861
+  type: 'test'
+  ...
+# Subtest: native quota reads select the explicit limit and preserve percentages separately from tokens
+ok 80 - native quota reads select the explicit limit and preserve percentages separately from tokens
+  ---
+  duration_ms: 151.6558
+  type: 'test'
+  ...
+# Subtest: native RPC correlates replies, bounds frames and rejects pending calls on transport loss
+ok 81 - native RPC correlates replies, bounds frames and rejects pending calls on transport loss
+  ---
+  duration_ms: 2.1792
+  type: 'test'
+  ...
+# Subtest: native launch pin and per-thread config preserve model, effort, permissions and delegation boundary
+ok 82 - native launch pin and per-thread config preserve model, effort, permissions and delegation boundary
+  ---
+  duration_ms: 157.9296
+  type: 'test'
+  ...
+# Subtest: native process fixture finishes with pinned receipt and authoritative usage instead of model self-report
+ok 83 - native process fixture finishes with pinned receipt and authoritative usage instead of model self-report
+  ---
+  duration_ms: 431.1391
+  type: 'test'
+  ...
+# Subtest: Codex orchestrator dispatches a separately budgeted worker through core tools
+ok 84 - Codex orchestrator dispatches a separately budgeted worker through core tools
+  ---
+  duration_ms: 493.4573
+  type: 'test'
+  ...
+# Subtest: native input persists across CLI reads, validates answers and never becomes project approval
+ok 85 - native input persists across CLI reads, validates answers and never becomes project approval
+  ---
+  duration_ms: 396.4454
+  type: 'test'
+  ...
+# Subtest: native steer ACK is distinct from application; cancel conservatively retains unknown descendants
+ok 86 - native steer ACK is distinct from application; cancel conservatively retains unknown descendants
+  ---
+  duration_ms: 601.5523
+  type: 'test'
+  ...
+# Subtest: old orchestration owner cannot register or launch work after takeover
+ok 87 - old orchestration owner cannot register or launch work after takeover
+  ---
+  duration_ms: 26.1243
+  type: 'test'
+  ...
+# Subtest: native workers can checkpoint but cannot dispatch another worker
+ok 88 - native workers can checkpoint but cannot dispatch another worker
+  ---
+  duration_ms: 32.8484
+  type: 'test'
+  ...
+# Subtest: native acceptance grader checks the oracle and current primary evidence without a model
+ok 89 - native acceptance grader checks the oracle and current primary evidence without a model
+  ---
+  duration_ms: 65.1783
+  type: 'test'
+  ...
+# Subtest: lost turn submission reply remains unknown and retains reservation without automatic retry
+ok 90 - lost turn submission reply remains unknown and retains reservation without automatic retry
+  ---
+  duration_ms: 1379.665
+  type: 'test'
+  ...
+# Subtest: native writable permissions cannot bypass shared workspace writer admission
+ok 91 - native writable permissions cannot bypass shared workspace writer admission
+  ---
+  duration_ms: 19.2587
+  type: 'test'
+  ...
+# Subtest: native inspection is read-only and cannot infer that unknown side effects stopped
+ok 92 - native inspection is read-only and cannot infer that unknown side effects stopped
+  ---
+  duration_ms: 170.8529
+  type: 'test'
+  ...
+# Subtest: control polling no longer rewrites heartbeat state on every tick
+ok 93 - control polling no longer rewrites heartbeat state on every tick
+  ---
+  duration_ms: 624.7796
+  type: 'test'
+  ...
+# Subtest: orchestrator frontier can select completed history explicitly without loading unrelated tasks
+ok 94 - orchestrator frontier can select completed history explicitly without loading unrelated tasks
+  ---
+  duration_ms: 32.3742
+  type: 'test'
+  ...
+# Subtest: native acceptance preparation is pending, source-pinned, cost-explicit and cannot dispatch before human confirmation
+ok 95 - native acceptance preparation is pending, source-pinned, cost-explicit and cannot dispatch before human confirmation
+  ---
+  duration_ms: 100.8998
+  type: 'test'
+  ...
+# Subtest: review reopening preserves completed units, revisions, budgets and historical attempts
+ok 96 - review reopening preserves completed units, revisions, budgets and historical attempts
+  ---
+  duration_ms: 51.2934
+  type: 'test'
+  ...
+# Subtest: a revised upstream can be followed by explicit review of an unchanged queued dependent
+ok 97 - a revised upstream can be followed by explicit review of an unchanged queued dependent
+  ---
+  duration_ms: 46.4563
+  type: 'test'
+  ...
+# Subtest: reopening refuses unresolved external jobs and never resets an exhausted attempt budget
+ok 98 - reopening refuses unresolved external jobs and never resets an exhausted attempt budget
+  ---
+  duration_ms: 44.3011
+  type: 'test'
+  ...
+# Subtest: non-resource errors between units propagate instead of becoming capacity errors
+ok 99 - non-resource errors between units propagate instead of becoming capacity errors
+  ---
+  duration_ms: 430.0749
+  type: 'test'
+  ...
+# Subtest: later units may update a public output while historical output snapshots remain checked
+ok 100 - later units may update a public output while historical output snapshots remain checked
+  ---
+  duration_ms: 91.7682
+  type: 'test'
+  ...
+# Subtest: tampering with the latest public output invalidates a task despite intact snapshots
+ok 101 - tampering with the latest public output invalidates a task despite intact snapshots
+  ---
+  duration_ms: 50.6889
+  type: 'test'
+  ...
+# Subtest: missing task-level output is rejected before final publication and settles the exited mock
+ok 102 - missing task-level output is rejected before final publication and settles the exited mock
+  ---
+  duration_ms: 408.7632
+  type: 'test'
+  ...
+# Subtest: a finish transaction exception is caught after root exit and does not crash or leak mock reservations
+ok 103 - a finish transaction exception is caught after root exit and does not crash or leak mock reservations
+  ---
+  duration_ms: 426.225
+  type: 'test'
+  ...
+# Subtest: finalization errors retain unknown descendant reservations for an unverified command
+ok 104 - finalization errors retain unknown descendant reservations for an unverified command
+  ---
+  duration_ms: 133.8084
+  type: 'test'
+  ...
+# Subtest: pause/resume retains a declined decision until explicit replacement approval
+ok 105 - pause/resume retains a declined decision until explicit replacement approval
+  ---
+  duration_ms: 28.3778
+  type: 'test'
+  ...
+# Subtest: pause/resume preserves pending decisions, yielded work and waiting capacity
+ok 106 - pause/resume preserves pending decisions, yielded work and waiting capacity
+  ---
+  duration_ms: 34.169
+  type: 'test'
+  ...
+# Subtest: a paused manual handoff resumes without a second attempt or loss of reservation
+ok 107 - a paused manual handoff resumes without a second attempt or loss of reservation
+  ---
+  duration_ms: 35.9072
+  type: 'test'
+  ...
+# Subtest: pause at a multi-unit boundary resumes the next unit instead of restoring a dead running state
+ok 108 - pause at a multi-unit boundary resumes the next unit instead of restoring a dead running state
+  ---
+  duration_ms: 770.3577
+  type: 'test'
+  ...
+# Subtest: branch selection keeps primary counterevidence/reviews without expanding sibling hypotheses
+ok 109 - branch selection keeps primary counterevidence/reviews without expanding sibling hypotheses
+  ---
+  duration_ms: 50.4331
+  type: 'test'
+  ...
+# Subtest: failed/cancelled/unknown attempts cannot publish new checkpoints
+ok 110 - failed/cancelled/unknown attempts cannot publish new checkpoints
+  ---
+  duration_ms: 81.9754
+  type: 'test'
+  ...
+# Subtest: final boundary checkpoints derive from validated results and cannot be rewritten by workers
+ok 111 - final boundary checkpoints derive from validated results and cannot be rewritten by workers
+  ---
+  duration_ms: 26.5197
+  type: 'test'
+  ...
+# Subtest: default single-unit estimates retain checkpoint headroom and request yielding on exhaustion
+ok 112 - default single-unit estimates retain checkpoint headroom and request yielding on exhaustion
+  ---
+  duration_ms: 22.5509
+  type: 'test'
+  ...
+# Subtest: backoff tracks a consecutive streak separately and resets after valid recovery signals
+ok 113 - backoff tracks a consecutive streak separately and resets after valid recovery signals
+  ---
+  duration_ms: 33.3711
+  type: 'test'
+  ...
+# Subtest: invalid multi-file overlay leaves no orphan and its change ID can be used after correction
+ok 114 - invalid multi-file overlay leaves no orphan and its change ID can be used after correction
+  ---
+  duration_ms: 46.3269
+  type: 'test'
+  ...
+# Subtest: overlay IO rollback cleans only a directory created by that invocation
+ok 115 - overlay IO rollback cleans only a directory created by that invocation
+  ---
+  duration_ms: 37.0513
+  type: 'test'
+  ...
+# Subtest: dictionary keys do not satisfy absent dependencies, roles, backends or skills by inheritance
+ok 116 - dictionary keys do not satisfy absent dependencies, roles, backends or skills by inheritance
+  ---
+  duration_ms: 21.9149
+  type: 'test'
+  ...
+# Subtest: Windows preflight rejects shims/oversized argv without shell expansion or truncation
+ok 117 - Windows preflight rejects shims/oversized argv without shell expansion or truncation
+  ---
+  duration_ms: 0.4639
+  type: 'test'
+  ...
+# Subtest: native final messages accept a single JSON fence while prose, multiple fences and script transport remain strict
+ok 118 - native final messages accept a single JSON fence while prose, multiple fences and script transport remain strict
+  ---
+  duration_ms: 0.6075
+  type: 'test'
+  ...
+# Subtest: capabilities distinguish boundary checkpoints from mock-only midrun control
+ok 119 - capabilities distinguish boundary checkpoints from mock-only midrun control
+  ---
+  duration_ms: 0.0952
+  type: 'test'
+  ...
+# Subtest: only declared writable outputs may use harness-pinned hashes; evidence and historical inputs stay strict
+ok 120 - only declared writable outputs may use harness-pinned hashes; evidence and historical inputs stay strict
+  ---
+  duration_ms: 29.8373
+  type: 'test'
+  ...
+# Subtest: new declared outputs can be pinned and snapshot by the harness without an LLM copying hashes
+ok 121 - new declared outputs can be pinned and snapshot by the harness without an LLM copying hashes
+  ---
+  duration_ms: 39.8421
+  type: 'test'
+  ...
+# Subtest: CLI exposes review reopening without changing the task revision
+ok 122 - CLI exposes review reopening without changing the task revision
+  ---
+  duration_ms: 40.1613
+  type: 'test'
+  ...
+# Subtest: planning tolerates second precision only within the attempt start second
+ok 123 - planning tolerates second precision only within the attempt start second
+  ---
+  duration_ms: 35.8675
+  type: 'test'
+  ...
+# Subtest: replacement approval resolves an explicit chain of declined decisions
+ok 124 - replacement approval resolves an explicit chain of declined decisions
+  ---
+  duration_ms: 28.8301
+  type: 'test'
+  ...
+# Subtest: a final unit cannot silently modify a previous output without declaring its new version
+ok 125 - a final unit cannot silently modify a previous output without declaring its new version
+  ---
+  duration_ms: 42.8407
+  type: 'test'
+  ...
+# Subtest: selective reruns publish the newest output even when earlier independent units run again
+ok 126 - selective reruns publish the newest output even when earlier independent units run again
+  ---
+  duration_ms: 74.5279
+  type: 'test'
+  ...
+# Subtest: CLI manual import publishes a derived final checkpoint
+ok 127 - CLI manual import publishes a derived final checkpoint
+  ---
+  duration_ms: 63.4038
+  type: 'test'
+  ...
+# Subtest: inconclusive work can report missing promised outputs without becoming a transport failure
+ok 128 - inconclusive work can report missing promised outputs without becoming a transport failure
+  ---
+  duration_ms: 24.4229
+  type: 'test'
+  ...
+# Subtest: a close-time exception before job mapping still records root exit and a durable termination receipt
+ok 129 - a close-time exception before job mapping still records root exit and a durable termination receipt
+  ---
+  duration_ms: 388.7822
+  type: 'test'
+  ...
+# Subtest: planning context requires independent research and completed plans need a review record
+ok 130 - planning context requires independent research and completed plans need a review record
+  ---
+  duration_ms: 83.7683
+  type: 'test'
+  ...
+# Subtest: planning cannot relabel an analysis summary as independently verified primary evidence
+ok 131 - planning cannot relabel an analysis summary as independently verified primary evidence
+  ---
+  duration_ms: 59.8026
+  type: 'test'
+  ...
+# Subtest: planning research must be recorded afresh for this attempt and blocking questions remain open
+ok 132 - planning research must be recorded afresh for this attempt and blocking questions remain open
+  ---
+  duration_ms: 57.691
+  type: 'test'
+  ...
+# Subtest: planning sources outside declared inputs remain tracked after result publication
+ok 133 - planning sources outside declared inputs remain tracked after result publication
+  ---
+  duration_ms: 68.0659
+  type: 'test'
+  ...
+# Subtest: a multi-unit task checkpoints each unit and only completes after all units pass
+ok 134 - a multi-unit task checkpoints each unit and only completes after all units pass
+  ---
+  duration_ms: 842.2796
+  type: 'test'
+  ...
+# Subtest: project reserves prevent a new unit before worker launch
+ok 135 - project reserves prevent a new unit before worker launch
+  ---
+  duration_ms: 23.2251
+  type: 'test'
+  ...
+# Subtest: shared-pool reservations reject over-allocation across different agent names
+ok 136 - shared-pool reservations reject over-allocation across different agent names
+  ---
+  duration_ms: 26.4315
+  type: 'test'
+  ...
+# Subtest: unknown/stale pool telemetry follows configured admission policy
+ok 137 - unknown/stale pool telemetry follows configured admission policy
+  ---
+  duration_ms: 23.2299
+  type: 'test'
+  ...
+# Subtest: context admission accounts for next-step growth and checkpoint reserve
+ok 138 - context admission accounts for next-step growth and checkpoint reserve
+  ---
+  duration_ms: 22.5396
+  type: 'test'
+  ...
+# Subtest: A to B fallback keeps completed units and skips B if it shares the exhausted pool
+ok 139 - A to B fallback keeps completed units and skips B if it shares the exhausted pool
+  ---
+  duration_ms: 672.7992
+  type: 'test'
+  ...
+# Subtest: handoff remains possible without a final answer from A
+ok 140 - handoff remains possible without a final answer from A
+  ---
+  duration_ms: 226.6964
+  type: 'test'
+  ...
+# Subtest: checkpoint publication failure does not select an orphan manifest
+ok 141 - checkpoint publication failure does not select an orphan manifest
+  ---
+  duration_ms: 35.8049
+  type: 'test'
+  ...
+# Subtest: a corrupted latest checkpoint falls back to the prior durable manifest
+ok 142 - a corrupted latest checkpoint falls back to the prior durable manifest
+  ---
+  duration_ms: 48.6812
+  type: 'test'
+  ...
+# Subtest: changed checkpoint artifacts prevent blind reuse
+ok 143 - changed checkpoint artifacts prevent blind reuse
+  ---
+  duration_ms: 38.5327
+  type: 'test'
+  ...
+# Subtest: stale worker generation cannot publish a checkpoint after takeover
+ok 144 - stale worker generation cannot publish a checkpoint after takeover
+  ---
+  duration_ms: 56.7873
+  type: 'test'
+  ...
+# Subtest: pause between recovery preparation and dispatch wins over fallback
+ok 145 - pause between recovery preparation and dispatch wins over fallback
+  ---
+  duration_ms: 45.7513
+  type: 'test'
+  ...
+# Subtest: lease expiry marks unknown but does not authorize a second writer
+ok 146 - lease expiry marks unknown but does not authorize a second writer
+  ---
+  duration_ms: 32.3108
+  type: 'test'
+  ...
+# Subtest: running external jobs survive worker exit and are never relaunched by recovery
+ok 147 - running external jobs survive worker exit and are never relaunched by recovery
+  ---
+  duration_ms: 40.7463
+  type: 'test'
+  ...
+# Subtest: telemetry cumulative snapshots replace totals and never double-count on final settlement
+ok 148 - telemetry cumulative snapshots replace totals and never double-count on final settlement
+  ---
+  duration_ms: 25.8581
+  type: 'test'
+  ...
+# Subtest: low predicted headroom requests yielding before a hard cutoff
+ok 149 - low predicted headroom requests yielding before a hard cutoff
+  ---
+  duration_ms: 31.4452
+  type: 'test'
+  ...
+# Subtest: cooperative yielding produces a durable checkpoint without marking the unit done
+ok 150 - cooperative yielding produces a durable checkpoint without marking the unit done
+  ---
+  duration_ms: 209.3456
+  type: 'test'
+  ...
+# Subtest: explicit migration preserves v1 history after unfinished attempts are resolved
+ok 151 - explicit migration preserves v1 history after unfinished attempts are resolved
+  ---
+  duration_ms: 43.5824
+  type: 'test'
+  ...
+# Subtest: retry and transfer counters prevent an unbounded fallback loop
+ok 152 - retry and transfer counters prevent an unbounded fallback loop
+  ---
+  duration_ms: 29.8454
+  type: 'test'
+  ...
+# Subtest: capability/auth failures are not retried by treating stderr as quota evidence
+ok 153 - capability/auth failures are not retried by treating stderr as quota evidence
+  ---
+  duration_ms: 0.1158
+  type: 'test'
+  ...
+# Subtest: historical quantiles are used only after enough matching labeled samples
+ok 154 - historical quantiles are used only after enough matching labeled samples
+  ---
+  duration_ms: 45.62
+  type: 'test'
+  ...
+# Subtest: no-progress recovery stops even when worker names and checkpoint IDs change
+ok 155 - no-progress recovery stops even when worker names and checkpoint IDs change
+  ---
+  duration_ms: 49.3588
+  type: 'test'
+  ...
+# Subtest: a low-resource update cannot override the user cancellation barrier
+ok 156 - a low-resource update cannot override the user cancellation barrier
+  ---
+  duration_ms: 23.6766
+  type: 'test'
+  ...
+# Subtest: project stop includes remote jobs whose agent already completed
+ok 157 - project stop includes remote jobs whose agent already completed
+  ---
+  duration_ms: 28.6137
+  type: 'test'
+  ...
+# Subtest: same-pool recovery becomes eligible after cooldown and a fresh capacity observation
+ok 158 - same-pool recovery becomes eligible after cooldown and a fresh capacity observation
+  ---
+  duration_ms: 28.3603
+  type: 'test'
+  ...
+# Subtest: paper/proof output and scoped profile overrides are independent of role/backend
+ok 159 - paper/proof output and scoped profile overrides are independent of role/backend
+  ---
+  duration_ms: 37.8854
+  type: 'test'
+  ...
+# Subtest: C1: observations keep historical subjects while a hypothesis evolves
+ok 160 - C1: observations keep historical subjects while a hypothesis evolves
+  ---
+  duration_ms: 43.8752
+  type: 'test'
+  ...
+# Subtest: dependency changes invalidate derived claims transitively without deleting history
+ok 161 - dependency changes invalidate derived claims transitively without deleting history
+  ---
+  duration_ms: 34.3107
+  type: 'test'
+  ...
+# Subtest: record revisions and owner fences prevent overwrites and stale-worker publication
+ok 162 - record revisions and owner fences prevent overwrites and stale-worker publication
+  ---
+  duration_ms: 51.0817
+  type: 'test'
+  ...
+# Subtest: support and novelty cannot be promoted without matching explicit evidence
+ok 163 - support and novelty cannot be promoted without matching explicit evidence
+  ---
+  duration_ms: 34.8396
+  type: 'test'
+  ...
+# Subtest: C2: numerical checks and open obligations cannot be labelled as verified proof
+ok 164 - C2: numerical checks and open obligations cannot be labelled as verified proof
+  ---
+  duration_ms: 52.6777
+  type: 'test'
+  ...
+# Subtest: C3: confirmatory plans need predictions and failed runs are not scientific counterevidence
+ok 165 - C3: confirmatory plans need predictions and failed runs are not scientific counterevidence
+  ---
+  duration_ms: 59.2776
+  type: 'test'
+  ...
+# Subtest: contrary evidence is retained and conflicts require a recorded review
+ok 166 - contrary evidence is retained and conflicts require a recorded review
+  ---
+  duration_ms: 67.729
+  type: 'test'
+  ...
+# Subtest: changed artifacts and task revisions make research require review
+ok 167 - changed artifacts and task revisions make research require review
+  ---
+  duration_ms: 43.6435
+  type: 'test'
+  ...
+# Subtest: targeted context includes reverse counterevidence and cannot silently truncate it
+ok 168 - targeted context includes reverse counterevidence and cannot silently truncate it
+  ---
+  duration_ms: 49.1748
+  type: 'test'
+  ...
+# Subtest: small citation tasks do not load discovery references or create extra workers
+ok 169 - small citation tasks do not load discovery references or create extra workers
+  ---
+  duration_ms: 27.9419
+  type: 'test'
+  ...
+# Subtest: C4: checkpoint and handoff preserve pinned obligations through takeover and pause
+ok 170 - C4: checkpoint and handoff preserve pinned obligations through takeover and pause
+  ---
+  duration_ms: 76.645
+  type: 'test'
+  ...
+# Subtest: research namespace stays additive and export works through the v4 CLI
+ok 171 - research namespace stays additive and export works through the v4 CLI
+  ---
+  duration_ms: 91.665
+  type: 'test'
+  ...
+# Subtest: declared inputs and upstream task revisions invalidate research even if raw outputs remain unchanged
+ok 172 - declared inputs and upstream task revisions invalidate research even if raw outputs remain unchanged
+  ---
+  duration_ms: 77.7226
+  type: 'test'
+  ...
+# Subtest: unknown workers cannot publish and snapshots detect corrupted pinned records
+ok 173 - unknown workers cannot publish and snapshots detect corrupted pinned records
+  ---
+  duration_ms: 45.6242
+  type: 'test'
+  ...
+# Subtest: historical subject references cannot bypass evidence dependency invalidation
+ok 174 - historical subject references cannot bypass evidence dependency invalidation
+  ---
+  duration_ms: 44.8516
+  type: 'test'
+  ...
+# Subtest: real fixture process records result, logs, context and configuration snapshot
+ok 175 - real fixture process records result, logs, context and configuration snapshot
+  ---
+  duration_ms: 467.9111
+  type: 'test'
+  ...
+# Subtest: missing, malformed and failed-check outputs do not pass on exit code zero
+ok 176 - missing, malformed and failed-check outputs do not pass on exit code zero
+  ---
+  duration_ms: 660.8589
+  type: 'test'
+  ...
+# Subtest: cancel a running branch without stopping an independent branch
+ok 177 - cancel a running branch without stopping an independent branch
+  ---
+  duration_ms: 895.3106
+  type: 'test'
+  ...
+# Subtest: pause reaches task checkpoint and resume uses saved result without rerun
+ok 178 - pause reaches task checkpoint and resume uses saved result without rerun
+  ---
+  duration_ms: 402.7094
+  type: 'test'
+  ...
+# Subtest: status and steer preserve original objective, steer acknowledgement is distinct
+ok 179 - status and steer preserve original objective, steer acknowledgement is distinct
+  ---
+  duration_ms: 680.7327
+  type: 'test'
+  ...
+# Subtest: timeout requests cancellation and does not report success
+ok 180 - timeout requests cancellation and does not report success
+  ---
+  duration_ms: 172.7988
+  type: 'test'
+  ...
+# Subtest: a second CLI process can cancel while the runner is occupied
+ok 181 - a second CLI process can cancel while the runner is occupied
+  ---
+  duration_ms: 454.9706
+  type: 'test'
+  ...
+# Subtest: prepare-task and default run-task do not dispatch
+ok 182 - prepare-task and default run-task do not dispatch
+  ---
+  duration_ms: 43.2729
+  type: 'test'
+  ...
+# Subtest: one-shot adapters do not claim native steer/resume; commands bypass the shell
+ok 183 - one-shot adapters do not claim native steer/resume; commands bypass the shell
+  ---
+  duration_ms: 28.3726
+  type: 'test'
+  ...
+# Subtest: Codex and Claude parsers use reported usage and reject transport errors
+ok 184 - Codex and Claude parsers use reported usage and reject transport errors
+  ---
+  duration_ms: 1.1626
+  type: 'test'
+  ...
+# Subtest: emergency control still works when the configuration file is broken
+ok 185 - emergency control still works when the configuration file is broken
+  ---
+  duration_ms: 37.8796
+  type: 'test'
+  ...
+# Subtest: cancelled external command reports unknown descendants instead of false stopped
+ok 186 - cancelled external command reports unknown descendants instead of false stopped
+  ---
+  duration_ms: 119.1626
+  type: 'test'
+  ...
+# Subtest: usage report labels fixture tokens and does not invent human active time
+ok 187 - usage report labels fixture tokens and does not invent human active time
+  ---
+  duration_ms: 390.6685
+  type: 'test'
+  ...
+# Subtest: snapshot roots exclude the control DB, preserve immutable inputs and pin publication bytes
+ok 188 - snapshot roots exclude the control DB, preserve immutable inputs and pin publication bytes
+  ---
+  duration_ms: 149.4563
+  type: 'test'
+  ...
+# Subtest: independent writers publish separately while conflicting baselines preserve the losing candidate
+ok 189 - independent writers publish separately while conflicting baselines preserve the losing candidate
+  ---
+  duration_ms: 246.9661
+  type: 'test'
+  ...
+# Subtest: partial publication is fenced from dispatch and recovers without another worker attempt
+ok 190 - partial publication is fenced from dispatch and recovers without another worker attempt
+  ---
+  duration_ms: 216.8224
+  type: 'test'
+  ...
+# Subtest: publication rollback restores baseline but retains reservations until executor reconciliation
+ok 191 - publication rollback restores baseline but retains reservations until executor reconciliation
+  ---
+  duration_ms: 156.7325
+  type: 'test'
+  ...
+# Subtest: recovery refuses third-party edits and stale owners without replacing their bytes
+ok 192 - recovery refuses third-party edits and stale owners without replacing their bytes
+  ---
+  duration_ms: 83.8989
+  type: 'test'
+  ...
+# Subtest: isolated checkpoint artifacts are pinned and rematerialized without publishing partial work
+ok 193 - isolated checkpoint artifacts are pinned and rematerialized without publishing partial work
+  ---
+  duration_ms: 127.3305
+  type: 'test'
+  ...
+# Subtest: execution paths reject control aliases, traversal, Windows devices and junctions
+ok 194 - execution paths reject control aliases, traversal, Windows devices and junctions
+  ---
+  duration_ms: 31.8799
+  type: 'test'
+  ...
+# Subtest: snapshot byte caps reject materialization before a worker can run
+ok 195 - snapshot byte caps reject materialization before a worker can run
+  ---
+  duration_ms: 34.3529
+  type: 'test'
+  ...
+# Subtest: preparation failure before spawn settles known zero model usage
+ok 196 - preparation failure before spawn settles known zero model usage
+  ---
+  duration_ms: 33.5333
+  type: 'test'
+  ...
+# Subtest: failed spawn transaction cannot hide a possibly launched OS process behind an empty job list
+ok 197 - failed spawn transaction cannot hide a possibly launched OS process behind an empty job list
+  ---
+  duration_ms: 54.6069
+  type: 'test'
+  ...
+# Subtest: v4 migration backs up history, fences old SQLite writers, and blocks active v2 migration
+ok 198 - v4 migration backs up history, fences old SQLite writers, and blocks active v2 migration
+  ---
+  duration_ms: 61.6845
+  type: 'test'
+  ...
+# Subtest: runner supplies separate execution/control roots and validates actual worker-created files
+ok 199 - runner supplies separate execution/control roots and validates actual worker-created files
+  ---
+  duration_ms: 210.1365
+  type: 'test'
+  ...
+# Subtest: isolated tool reads use the execution baseline and immutable primary changes block acceptance
+ok 200 - isolated tool reads use the execution baseline and immutable primary changes block acceptance
+  ---
+  duration_ms: 61.2624
+  type: 'test'
+  ...
+# Subtest: isolated undeclared artifacts and generated evidence cannot escape publication scope
+ok 201 - isolated undeclared artifacts and generated evidence cannot escape publication scope
+  ---
+  duration_ms: 85.1332
+  type: 'test'
+  ...
+# Subtest: multiple isolated units may update the same logical artifact without invalidating historical receipts
+ok 202 - multiple isolated units may update the same logical artifact without invalidating historical receipts
+  ---
+  duration_ms: 184.9219
+  type: 'test'
+  ...
+# Subtest: pause during snapshot preparation stops before dispatch with zero model usage
+ok 203 - pause during snapshot preparation stops before dispatch with zero model usage
+  ---
+  duration_ms: 433.1127
+  type: 'test'
+  ...
+# Subtest: cancel during snapshot preparation stops before dispatch with zero model usage
+ok 204 - cancel during snapshot preparation stops before dispatch with zero model usage
+  ---
+  duration_ms: 51.906
+  type: 'test'
+  ...
+1..204
+# tests 204
+# suites 0
+# pass 204
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 52738.9943

@@ -1,0 +1,32 @@
+{
+  "task_id": "advise_research_plan",
+  "domain": "research",
+  "study_type": "reproduction",
+  "task_revision": 1,
+  "role": "researcher",
+  "backend": "codex",
+  "task_class": "synthesis_planning",
+  "skills": ["research-design"],
+  "objective": "Act as the scientific advisor to the research team. Synthesize the supplied analyses, independently inspect primary evidence and research important uncertainties again. Return a detailed plan to the orchestrator in result.summary, with scientific rationale, assumptions, ordered steps, responsible roles, dependencies, expected outputs, acceptance checks, resource estimates, stopping conditions and unresolved decisions. Do not take over orchestration or dispatch workers. Missing analyses or primary evidence must remain explicit blockers rather than invented findings.",
+  "inputs": [],
+  "analysis_input_paths": [],
+  "dependencies": [],
+  "acceptance": [
+    "The plan corrects or retains disagreements with the supplied analyses and includes a current-attempt planning_review of actual primary and research checks.",
+    "The orchestrator can translate the plan into bounded tasks without inventing scientific assumptions or changing success criteria.",
+    "Insufficient evidence or unresolved blocking questions produce an inconclusive result."
+  ],
+  "expected_artifacts": [],
+  "protocol_version": "advisor-example-v1",
+  "capabilities": [],
+  "budget": {
+    "max_attempts": 2,
+    "timeout_ms": 900000,
+    "reservation_tokens": 12000,
+    "reservation_cost_usd": 0,
+    "max_total_tokens": 80000
+  },
+  "stop_conditions": ["Stop on timeout, cancellation or missing authorized evidence; do not start experiments."],
+  "required_actions": ["local_review"],
+  "writes_workspace": false
+}

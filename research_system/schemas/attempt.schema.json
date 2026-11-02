@@ -1,0 +1,351 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "attempt",
+  "type": "object",
+  "properties": {
+    "native": {
+      "type": "object"
+    },
+    "native_requests": {
+      "type": "object"
+    },
+    "native_usage": {
+      "type": "object"
+    },
+    "benchmark_request_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "bundle_refs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "path": {
+            "type": "string",
+            "minLength": 1
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "root": {
+            "type": "string",
+            "enum": [
+              "workspace"
+            ]
+          },
+          "target": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "path",
+          "sha256"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "attempt_id": {
+      "type": "string",
+      "pattern": "^(?!(?:constructor|prototype|__proto__)$)[A-Za-z0-9][A-Za-z0-9_-]{0,95}$"
+    },
+    "task_id": {
+      "type": "string",
+      "pattern": "^(?!(?:constructor|prototype|__proto__)$)[A-Za-z0-9][A-Za-z0-9_-]{0,95}$"
+    },
+    "task_revision": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "protocol_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "owner_epoch": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "backend": {
+      "type": "string",
+      "minLength": 1
+    },
+    "dispatch_key": {
+      "type": "string",
+      "minLength": 1
+    },
+    "desired_state": {
+      "type": "string",
+      "minLength": 1
+    },
+    "observed_state": {
+      "type": "string",
+      "minLength": 1
+    },
+    "job_refs": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "timestamps": {
+      "type": "object"
+    },
+    "work_unit_id": {
+      "type": "string",
+      "pattern": "^(?!(?:constructor|prototype|__proto__)$)[A-Za-z0-9][A-Za-z0-9_-]{0,95}$"
+    },
+    "assignment_id": {
+      "type": "string",
+      "pattern": "^(?!(?:constructor|prototype|__proto__)$)[A-Za-z0-9][A-Za-z0-9_-]{0,95}$"
+    },
+    "assignment_generation": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "quota_pool_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "runner_pid": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "runner_token": {
+      "type": "string",
+      "minLength": 1
+    },
+    "reservation_tokens": {
+      "type": "number",
+      "minimum": 0
+    },
+    "reservation_cost_usd": {
+      "type": "number",
+      "minimum": 0
+    },
+    "settled": {
+      "type": "boolean"
+    },
+    "context_hash": {
+      "type": "string",
+      "minLength": 1
+    },
+    "context_characters": {
+      "type": "number",
+      "minimum": 0
+    },
+    "effective_config": {
+      "type": "object"
+    },
+    "config_hash": {
+      "type": "string",
+      "minLength": 1
+    },
+    "input_refs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "path": {
+            "type": "string",
+            "minLength": 1
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          }
+        },
+        "required": [
+          "path",
+          "sha256"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "failure": {
+      "type": "object"
+    },
+    "error": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "result": {
+      "type": "object"
+    },
+    "session_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "usage_basis": {
+      "type": "object"
+    },
+    "accounted_tokens": {
+      "type": "number",
+      "minimum": 0
+    },
+    "accounted_cost_usd": {
+      "type": "number",
+      "minimum": 0
+    },
+    "reconciliation": {
+      "type": "object"
+    },
+    "adopted_by": {
+      "type": "object"
+    },
+    "checkpoint_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "resumed_from_checkpoint": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "supersedes_attempt_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "telemetry": {
+      "type": "object"
+    },
+    "telemetry_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "yield_reason": {
+      "type": "string",
+      "minLength": 1
+    },
+    "admission": {
+      "type": "object"
+    },
+    "recovery_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "failure_evidence": {
+      "type": "object"
+    },
+    "reported_usage": {
+      "type": "object"
+    },
+    "late_deliveries": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "research_refs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "record_id": {
+            "type": "string",
+            "pattern": "^(?!(?:constructor|prototype|__proto__)$)[A-Za-z0-9][A-Za-z0-9_-]{0,95}$"
+          },
+          "revision": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "relation": {
+            "type": "string",
+            "enum": [
+              "dependency",
+              "subject"
+            ]
+          }
+        },
+        "required": [
+          "record_id",
+          "revision",
+          "sha256"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "output_snapshots": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "logical_path": {
+            "type": "string",
+            "minLength": 1
+          },
+          "path": {
+            "type": "string",
+            "minLength": 1
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          }
+        },
+        "required": [
+          "logical_path",
+          "path",
+          "sha256"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "final_checkpoint_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "workspace": {
+      "type": "object"
+    },
+    "native_usage_cursor": {
+      "type": "object"
+    },
+    "publication_id": {
+      "type": "string"
+    },
+    "recovered_result_termination": {
+      "type": "object"
+    },
+    "extension_binding": {
+      "type": "object"
+    }
+  },
+  "required": [
+    "attempt_id",
+    "task_id",
+    "task_revision",
+    "protocol_version",
+    "owner_epoch",
+    "backend",
+    "dispatch_key",
+    "desired_state",
+    "observed_state",
+    "job_refs",
+    "timestamps",
+    "work_unit_id",
+    "assignment_id",
+    "assignment_generation",
+    "quota_pool_ids",
+    "settled"
+  ],
+  "additionalProperties": false
+}

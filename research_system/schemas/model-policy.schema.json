@@ -1,0 +1,174 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "model-policy",
+  "type": "object",
+  "properties": {
+    "default_task_class": {
+      "type": "string",
+      "enum": [
+        "synthesis_planning",
+        "analysis",
+        "automation"
+      ]
+    },
+    "orchestrator_task_class": {
+      "type": "string",
+      "enum": [
+        "synthesis_planning",
+        "analysis",
+        "automation"
+      ]
+    },
+    "task_class_backends": {
+      "description": "Default backend for new tasks by class; explicit task backend/model selections and registered snapshots take precedence.",
+      "type": "object",
+      "properties": {
+        "synthesis_planning": { "type": "string", "minLength": 1 },
+        "analysis": { "type": "string", "minLength": 1 },
+        "automation": { "type": "string", "minLength": 1 }
+      },
+      "additionalProperties": false
+    },
+    "task_class_tiers": {
+      "type": "object",
+      "properties": {
+        "synthesis_planning": {
+          "type": "string",
+          "enum": [
+            "highest",
+            "medium",
+            "low"
+          ]
+        },
+        "analysis": {
+          "type": "string",
+          "enum": [
+            "highest",
+            "medium",
+            "low"
+          ]
+        },
+        "automation": {
+          "type": "string",
+          "enum": [
+            "highest",
+            "medium",
+            "low"
+          ]
+        }
+      },
+      "required": [
+        "synthesis_planning",
+        "analysis",
+        "automation"
+      ],
+      "additionalProperties": false
+    },
+    "backends": {
+      "type": "object",
+      "additionalProperties": {
+        "oneOf": [
+          {
+            "type": "null"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "highest": {
+                "type": "object",
+                "properties": {
+                  "model": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "reasoning_effort": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "minLength": 1
+                  }
+                },
+                "required": [
+                  "model",
+                  "reasoning_effort"
+                ],
+                "additionalProperties": false
+              },
+              "medium": {
+                "type": "object",
+                "properties": {
+                  "model": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "reasoning_effort": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "minLength": 1
+                  }
+                },
+                "required": [
+                  "model",
+                  "reasoning_effort"
+                ],
+                "additionalProperties": false
+              },
+              "low": {
+                "type": "object",
+                "properties": {
+                  "model": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "reasoning_effort": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "minLength": 1
+                  }
+                },
+                "required": [
+                  "model",
+                  "reasoning_effort"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "additionalProperties": false
+          }
+        ]
+      }
+    },
+    "planning_verification": {
+      "type": "object",
+      "properties": {
+        "independent_research": {
+          "const": true
+        },
+        "primary_source_checks": {
+          "const": true
+        },
+        "attempt_scoped_evidence": {
+          "const": true
+        }
+      },
+      "required": [
+        "independent_research",
+        "primary_source_checks",
+        "attempt_scoped_evidence"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "default_task_class",
+    "orchestrator_task_class",
+    "task_class_tiers",
+    "backends"
+  ],
+  "additionalProperties": false
+}

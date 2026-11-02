@@ -1,0 +1,10 @@
+.agentic/
+node_modules/
+examples/workspace/
+examples/paper-workspace/
+examples/recovery-workspace/
+coverage/
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
+__pycache__/

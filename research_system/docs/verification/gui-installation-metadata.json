@@ -1,0 +1,18 @@
+{
+  "observed_at": "2026-10-29T14:15:00.714Z",
+  "kind": "local_cli_version_metadata_no_inference",
+  "versions": {
+    "codex_cli": "0.165.0-alpha.1.2",
+    "claude_code": "2.1.310",
+    "antigravity_cli": "1.4.7"
+  },
+  "codex_warning": "Version command exited 0; sandbox denied cleanup of temp aliases/PATH aliases",
+  "gui_loader_verified": false,
+  "gui_model_verified": false,
+  "native_inventory_verified": false,
+  "global_settings_changed": false,
+  "notes": [
+    "Version probes are not GUI loader evidence",
+    "Existing Codex pin is older; no silent repinning or external execution"
+  ]
+}

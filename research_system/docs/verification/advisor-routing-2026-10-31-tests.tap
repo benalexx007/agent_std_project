@@ -1,0 +1,1591 @@
+TAP version 13
+# Subtest: benchmark dispatch is blocked until a scoped protocol confirmation exists
+ok 1 - benchmark dispatch is blocked until a scoped protocol confirmation exists
+  ---
+  duration_ms: 56.1702
+  type: 'test'
+  ...
+# Subtest: blanket approval, changed protocol and missing human text do not grant execution
+ok 2 - blanket approval, changed protocol and missing human text do not grant execution
+  ---
+  duration_ms: 34.3318
+  type: 'test'
+  ...
+# Subtest: each request is single-use and completed approval cannot be reused
+ok 3 - each request is single-use and completed approval cannot be reused
+  ---
+  duration_ms: 39.8223
+  type: 'test'
+  ...
+# Subtest: approved benchmark limits include retries and reserved tokens before dispatch
+ok 4 - approved benchmark limits include retries and reserved tokens before dispatch
+  ---
+  duration_ms: 36.4481
+  type: 'test'
+  ...
+# Subtest: protocol mutation after approval is checked again at the final dispatch barrier
+ok 5 - protocol mutation after approval is checked again at the final dispatch barrier
+  ---
+  duration_ms: 35.8724
+  type: 'test'
+  ...
+# Subtest: ordinary implementation tasks do not need benchmark approval
+ok 6 - ordinary implementation tasks do not need benchmark approval
+  ---
+  duration_ms: 30.4773
+  type: 'test'
+  ...
+# Subtest: execution manifest is pinned through confirmation and final dispatch
+ok 7 - execution manifest is pinned through confirmation and final dispatch
+  ---
+  duration_ms: 39.8994
+  type: 'test'
+  ...
+# Subtest: superseding an unapproved campaign preserves history and grants no execution
+ok 8 - superseding an unapproved campaign preserves history and grants no execution
+  ---
+  duration_ms: 34.182
+  type: 'test'
+  ...
+# Subtest: B01 preparation pins seventeen tiered tasks and creates only a pending permission request
+ok 9 - B01 preparation pins seventeen tiered tasks and creates only a pending permission request
+  ---
+  duration_ms: 438.1056
+  type: 'test'
+  ...
+# Subtest: B01 integrity checks detect changed manifest, raw inputs and derived evidence
+ok 10 - B01 integrity checks detect changed manifest, raw inputs and derived evidence
+  ---
+  duration_ms: 678.9872
+  type: 'test'
+  ...
+# Subtest: C2 release uses only the final planner probe, not preliminary analysis
+ok 11 - C2 release uses only the final planner probe, not preliminary analysis
+  ---
+  duration_ms: 0.2369
+  type: 'test'
+  ...
+# Subtest: B01 execution refuses a prepared but unapproved campaign before any worker launch
+ok 12 - B01 execution refuses a prepared but unapproved campaign before any worker launch
+  ---
+  duration_ms: 304.2963
+  type: 'test'
+  ...
+# Subtest: B01 numeric grader detects wrong rates and an invalid selected probe without judging prose
+ok 13 - B01 numeric grader detects wrong rates and an invalid selected probe without judging prose
+  ---
+  duration_ms: 0.4819
+  type: 'test'
+  ...
+# Subtest: B01 handoff selects stage dependencies while evaluator retains all case evidence and audit
+ok 14 - B01 handoff selects stage dependencies while evaluator retains all case evidence and audit
+  ---
+  duration_ms: 0.7647
+  type: 'test'
+  ...
+# Subtest: B01 archived campaign manifests remain immutable when source has changed
+ok 15 - B01 archived campaign manifests remain immutable when source has changed
+  ---
+  duration_ms: 448.5263
+  type: 'test'
+  ...
+# Subtest: strict contracts reject unknown fields, invalid budgets and invalid IDs
+ok 16 - strict contracts reject unknown fields, invalid budgets and invalid IDs
+  ---
+  duration_ms: 2.9253
+  type: 'test'
+  ...
+# Subtest: orchestrator context provides ownership and handoff references without loading all skills
+ok 17 - orchestrator context provides ownership and handoff references without loading all skills
+  ---
+  duration_ms: 35.2724
+  type: 'test'
+  ...
+# Subtest: role/backend overrides are scoped and capabilities fail closed
+ok 18 - role/backend overrides are scoped and capabilities fail closed
+  ---
+  duration_ms: 22.7878
+  type: 'test'
+  ...
+# Subtest: context loads only selected skills and detects hash changes
+ok 19 - context loads only selected skills and detects hash changes
+  ---
+  duration_ms: 37.8084
+  type: 'test'
+  ...
+# Subtest: context limits fail without silently discarding evidence
+ok 20 - context limits fail without silently discarding evidence
+  ---
+  duration_ms: 31.7807
+  type: 'test'
+  ...
+# Subtest: paths cannot escape the workspace
+ok 21 - paths cannot escape the workspace
+  ---
+  duration_ms: 26.7656
+  type: 'test'
+  ...
+# Subtest: human decision blocks only its tasks, approval persists for its revision
+ok 22 - human decision blocks only its tasks, approval persists for its revision
+  ---
+  duration_ms: 46.07
+  type: 'test'
+  ...
+# Subtest: silence and status requests do not answer pending decisions
+ok 23 - silence and status requests do not answer pending decisions
+  ---
+  duration_ms: 30.0708
+  type: 'test'
+  ...
+# Subtest: dispatch keys are idempotent and ownership epochs fence stale dispatch
+ok 24 - dispatch keys are idempotent and ownership epochs fence stale dispatch
+  ---
+  duration_ms: 41.7038
+  type: 'test'
+  ...
+# Subtest: budget reservations serialize concurrent allocation
+ok 25 - budget reservations serialize concurrent allocation
+  ---
+  duration_ms: 32.6093
+  type: 'test'
+  ...
+# Subtest: external agents remain disabled by default even with explicit execute
+ok 26 - external agents remain disabled by default even with explicit execute
+  ---
+  duration_ms: 33.7953
+  type: 'test'
+  ...
+# Subtest: writer overlap and unresolved jobs block new dispatch
+ok 27 - writer overlap and unresolved jobs block new dispatch
+  ---
+  duration_ms: 41.5933
+  type: 'test'
+  ...
+# Subtest: late results from previous owner require explicit adoption
+ok 28 - late results from previous owner require explicit adoption
+  ---
+  duration_ms: 34.1809
+  type: 'test'
+  ...
+# Subtest: duplicate terminal delivery does not double-count usage
+ok 29 - duplicate terminal delivery does not double-count usage
+  ---
+  duration_ms: 38.0128
+  type: 'test'
+  ...
+# Subtest: revision invalidates dependent evidence and retains raw results
+ok 30 - revision invalidates dependent evidence and retains raw results
+  ---
+  duration_ms: 43.3287
+  type: 'test'
+  ...
+# Subtest: changed input blocks reuse by dependent tasks
+ok 31 - changed input blocks reuse by dependent tasks
+  ---
+  duration_ms: 43.7956
+  type: 'test'
+  ...
+# Subtest: event IDs reject conflicting replay and status does not undo pause
+ok 32 - event IDs reject conflicting replay and status does not undo pause
+  ---
+  duration_ms: 39.3874
+  type: 'test'
+  ...
+# Subtest: unknown cancellation retains budget and requires evidence to reconcile
+ok 33 - unknown cancellation retains budget and requires evidence to reconcile
+  ---
+  duration_ms: 43.6514
+  type: 'test'
+  ...
+# Subtest: artifact hashes and claim links detect changed files without claiming scientific validity
+ok 34 - artifact hashes and claim links detect changed files without claiming scientific validity
+  ---
+  duration_ms: 41.4372
+  type: 'test'
+  ...
+# Subtest: run records are immutable and handoff includes pending events and authority
+ok 35 - run records are immutable and handoff includes pending events and authority
+  ---
+  duration_ms: 38.5609
+  type: 'test'
+  ...
+# Subtest: upstream drift invalidates the entire dependency lineage
+ok 36 - upstream drift invalidates the entire dependency lineage
+  ---
+  duration_ms: 52.1167
+  type: 'test'
+  ...
+# Subtest: reconciliation updates an unresolved cancel event after evidence is supplied
+ok 37 - reconciliation updates an unresolved cancel event after evidence is supplied
+  ---
+  duration_ms: 34.2092
+  type: 'test'
+  ...
+# Subtest: native extension scope rejects inherited extras, discovery errors and repeated MCP pagination
+ok 38 - native extension scope rejects inherited extras, discovery errors and repeated MCP pagination
+  ---
+  duration_ms: 2.3136
+  type: 'test'
+  ...
+# Subtest: dependency integrity rejects modified files and v4 migration fences a real writer3 connection
+ok 39 - dependency integrity rejects modified files and v4 migration fences a real writer3 connection
+  ---
+  duration_ms: 89.0422
+  type: 'test'
+  ...
+# Subtest: v3 emergency controls can close old work before explicit migration without enabling v3 dispatch
+ok 40 - v3 emergency controls can close old work before explicit migration without enabling v3 dispatch
+  ---
+  duration_ms: 92.5302
+  type: 'test'
+  ...
+# Subtest: failed dependency staging never activates a partial environment
+ok 41 - failed dependency staging never activates a partial environment
+  ---
+  duration_ms: 298.5334
+  type: 'test'
+  ...
+# Subtest: extension profiles are opt-in, scoped, immutable and absent from plain-task context
+not ok 42 - extension profiles are opt-in, scoped, immutable and absent from plain-task context
+  ---
+  duration_ms: 24.9903
+  type: 'test'
+  location: 'D:\\Code\\AI\\agentic_std_proccess\\research_system\\test\\extensions.test.mjs:93:1'
+  failureType: 'testCodeFailure'
+  error: 'Base Python binding changed'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    requireThat (file:///D:/Code/AI/agentic_std_proccess/research_system/src/util.mjs:21:25)
+    verifyExtensionEnvironment (file:///D:/Code/AI/agentic_std_proccess/research_system/src/extensions.mjs:30:32)
+    extensionDocuments (file:///D:/Code/AI/agentic_std_proccess/research_system/src/extensions.mjs:92:3)
+    normalizeConfig (file:///D:/Code/AI/agentic_std_proccess/research_system/src/config.mjs:47:22)
+    loadConfig (file:///D:/Code/AI/agentic_std_proccess/research_system/src/config.mjs:14:10)
+    fixture (file:///D:/Code/AI/agentic_std_proccess/research_system/test/helpers.mjs:19:18)
+    setup (file:///D:/Code/AI/agentic_std_proccess/research_system/test/extensions.test.mjs:23:10)
+    TestContext.<anonymous> (file:///D:/Code/AI/agentic_std_proccess/research_system/test/extensions.test.mjs:94:29)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1402:25)
+  ...
+# Subtest: native helper contract discovery is cheap and execution uses the same scoped dispatcher
+not ok 43 - native helper contract discovery is cheap and execution uses the same scoped dispatcher
+  ---
+  duration_ms: 28.8864
+  type: 'test'
+  location: 'D:\\Code\\AI\\agentic_std_proccess\\research_system\\test\\extensions.test.mjs:106:1'
+  failureType: 'testCodeFailure'
+  error: 'Base Python binding changed'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    requireThat (file:///D:/Code/AI/agentic_std_proccess/research_system/src/util.mjs:21:25)
+    verifyExtensionEnvironment (file:///D:/Code/AI/agentic_std_proccess/research_system/src/extensions.mjs:30:32)
+    extensionDocuments (file:///D:/Code/AI/agentic_std_proccess/research_system/src/extensions.mjs:92:3)
+    normalizeConfig (file:///D:/Code/AI/agentic_std_proccess/research_system/src/config.mjs:47:22)
+    loadConfig (file:///D:/Code/AI/agentic_std_proccess/research_system/src/config.mjs:14:10)
+    fixture (file:///D:/Code/AI/agentic_std_proccess/research_system/test/helpers.mjs:19:18)
+    setup (file:///D:/Code/AI/agentic_std_proccess/research_system/test/extensions.test.mjs:23:10)
+    start (file:///D:/Code/AI/agentic_std_proccess/research_system/test/extensions.test.mjs:33:13)
+    TestContext.<anonymous> (file:///D:/Code/AI/agentic_std_proccess/research_system/test/extensions.test.mjs:107:30)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+  ...
+# Subtest: symbolic AST handles assumptions and rejects executable expressions; duplicate IDs do not rerun
+not ok 44 - symbolic AST handles assumptions and rejects executable expressions; duplicate IDs do not rerun
+  ---
+  duration_ms: 25.8199
+  type: 'test'
+  location: 'D:\\Code\\AI\\agentic_std_proccess\\research_system\\test\\extensions.test.mjs:120:1'
+  failureType: 'testCodeFailure'
+  error: 'Base Python binding changed'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    requireThat (file:///D:/Code/AI/agentic_std_proccess/research_system/src/util.mjs:21:25)
+    verifyExtensionEnvironment (file:///D:/Code/AI/agentic_std_proccess/research_system/src/extensions.mjs:30:32)
+    extensionDocuments (file:///D:/Code/AI/agentic_std_proccess/research_system/src/extensions.mjs:92:3)
+    normalizeConfig (file:///D:/Code/AI/agentic_std_proccess/research_system/src/config.mjs:47:22)
+    loadConfig (file:///D:/Code/AI/agentic_std_proccess/research_system/src/config.mjs:14:10)
+    fixture (file:///D:/Code/AI/agentic_std_proccess/research_system/test/helpers.mjs:19:18)
+    setup (file:///D:/Code/AI/agentic_std_proccess/research_system/test/extensions.test.mjs:23:10)
+    start (file:///D:/Code/AI/agentic_std_proccess/research_system/test/extensions.test.mjs:33:13)
+    TestContext.<anonymous> (file:///D:/Code/AI/agentic_std_proccess/research_system/test/extensions.test.mjs:121:36)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+  ...
+# Subtest: paired statistics match independent exact oracles and report degenerate bootstrap uncertainty
+not ok 45 - paired statistics match independent exact oracles and report degenerate bootstrap uncertainty
+  ---
+  duration_ms: 27.4229
+  type: 'test'
+  location: 'D:\\Code\\AI\\agentic_std_proccess\\research_system\\test\\extensions.test.mjs:134:1'
+  failureType: 'testCodeFailure'
+  error: 'Base Python binding changed'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    requireThat (file:///D:/Code/AI/agentic_std_proccess/research_system/src/util.mjs:21:25)
+    verifyExtensionEnvironment (file:///D:/Code/AI/agentic_std_proccess/research_system/src/extensions.mjs:30:32)
+    extensionDocuments (file:///D:/Code/AI/agentic_std_proccess/research_system/src/extensions.mjs:92:3)
+    normalizeConfig (file:///D:/Code/AI/agentic_std_proccess/research_system/src/config.mjs:47:22)
+    loadConfig (file:///D:/Code/AI/agentic_std_proccess/research_system/src/config.mjs:14:10)
+    fixture (file:///D:/Code/AI/agentic_std_proccess/research_system/test/helpers.mjs:19:18)
+    setup (file:///D:/Code/AI/agentic_std_proccess/research_system/test/extensions.test.mjs:23:10)
+    start (file:///D:/Code/AI/agentic_std_proccess/research_system/test/extensions.test.mjs:33:13)
+    TestContext.<anonymous> (file:///D:/Code/AI/agentic_std_proccess/research_system/test/extensions.test.mjs:135:36)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+  ...
+# Subtest: bibliography keeps distinct DOI records with colliding keys and exposes raw failed blocks
+not ok 46 - bibliography keeps distinct DOI records with colliding keys and exposes raw failed blocks
+  ---
+  duration_ms: 27.2884
+  type: 'test'
+  location: 'D:\\Code\\AI\\agentic_std_proccess\\research_system\\test\\extensions.test.mjs:143:1'
+  failureType: 'testCodeFailure'
+  error: 'Base Python binding changed'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    requireThat (file:///D:/Code/AI/agentic_std_proccess/research_system/src/util.mjs:21:25)
+    verifyExtensionEnvironment (file:///D:/Code/AI/agentic_std_proccess/research_system/src/extensions.mjs:30:32)
+    extensionDocuments (file:///D:/Code/AI/agentic_std_proccess/research_system/src/extensions.mjs:92:3)
+    normalizeConfig (file:///D:/Code/AI/agentic_std_proccess/research_system/src/config.mjs:47:22)
+    loadConfig (file:///D:/Code/AI/agentic_std_proccess/research_system/src/config.mjs:14:10)
+    fixture (file:///D:/Code/AI/agentic_std_proccess/research_system/test/helpers.mjs:19:18)
+    setup (file:///D:/Code/AI/agentic_std_proccess/research_system/test/extensions.test.mjs:23:10)
+    start (file:///D:/Code/AI/agentic_std_proccess/research_system/test/extensions.test.mjs:33:13)
+    TestContext.<anonymous> (file:///D:/Code/AI/agentic_std_proccess/research_system/test/extensions.test.mjs:144:36)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+  ...
+# Subtest: retrieval fixtures preserve raw bytes/version and distinguish HTTP200 errors from an empty search
+not ok 47 - retrieval fixtures preserve raw bytes/version and distinguish HTTP200 errors from an empty search
+  ---
+  duration_ms: 25.769
+  type: 'test'
+  location: 'D:\\Code\\AI\\agentic_std_proccess\\research_system\\test\\extensions.test.mjs:156:1'
+  failureType: 'testCodeFailure'
+  error: 'Base Python binding changed'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    requireThat (file:///D:/Code/AI/agentic_std_proccess/research_system/src/util.mjs:21:25)
+    verifyExtensionEnvironment (file:///D:/Code/AI/agentic_std_proccess/research_system/src/extensions.mjs:30:32)
+    extensionDocuments (file:///D:/Code/AI/agentic_std_proccess/research_system/src/extensions.mjs:92:3)
+    normalizeConfig (file:///D:/Code/AI/agentic_std_proccess/research_system/src/config.mjs:47:22)
+    loadConfig (file:///D:/Code/AI/agentic_std_proccess/research_system/src/config.mjs:14:10)
+    fixture (file:///D:/Code/AI/agentic_std_proccess/research_system/test/helpers.mjs:19:18)
+    setup (file:///D:/Code/AI/agentic_std_proccess/research_system/test/extensions.test.mjs:23:10)
+    start (file:///D:/Code/AI/agentic_std_proccess/research_system/test/extensions.test.mjs:33:13)
+    TestContext.<anonymous> (file:///D:/Code/AI/agentic_std_proccess/research_system/test/extensions.test.mjs:157:36)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+  ...
+# Subtest: OpenAlex/DOI fixtures report bounded paging and reject redirects outside the route
+not ok 48 - OpenAlex/DOI fixtures report bounded paging and reject redirects outside the route
+  ---
+  duration_ms: 26.6815
+  type: 'test'
+  location: 'D:\\Code\\AI\\agentic_std_proccess\\research_system\\test\\extensions.test.mjs:167:1'
+  failureType: 'testCodeFailure'
+  error: 'Base Python binding changed'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    requireThat (file:///D:/Code/AI/agentic_std_proccess/research_system/src/util.mjs:21:25)
+    verifyExtensionEnvironment (file:///D:/Code/AI/agentic_std_proccess/research_system/src/extensions.mjs:30:32)
+    extensionDocuments (file:///D:/Code/AI/agentic_std_proccess/research_system/src/extensions.mjs:92:3)
+    normalizeConfig (file:///D:/Code/AI/agentic_std_proccess/research_system/src/config.mjs:47:22)
+    loadConfig (file:///D:/Code/AI/agentic_std_proccess/research_system/src/config.mjs:14:10)
+    fixture (file:///D:/Code/AI/agentic_std_proccess/research_system/test/helpers.mjs:19:18)
+    setup (file:///D:/Code/AI/agentic_std_proccess/research_system/test/extensions.test.mjs:23:10)
+    start (file:///D:/Code/AI/agentic_std_proccess/research_system/test/extensions.test.mjs:33:13)
+    TestContext.<anonymous> (file:///D:/Code/AI/agentic_std_proccess/research_system/test/extensions.test.mjs:168:36)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+  ...
+# Subtest: provider admission and cancellation retain accounting and fence unresolved extension jobs
+not ok 49 - provider admission and cancellation retain accounting and fence unresolved extension jobs
+  ---
+  duration_ms: 26.9678
+  type: 'test'
+  location: 'D:\\Code\\AI\\agentic_std_proccess\\research_system\\test\\extensions.test.mjs:175:1'
+  failureType: 'testCodeFailure'
+  error: 'Base Python binding changed'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    requireThat (file:///D:/Code/AI/agentic_std_proccess/research_system/src/util.mjs:21:25)
+    verifyExtensionEnvironment (file:///D:/Code/AI/agentic_std_proccess/research_system/src/extensions.mjs:30:32)
+    extensionDocuments (file:///D:/Code/AI/agentic_std_proccess/research_system/src/extensions.mjs:92:3)
+    normalizeConfig (file:///D:/Code/AI/agentic_std_proccess/research_system/src/config.mjs:47:22)
+    loadConfig (file:///D:/Code/AI/agentic_std_proccess/research_system/src/config.mjs:14:10)
+    fixture (file:///D:/Code/AI/agentic_std_proccess/research_system/test/helpers.mjs:19:18)
+    setup (file:///D:/Code/AI/agentic_std_proccess/research_system/test/extensions.test.mjs:23:10)
+    start (file:///D:/Code/AI/agentic_std_proccess/research_system/test/extensions.test.mjs:33:13)
+    TestContext.<anonymous> (file:///D:/Code/AI/agentic_std_proccess/research_system/test/extensions.test.mjs:176:30)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+  ...
+# Subtest: extension output publication uses the existing journal and detects post-call tampering
+not ok 50 - extension output publication uses the existing journal and detects post-call tampering
+  ---
+  duration_ms: 26.4654
+  type: 'test'
+  location: 'D:\\Code\\AI\\agentic_std_proccess\\research_system\\test\\extensions.test.mjs:184:1'
+  failureType: 'testCodeFailure'
+  error: 'Base Python binding changed'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    requireThat (file:///D:/Code/AI/agentic_std_proccess/research_system/src/util.mjs:21:25)
+    verifyExtensionEnvironment (file:///D:/Code/AI/agentic_std_proccess/research_system/src/extensions.mjs:30:32)
+    extensionDocuments (file:///D:/Code/AI/agentic_std_proccess/research_system/src/extensions.mjs:92:3)
+    normalizeConfig (file:///D:/Code/AI/agentic_std_proccess/research_system/src/config.mjs:47:22)
+    loadConfig (file:///D:/Code/AI/agentic_std_proccess/research_system/src/config.mjs:14:10)
+    fixture (file:///D:/Code/AI/agentic_std_proccess/research_system/test/helpers.mjs:19:18)
+    setup (file:///D:/Code/AI/agentic_std_proccess/research_system/test/extensions.test.mjs:23:10)
+    start (file:///D:/Code/AI/agentic_std_proccess/research_system/test/extensions.test.mjs:33:13)
+    TestContext.<anonymous> (file:///D:/Code/AI/agentic_std_proccess/research_system/test/extensions.test.mjs:185:47)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+  ...
+# Subtest: changed helper output cannot be published as the pinned result
+not ok 51 - changed helper output cannot be published as the pinned result
+  ---
+  duration_ms: 29.6865
+  type: 'test'
+  location: 'D:\\Code\\AI\\agentic_std_proccess\\research_system\\test\\extensions.test.mjs:195:1'
+  failureType: 'testCodeFailure'
+  error: 'Base Python binding changed'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    requireThat (file:///D:/Code/AI/agentic_std_proccess/research_system/src/util.mjs:21:25)
+    verifyExtensionEnvironment (file:///D:/Code/AI/agentic_std_proccess/research_system/src/extensions.mjs:30:32)
+    extensionDocuments (file:///D:/Code/AI/agentic_std_proccess/research_system/src/extensions.mjs:92:3)
+    normalizeConfig (file:///D:/Code/AI/agentic_std_proccess/research_system/src/config.mjs:47:22)
+    loadConfig (file:///D:/Code/AI/agentic_std_proccess/research_system/src/config.mjs:14:10)
+    fixture (file:///D:/Code/AI/agentic_std_proccess/research_system/test/helpers.mjs:19:18)
+    setup (file:///D:/Code/AI/agentic_std_proccess/research_system/test/extensions.test.mjs:23:10)
+    start (file:///D:/Code/AI/agentic_std_proccess/research_system/test/extensions.test.mjs:33:13)
+    TestContext.<anonymous> (file:///D:/Code/AI/agentic_std_proccess/research_system/test/extensions.test.mjs:196:36)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+  ...
+# Subtest: a helper spawn commit failure stops the known process and retains the failed call evidence
+not ok 52 - a helper spawn commit failure stops the known process and retains the failed call evidence
+  ---
+  duration_ms: 26.1242
+  type: 'test'
+  location: 'D:\\Code\\AI\\agentic_std_proccess\\research_system\\test\\extensions.test.mjs:204:1'
+  failureType: 'testCodeFailure'
+  error: 'Base Python binding changed'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    requireThat (file:///D:/Code/AI/agentic_std_proccess/research_system/src/util.mjs:21:25)
+    verifyExtensionEnvironment (file:///D:/Code/AI/agentic_std_proccess/research_system/src/extensions.mjs:30:32)
+    extensionDocuments (file:///D:/Code/AI/agentic_std_proccess/research_system/src/extensions.mjs:92:3)
+    normalizeConfig (file:///D:/Code/AI/agentic_std_proccess/research_system/src/config.mjs:47:22)
+    loadConfig (file:///D:/Code/AI/agentic_std_proccess/research_system/src/config.mjs:14:10)
+    fixture (file:///D:/Code/AI/agentic_std_proccess/research_system/test/helpers.mjs:19:18)
+    setup (file:///D:/Code/AI/agentic_std_proccess/research_system/test/extensions.test.mjs:23:10)
+    start (file:///D:/Code/AI/agentic_std_proccess/research_system/test/extensions.test.mjs:33:13)
+    TestContext.<anonymous> (file:///D:/Code/AI/agentic_std_proccess/research_system/test/extensions.test.mjs:205:36)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+  ...
+# Subtest: bounded retrieval records HTTP and malformed/oversized-response failures without live services
+not ok 53 - bounded retrieval records HTTP and malformed/oversized-response failures without live services
+  ---
+  duration_ms: 32.4306
+  type: 'test'
+  location: 'D:\\Code\\AI\\agentic_std_proccess\\research_system\\test\\extensions.test.mjs:221:1'
+  failureType: 'testCodeFailure'
+  error: 'Base Python binding changed'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    requireThat (file:///D:/Code/AI/agentic_std_proccess/research_system/src/util.mjs:21:25)
+    verifyExtensionEnvironment (file:///D:/Code/AI/agentic_std_proccess/research_system/src/extensions.mjs:30:32)
+    extensionDocuments (file:///D:/Code/AI/agentic_std_proccess/research_system/src/extensions.mjs:92:3)
+    normalizeConfig (file:///D:/Code/AI/agentic_std_proccess/research_system/src/config.mjs:47:22)
+    loadConfig (file:///D:/Code/AI/agentic_std_proccess/research_system/src/config.mjs:14:10)
+    fixture (file:///D:/Code/AI/agentic_std_proccess/research_system/test/helpers.mjs:19:18)
+    setup (file:///D:/Code/AI/agentic_std_proccess/research_system/test/extensions.test.mjs:23:10)
+    start (file:///D:/Code/AI/agentic_std_proccess/research_system/test/extensions.test.mjs:33:13)
+    TestContext.<anonymous> (file:///D:/Code/AI/agentic_std_proccess/research_system/test/extensions.test.mjs:222:30)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+  ...
+# Subtest: PDF reuse extracts page locators and renders the same source with the pinned existing renderer
+not ok 54 - PDF reuse extracts page locators and renders the same source with the pinned existing renderer
+  ---
+  duration_ms: 33.3139
+  type: 'test'
+  location: 'D:\\Code\\AI\\agentic_std_proccess\\research_system\\test\\extensions.test.mjs:245:1'
+  failureType: 'testCodeFailure'
+  error: 'Base Python binding changed'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    requireThat (file:///D:/Code/AI/agentic_std_proccess/research_system/src/util.mjs:21:25)
+    verifyExtensionEnvironment (file:///D:/Code/AI/agentic_std_proccess/research_system/src/extensions.mjs:30:32)
+    extensionDocuments (file:///D:/Code/AI/agentic_std_proccess/research_system/src/extensions.mjs:92:3)
+    normalizeConfig (file:///D:/Code/AI/agentic_std_proccess/research_system/src/config.mjs:47:22)
+    loadConfig (file:///D:/Code/AI/agentic_std_proccess/research_system/src/config.mjs:14:10)
+    fixture (file:///D:/Code/AI/agentic_std_proccess/research_system/test/helpers.mjs:19:18)
+    setup (file:///D:/Code/AI/agentic_std_proccess/research_system/test/extensions.test.mjs:23:10)
+    start (file:///D:/Code/AI/agentic_std_proccess/research_system/test/extensions.test.mjs:33:13)
+    TestContext.<anonymous> (file:///D:/Code/AI/agentic_std_proccess/research_system/test/extensions.test.mjs:246:36)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+  ...
+# Subtest: terminal job observation is required to reconcile a lost extension reply
+ok 55 - terminal job observation is required to reconcile a lost extension reply
+  ---
+  duration_ms: 48.5035
+  type: 'test'
+  ...
+# Subtest: session accounting subtracts baseline, deduplicates scoped events and rejects silent resets/overlap
+ok 56 - session accounting subtracts baseline, deduplicates scoped events and rejects silent resets/overlap
+  ---
+  duration_ms: 66.9761
+  type: 'test'
+  ...
+# Subtest: bundle cache rechecks identity, rejects changed reads and stays bounded
+ok 57 - bundle cache rechecks identity, rejects changed reads and stays bounded
+  ---
+  duration_ms: 39.8496
+  type: 'test'
+  ...
+# Subtest: native ranged reads preserve exact bytes and explicit baselines without loading an oversized file
+ok 58 - native ranged reads preserve exact bytes and explicit baselines without loading an oversized file
+  ---
+  duration_ms: 63.2835
+  type: 'test'
+  ...
+# Subtest: native exhausted percentages block admission without converting percent to token counts
+ok 59 - native exhausted percentages block admission without converting percent to token counts
+  ---
+  duration_ms: 46.0384
+  type: 'test'
+  ...
+# Subtest: unknown recovered output requires owner and descendant evidence and does not settle during reconciliation
+ok 60 - unknown recovered output requires owner and descendant evidence and does not settle during reconciliation
+  ---
+  duration_ms: 56.9574
+  type: 'test'
+  ...
+# Subtest: GUI migration backs up v4, preserves history and blocks old writers and downgrade
+ok 61 - GUI migration backs up v4, preserves history and blocks old writers and downgrade
+  ---
+  duration_ms: 75.0354
+  type: 'test'
+  ...
+# Subtest: migration refuses active work; attachments fence projects, detach and stale owners
+ok 62 - migration refuses active work; attachments fence projects, detach and stale owners
+  ---
+  duration_ms: 132.5053
+  type: 'test'
+  ...
+# Subtest: config preview/apply/CAS/rollback are atomic, versioned and idle attachment never blocks
+ok 63 - config preview/apply/CAS/rollback are atomic, versioned and idle attachment never blocks
+  ---
+  duration_ms: 94.1928
+  type: 'test'
+  ...
+# Subtest: protected change requires exact human path; active work defers normal change and preserves frozen config
+ok 64 - protected change requires exact human path; active work defers normal change and preserves frozen config
+  ---
+  duration_ms: 94.2074
+  type: 'test'
+  ...
+# Subtest: native observed work is idempotent, model checked, descendants required and completion validates core result
+ok 65 - native observed work is idempotent, model checked, descendants required and completion validates core result
+  ---
+  duration_ms: 97.2158
+  type: 'test'
+  ...
+# Subtest: project entries coexist across three hosts, reject modifications and uninstall preserves state
+ok 66 - project entries coexist across three hosts, reject modifications and uninstall preserves state
+  ---
+  duration_ms: 168.8029
+  type: 'test'
+  ...
+# Subtest: managed GUI operation survives caller return; replay never submits a second worker
+ok 67 - managed GUI operation survives caller return; replay never submits a second worker
+  ---
+  duration_ms: 590.2723
+  type: 'test'
+  ...
+# Subtest: submit intents defer changes until explicit launcher reconciliation; uncertain attempts cannot be erased
+ok 68 - submit intents defer changes until explicit launcher reconciliation; uncertain attempts cannot be erased
+  ---
+  duration_ms: 105.153
+  type: 'test'
+  ...
+# Subtest: native mode conflicts, cancellation and terminal replay preserve control and reservations
+ok 69 - native mode conflicts, cancellation and terminal replay preserve control and reservations
+  ---
+  duration_ms: 224.3313
+  type: 'test'
+  ...
+# Subtest: bounded reads, response references, strict catalog and redacted error logs
+ok 70 - bounded reads, response references, strict catalog and redacted error logs
+  ---
+  duration_ms: 85.912
+  type: 'test'
+  ...
+# Subtest: transaction authorization is rechecked after an async owner takeover
+ok 71 - transaction authorization is rechecked after an async owner takeover
+  ---
+  duration_ms: 53.938
+  type: 'test'
+  ...
+# Subtest: config and immutable overlay activate together; tampering cannot leave partial activation
+ok 72 - config and immutable overlay activate together; tampering cannot leave partial activation
+  ---
+  duration_ms: 142.9299
+  type: 'test'
+  ...
+# Subtest: GUI evidence boundaries, bounded response and unknown inventory survive restart
+ok 73 - GUI evidence boundaries, bounded response and unknown inventory survive restart
+  ---
+  duration_ms: 152.4196
+  type: 'test'
+  ...
+# Subtest: feedback leads to immutable project overlays with an actual rollback path
+ok 74 - feedback leads to immutable project overlays with an actual rollback path
+  ---
+  duration_ms: 88.8015
+  type: 'test'
+  ...
+# Subtest: improvements require checked evidence, valid targets and current ownership
+ok 75 - improvements require checked evidence, valid targets and current ownership
+  ---
+  duration_ms: 76.8917
+  type: 'test'
+  ...
+# Subtest: active work fences bundle activation and immutable overlay tampering is detected
+ok 76 - active work fences bundle activation and immutable overlay tampering is detected
+  ---
+  duration_ms: 100.1021
+  type: 'test'
+  ...
+# Subtest: checkpoint policy fingerprints reject a changed overlay and accept explicit rollback
+ok 77 - checkpoint policy fingerprints reject a changed overlay and accept explicit rollback
+  ---
+  duration_ms: 101.2899
+  type: 'test'
+  ...
+# Subtest: a fresh improvement version can be activated and rolled back without losing prior versions
+ok 78 - a fresh improvement version can be activated and rolled back without losing prior versions
+  ---
+  duration_ms: 119.3945
+  type: 'test'
+  ...
+# Subtest: inspect reads live WAL state without changing logical payload, schema or config
+ok 79 - inspect reads live WAL state without changing logical payload, schema or config
+  ---
+  duration_ms: 60.9148
+  type: 'test'
+  ...
+# Subtest: candidate drift and malformed config preserve registered snapshot; workspace rescue works
+ok 80 - candidate drift and malformed config preserve registered snapshot; workspace rescue works
+  ---
+  duration_ms: 113.4659
+  type: 'test'
+  ...
+# Subtest: uninitialized valid candidate does not initialize state; corrupt DB is a partial error
+ok 81 - uninitialized valid candidate does not initialize state; corrupt DB is a partial error
+  ---
+  duration_ms: 72.0855
+  type: 'test'
+  ...
+# Subtest: native inventory is historical, scope bound, and distinct from skill allowlists
+ok 82 - native inventory is historical, scope bound, and distinct from skill allowlists
+  ---
+  duration_ms: 77.6136
+  type: 'test'
+  ...
+# Subtest: report redacts credentials and escapes terminal control input before both renderers
+ok 83 - report redacts credentials and escapes terminal control input before both renderers
+  ---
+  duration_ms: 0.3838
+  type: 'test'
+  ...
+# Subtest: paging is explicit; full and filtered reports remain available without native calls
+ok 84 - paging is explicit; full and filtered reports remain available without native calls
+  ---
+  duration_ms: 61.5147
+  type: 'test'
+  ...
+# Subtest: CLI emits machine-readable JSON, correct exit codes and no initialization side effects
+ok 85 - CLI emits machine-readable JSON, correct exit codes and no initialization side effects
+  ---
+  duration_ms: 479.8474
+  type: 'test'
+  ...
+# Subtest: legacy state can be read without migration; unsupported version is clearly partial
+ok 86 - legacy state can be read without migration; unsupported version is clearly partial
+  ---
+  duration_ms: 71.9453
+  type: 'test'
+  ...
+# Subtest: the three requested Codex task classes resolve the exact model and effort pair
+ok 87 - the three requested Codex task classes resolve the exact model and effort pair
+  ---
+  duration_ms: 37.8293
+  type: 'test'
+  ...
+# Subtest: orchestration defaults to analysis while a separate scientific advisor uses the highest tier
+ok 88 - orchestration defaults to analysis while a separate scientific advisor uses the highest tier
+  ---
+  duration_ms: 28.3168
+  type: 'test'
+  ...
+# Subtest: all shipped model-policy presets and the headless coordinator example default to analysis
+ok 89 - all shipped model-policy presets and the headless coordinator example default to analysis
+  ---
+  duration_ms: 6.4281
+  type: 'test'
+  ...
+# Subtest: explicit orchestrator selections retain precedence without changing worker or advisor policy
+ok 90 - explicit orchestrator selections retain precedence without changing worker or advisor policy
+  ---
+  duration_ms: 27.3637
+  type: 'test'
+  ...
+# Subtest: Codex invocation passes effort as a real configuration argument rather than prompt text
+ok 91 - Codex invocation passes effort as a real configuration argument rather than prompt text
+  ---
+  duration_ms: 31.0282
+  type: 'test'
+  ...
+# Subtest: scoped class/tier overrides replace a resolved pair without mutating the original task
+ok 92 - scoped class/tier overrides replace a resolved pair without mutating the original task
+  ---
+  duration_ms: 43.0495
+  type: 'test'
+  ...
+# Subtest: explicit model/effort overrides have visible provenance and do not retain a misleading tier label
+ok 93 - explicit model/effort overrides have visible provenance and do not retain a misleading tier label
+  ---
+  duration_ms: 41.5102
+  type: 'test'
+  ...
+# Subtest: unconfigured provider tiers cannot silently borrow the Codex tier model or effort
+ok 94 - unconfigured provider tiers cannot silently borrow the Codex tier model or effort
+  ---
+  duration_ms: 37.76
+  type: 'test'
+  ...
+# Subtest: automation defaults across backends to Gemini Flash High without changing explicit or frozen selections
+ok 95 - automation defaults across backends to Gemini Flash High without changing explicit or frozen selections
+  ---
+  duration_ms: 37.9964
+  type: 'test'
+  ...
+# Subtest: Antigravity automation transmits High effort and large prompts through stdin without Codex flags
+ok 96 - Antigravity automation transmits High effort and large prompts through stdin without Codex flags
+  ---
+  duration_ms: 25.9901
+  type: 'test'
+  ...
+# Subtest: fallback keeps the requested tier and rebinds only through a configured target family
+ok 97 - fallback keeps the requested tier and rebinds only through a configured target family
+  ---
+  duration_ms: 30.5544
+  type: 'test'
+  ...
+# Subtest: attempt snapshots retain model/tier/effort without changing permission, budget or quota identity
+ok 98 - attempt snapshots retain model/tier/effort without changing permission, budget or quota identity
+  ---
+  duration_ms: 51.0972
+  type: 'test'
+  ...
+# Subtest: command adapters require explicit model/effort templates and never silently drop routed settings
+ok 99 - command adapters require explicit model/effort templates and never silently drop routed settings
+  ---
+  duration_ms: 33.3833
+  type: 'test'
+  ...
+# Subtest: legacy configs without a policy preserve explicit model selection
+ok 100 - legacy configs without a policy preserve explicit model selection
+  ---
+  duration_ms: 34.2961
+  type: 'test'
+  ...
+# Subtest: CLI model preview is read-only and allows the three classes without running a model
+ok 101 - CLI model preview is read-only and allows the three classes without running a model
+  ---
+  duration_ms: 40.5603
+  type: 'test'
+  ...
+# Subtest: historical estimates keep Sol High and Sol Medium samples separate
+ok 102 - historical estimates keep Sol High and Sol Medium samples separate
+  ---
+  duration_ms: 39.9349
+  type: 'test'
+  ...
+# Subtest: native bridge keeps the control store outside an isolated execution root
+ok 103 - native bridge keeps the control store outside an isolated execution root
+  ---
+  duration_ms: 464.1381
+  type: 'test'
+  ...
+# Subtest: native history collection requires the exact terminal turn and never starts inference or trusts model counters
+ok 104 - native history collection requires the exact terminal turn and never starts inference or trusts model counters
+  ---
+  duration_ms: 232.382
+  type: 'test'
+  ...
+# Subtest: native quota reads select the explicit limit and preserve percentages separately from tokens
+ok 105 - native quota reads select the explicit limit and preserve percentages separately from tokens
+  ---
+  duration_ms: 118.5648
+  type: 'test'
+  ...
+# Subtest: native RPC correlates replies, bounds frames and rejects pending calls on transport loss
+ok 106 - native RPC correlates replies, bounds frames and rejects pending calls on transport loss
+  ---
+  duration_ms: 1.2562
+  type: 'test'
+  ...
+# Subtest: native launch pin and per-thread config preserve model, effort, permissions and delegation boundary
+ok 107 - native launch pin and per-thread config preserve model, effort, permissions and delegation boundary
+  ---
+  duration_ms: 99.2892
+  type: 'test'
+  ...
+# Subtest: native process fixture finishes with pinned receipt and authoritative usage instead of model self-report
+ok 108 - native process fixture finishes with pinned receipt and authoritative usage instead of model self-report
+  ---
+  duration_ms: 384.1012
+  type: 'test'
+  ...
+# Subtest: Codex orchestrator dispatches a separately budgeted worker through core tools
+ok 109 - Codex orchestrator dispatches a separately budgeted worker through core tools
+  ---
+  duration_ms: 473.7362
+  type: 'test'
+  ...
+# Subtest: native input persists across CLI reads, validates answers and never becomes project approval
+ok 110 - native input persists across CLI reads, validates answers and never becomes project approval
+  ---
+  duration_ms: 357.5202
+  type: 'test'
+  ...
+# Subtest: native steer ACK is distinct from application; cancel conservatively retains unknown descendants
+ok 111 - native steer ACK is distinct from application; cancel conservatively retains unknown descendants
+  ---
+  duration_ms: 427.5367
+  type: 'test'
+  ...
+# Subtest: old orchestration owner cannot register or launch work after takeover
+ok 112 - old orchestration owner cannot register or launch work after takeover
+  ---
+  duration_ms: 29.791
+  type: 'test'
+  ...
+# Subtest: native workers can checkpoint but cannot dispatch another worker
+ok 113 - native workers can checkpoint but cannot dispatch another worker
+  ---
+  duration_ms: 41.1304
+  type: 'test'
+  ...
+# Subtest: native acceptance grader checks the oracle and current primary evidence without a model
+ok 114 - native acceptance grader checks the oracle and current primary evidence without a model
+  ---
+  duration_ms: 134.5933
+  type: 'test'
+  ...
+# Subtest: lost turn submission reply remains unknown and retains reservation without automatic retry
+ok 115 - lost turn submission reply remains unknown and retains reservation without automatic retry
+  ---
+  duration_ms: 1330.247
+  type: 'test'
+  ...
+# Subtest: native writable permissions cannot bypass shared workspace writer admission
+ok 116 - native writable permissions cannot bypass shared workspace writer admission
+  ---
+  duration_ms: 19.6024
+  type: 'test'
+  ...
+# Subtest: native inspection is read-only and cannot infer that unknown side effects stopped
+ok 117 - native inspection is read-only and cannot infer that unknown side effects stopped
+  ---
+  duration_ms: 206.5493
+  type: 'test'
+  ...
+# Subtest: control polling no longer rewrites heartbeat state on every tick
+ok 118 - control polling no longer rewrites heartbeat state on every tick
+  ---
+  duration_ms: 764.3529
+  type: 'test'
+  ...
+# Subtest: orchestrator frontier can select completed history explicitly without loading unrelated tasks
+ok 119 - orchestrator frontier can select completed history explicitly without loading unrelated tasks
+  ---
+  duration_ms: 36.5152
+  type: 'test'
+  ...
+# Subtest: native acceptance preparation is pending, source-pinned, cost-explicit and cannot dispatch before human confirmation
+ok 120 - native acceptance preparation is pending, source-pinned, cost-explicit and cannot dispatch before human confirmation
+  ---
+  duration_ms: 138.2096
+  type: 'test'
+  ...
+# Subtest: review reopening preserves completed units, revisions, budgets and historical attempts
+ok 121 - review reopening preserves completed units, revisions, budgets and historical attempts
+  ---
+  duration_ms: 58.2384
+  type: 'test'
+  ...
+# Subtest: a revised upstream can be followed by explicit review of an unchanged queued dependent
+ok 122 - a revised upstream can be followed by explicit review of an unchanged queued dependent
+  ---
+  duration_ms: 58.9938
+  type: 'test'
+  ...
+# Subtest: reopening refuses unresolved external jobs and never resets an exhausted attempt budget
+ok 123 - reopening refuses unresolved external jobs and never resets an exhausted attempt budget
+  ---
+  duration_ms: 43.2886
+  type: 'test'
+  ...
+# Subtest: non-resource errors between units propagate instead of becoming capacity errors
+ok 124 - non-resource errors between units propagate instead of becoming capacity errors
+  ---
+  duration_ms: 423.0697
+  type: 'test'
+  ...
+# Subtest: later units may update a public output while historical output snapshots remain checked
+ok 125 - later units may update a public output while historical output snapshots remain checked
+  ---
+  duration_ms: 102.9939
+  type: 'test'
+  ...
+# Subtest: tampering with the latest public output invalidates a task despite intact snapshots
+ok 126 - tampering with the latest public output invalidates a task despite intact snapshots
+  ---
+  duration_ms: 58.8198
+  type: 'test'
+  ...
+# Subtest: missing task-level output is rejected before final publication and settles the exited mock
+ok 127 - missing task-level output is rejected before final publication and settles the exited mock
+  ---
+  duration_ms: 404.1607
+  type: 'test'
+  ...
+# Subtest: a finish transaction exception is caught after root exit and does not crash or leak mock reservations
+ok 128 - a finish transaction exception is caught after root exit and does not crash or leak mock reservations
+  ---
+  duration_ms: 401.2042
+  type: 'test'
+  ...
+# Subtest: finalization errors retain unknown descendant reservations for an unverified command
+ok 129 - finalization errors retain unknown descendant reservations for an unverified command
+  ---
+  duration_ms: 114.9832
+  type: 'test'
+  ...
+# Subtest: pause/resume retains a declined decision until explicit replacement approval
+ok 130 - pause/resume retains a declined decision until explicit replacement approval
+  ---
+  duration_ms: 31.4119
+  type: 'test'
+  ...
+# Subtest: pause/resume preserves pending decisions, yielded work and waiting capacity
+ok 131 - pause/resume preserves pending decisions, yielded work and waiting capacity
+  ---
+  duration_ms: 39.1494
+  type: 'test'
+  ...
+# Subtest: a paused manual handoff resumes without a second attempt or loss of reservation
+ok 132 - a paused manual handoff resumes without a second attempt or loss of reservation
+  ---
+  duration_ms: 40.1701
+  type: 'test'
+  ...
+# Subtest: pause at a multi-unit boundary resumes the next unit instead of restoring a dead running state
+ok 133 - pause at a multi-unit boundary resumes the next unit instead of restoring a dead running state
+  ---
+  duration_ms: 773.7234
+  type: 'test'
+  ...
+# Subtest: branch selection keeps primary counterevidence/reviews without expanding sibling hypotheses
+ok 134 - branch selection keeps primary counterevidence/reviews without expanding sibling hypotheses
+  ---
+  duration_ms: 70.0737
+  type: 'test'
+  ...
+# Subtest: failed/cancelled/unknown attempts cannot publish new checkpoints
+ok 135 - failed/cancelled/unknown attempts cannot publish new checkpoints
+  ---
+  duration_ms: 97.1243
+  type: 'test'
+  ...
+# Subtest: final boundary checkpoints derive from validated results and cannot be rewritten by workers
+ok 136 - final boundary checkpoints derive from validated results and cannot be rewritten by workers
+  ---
+  duration_ms: 44.7396
+  type: 'test'
+  ...
+# Subtest: default single-unit estimates retain checkpoint headroom and request yielding on exhaustion
+ok 137 - default single-unit estimates retain checkpoint headroom and request yielding on exhaustion
+  ---
+  duration_ms: 40.3608
+  type: 'test'
+  ...
+# Subtest: backoff tracks a consecutive streak separately and resets after valid recovery signals
+ok 138 - backoff tracks a consecutive streak separately and resets after valid recovery signals
+  ---
+  duration_ms: 60.4087
+  type: 'test'
+  ...
+# Subtest: invalid multi-file overlay leaves no orphan and its change ID can be used after correction
+ok 139 - invalid multi-file overlay leaves no orphan and its change ID can be used after correction
+  ---
+  duration_ms: 86.7231
+  type: 'test'
+  ...
+# Subtest: overlay IO rollback cleans only a directory created by that invocation
+ok 140 - overlay IO rollback cleans only a directory created by that invocation
+  ---
+  duration_ms: 49.97
+  type: 'test'
+  ...
+# Subtest: dictionary keys do not satisfy absent dependencies, roles, backends or skills by inheritance
+ok 141 - dictionary keys do not satisfy absent dependencies, roles, backends or skills by inheritance
+  ---
+  duration_ms: 32.8291
+  type: 'test'
+  ...
+# Subtest: Windows preflight rejects shims/oversized argv without shell expansion or truncation
+ok 142 - Windows preflight rejects shims/oversized argv without shell expansion or truncation
+  ---
+  duration_ms: 0.3744
+  type: 'test'
+  ...
+# Subtest: native final messages accept a single JSON fence while prose, multiple fences and script transport remain strict
+ok 143 - native final messages accept a single JSON fence while prose, multiple fences and script transport remain strict
+  ---
+  duration_ms: 0.5981
+  type: 'test'
+  ...
+# Subtest: capabilities distinguish boundary checkpoints from mock-only midrun control
+ok 144 - capabilities distinguish boundary checkpoints from mock-only midrun control
+  ---
+  duration_ms: 0.0961
+  type: 'test'
+  ...
+# Subtest: only declared writable outputs may use harness-pinned hashes; evidence and historical inputs stay strict
+ok 145 - only declared writable outputs may use harness-pinned hashes; evidence and historical inputs stay strict
+  ---
+  duration_ms: 51.2604
+  type: 'test'
+  ...
+# Subtest: new declared outputs can be pinned and snapshot by the harness without an LLM copying hashes
+ok 146 - new declared outputs can be pinned and snapshot by the harness without an LLM copying hashes
+  ---
+  duration_ms: 54.3304
+  type: 'test'
+  ...
+# Subtest: CLI exposes review reopening without changing the task revision
+ok 147 - CLI exposes review reopening without changing the task revision
+  ---
+  duration_ms: 46.1241
+  type: 'test'
+  ...
+# Subtest: planning tolerates second precision only within the attempt start second
+ok 148 - planning tolerates second precision only within the attempt start second
+  ---
+  duration_ms: 47.4583
+  type: 'test'
+  ...
+# Subtest: replacement approval resolves an explicit chain of declined decisions
+ok 149 - replacement approval resolves an explicit chain of declined decisions
+  ---
+  duration_ms: 30.0943
+  type: 'test'
+  ...
+# Subtest: a final unit cannot silently modify a previous output without declaring its new version
+ok 150 - a final unit cannot silently modify a previous output without declaring its new version
+  ---
+  duration_ms: 54.8766
+  type: 'test'
+  ...
+# Subtest: selective reruns publish the newest output even when earlier independent units run again
+ok 151 - selective reruns publish the newest output even when earlier independent units run again
+  ---
+  duration_ms: 110.8145
+  type: 'test'
+  ...
+# Subtest: CLI manual import publishes a derived final checkpoint
+ok 152 - CLI manual import publishes a derived final checkpoint
+  ---
+  duration_ms: 62.9454
+  type: 'test'
+  ...
+# Subtest: inconclusive work can report missing promised outputs without becoming a transport failure
+ok 153 - inconclusive work can report missing promised outputs without becoming a transport failure
+  ---
+  duration_ms: 24.7924
+  type: 'test'
+  ...
+# Subtest: a close-time exception before job mapping still records root exit and a durable termination receipt
+ok 154 - a close-time exception before job mapping still records root exit and a durable termination receipt
+  ---
+  duration_ms: 388.1057
+  type: 'test'
+  ...
+# Subtest: planning context requires independent research and completed plans need a review record
+ok 155 - planning context requires independent research and completed plans need a review record
+  ---
+  duration_ms: 65.3202
+  type: 'test'
+  ...
+# Subtest: a researcher advisor returns an audited plan before an analysis coordinator can execute it
+ok 156 - a researcher advisor returns an audited plan before an analysis coordinator can execute it
+  ---
+  duration_ms: 137.0506
+  type: 'test'
+  ...
+# Subtest: planning cannot relabel an analysis summary as independently verified primary evidence
+ok 157 - planning cannot relabel an analysis summary as independently verified primary evidence
+  ---
+  duration_ms: 66.0355
+  type: 'test'
+  ...
+# Subtest: planning research must be recorded afresh for this attempt and blocking questions remain open
+ok 158 - planning research must be recorded afresh for this attempt and blocking questions remain open
+  ---
+  duration_ms: 62.2456
+  type: 'test'
+  ...
+# Subtest: planning sources outside declared inputs remain tracked after result publication
+ok 159 - planning sources outside declared inputs remain tracked after result publication
+  ---
+  duration_ms: 117.6731
+  type: 'test'
+  ...
+# Subtest: a multi-unit task checkpoints each unit and only completes after all units pass
+ok 160 - a multi-unit task checkpoints each unit and only completes after all units pass
+  ---
+  duration_ms: 948.4248
+  type: 'test'
+  ...
+# Subtest: project reserves prevent a new unit before worker launch
+ok 161 - project reserves prevent a new unit before worker launch
+  ---
+  duration_ms: 39.2228
+  type: 'test'
+  ...
+# Subtest: shared-pool reservations reject over-allocation across different agent names
+ok 162 - shared-pool reservations reject over-allocation across different agent names
+  ---
+  duration_ms: 30.9813
+  type: 'test'
+  ...
+# Subtest: unknown/stale pool telemetry follows configured admission policy
+ok 163 - unknown/stale pool telemetry follows configured admission policy
+  ---
+  duration_ms: 30.4221
+  type: 'test'
+  ...
+# Subtest: context admission accounts for next-step growth and checkpoint reserve
+ok 164 - context admission accounts for next-step growth and checkpoint reserve
+  ---
+  duration_ms: 39.8624
+  type: 'test'
+  ...
+# Subtest: A to B fallback keeps completed units and skips B if it shares the exhausted pool
+ok 165 - A to B fallback keeps completed units and skips B if it shares the exhausted pool
+  ---
+  duration_ms: 747.708
+  type: 'test'
+  ...
+# Subtest: handoff remains possible without a final answer from A
+ok 166 - handoff remains possible without a final answer from A
+  ---
+  duration_ms: 240.2089
+  type: 'test'
+  ...
+# Subtest: checkpoint publication failure does not select an orphan manifest
+ok 167 - checkpoint publication failure does not select an orphan manifest
+  ---
+  duration_ms: 38.23
+  type: 'test'
+  ...
+# Subtest: a corrupted latest checkpoint falls back to the prior durable manifest
+ok 168 - a corrupted latest checkpoint falls back to the prior durable manifest
+  ---
+  duration_ms: 57.8613
+  type: 'test'
+  ...
+# Subtest: changed checkpoint artifacts prevent blind reuse
+ok 169 - changed checkpoint artifacts prevent blind reuse
+  ---
+  duration_ms: 44.729
+  type: 'test'
+  ...
+# Subtest: stale worker generation cannot publish a checkpoint after takeover
+ok 170 - stale worker generation cannot publish a checkpoint after takeover
+  ---
+  duration_ms: 54.425
+  type: 'test'
+  ...
+# Subtest: pause between recovery preparation and dispatch wins over fallback
+ok 171 - pause between recovery preparation and dispatch wins over fallback
+  ---
+  duration_ms: 41.6204
+  type: 'test'
+  ...
+# Subtest: lease expiry marks unknown but does not authorize a second writer
+ok 172 - lease expiry marks unknown but does not authorize a second writer
+  ---
+  duration_ms: 30.2713
+  type: 'test'
+  ...
+# Subtest: running external jobs survive worker exit and are never relaunched by recovery
+ok 173 - running external jobs survive worker exit and are never relaunched by recovery
+  ---
+  duration_ms: 41.8569
+  type: 'test'
+  ...
+# Subtest: telemetry cumulative snapshots replace totals and never double-count on final settlement
+ok 174 - telemetry cumulative snapshots replace totals and never double-count on final settlement
+  ---
+  duration_ms: 33.418
+  type: 'test'
+  ...
+# Subtest: low predicted headroom requests yielding before a hard cutoff
+ok 175 - low predicted headroom requests yielding before a hard cutoff
+  ---
+  duration_ms: 40.8416
+  type: 'test'
+  ...
+# Subtest: cooperative yielding produces a durable checkpoint without marking the unit done
+ok 176 - cooperative yielding produces a durable checkpoint without marking the unit done
+  ---
+  duration_ms: 217.9511
+  type: 'test'
+  ...
+# Subtest: explicit migration preserves v1 history after unfinished attempts are resolved
+ok 177 - explicit migration preserves v1 history after unfinished attempts are resolved
+  ---
+  duration_ms: 51.3638
+  type: 'test'
+  ...
+# Subtest: retry and transfer counters prevent an unbounded fallback loop
+ok 178 - retry and transfer counters prevent an unbounded fallback loop
+  ---
+  duration_ms: 26.8986
+  type: 'test'
+  ...
+# Subtest: capability/auth failures are not retried by treating stderr as quota evidence
+ok 179 - capability/auth failures are not retried by treating stderr as quota evidence
+  ---
+  duration_ms: 0.1208
+  type: 'test'
+  ...
+# Subtest: historical quantiles are used only after enough matching labeled samples
+ok 180 - historical quantiles are used only after enough matching labeled samples
+  ---
+  duration_ms: 53.9569
+  type: 'test'
+  ...
+# Subtest: no-progress recovery stops even when worker names and checkpoint IDs change
+ok 181 - no-progress recovery stops even when worker names and checkpoint IDs change
+  ---
+  duration_ms: 72.0152
+  type: 'test'
+  ...
+# Subtest: a low-resource update cannot override the user cancellation barrier
+ok 182 - a low-resource update cannot override the user cancellation barrier
+  ---
+  duration_ms: 28.6974
+  type: 'test'
+  ...
+# Subtest: project stop includes remote jobs whose agent already completed
+ok 183 - project stop includes remote jobs whose agent already completed
+  ---
+  duration_ms: 31.7392
+  type: 'test'
+  ...
+# Subtest: same-pool recovery becomes eligible after cooldown and a fresh capacity observation
+ok 184 - same-pool recovery becomes eligible after cooldown and a fresh capacity observation
+  ---
+  duration_ms: 31.8356
+  type: 'test'
+  ...
+# Subtest: paper/proof output and scoped profile overrides are independent of role/backend
+ok 185 - paper/proof output and scoped profile overrides are independent of role/backend
+  ---
+  duration_ms: 43.9292
+  type: 'test'
+  ...
+# Subtest: C1: observations keep historical subjects while a hypothesis evolves
+ok 186 - C1: observations keep historical subjects while a hypothesis evolves
+  ---
+  duration_ms: 52.7635
+  type: 'test'
+  ...
+# Subtest: dependency changes invalidate derived claims transitively without deleting history
+ok 187 - dependency changes invalidate derived claims transitively without deleting history
+  ---
+  duration_ms: 40.281
+  type: 'test'
+  ...
+# Subtest: record revisions and owner fences prevent overwrites and stale-worker publication
+ok 188 - record revisions and owner fences prevent overwrites and stale-worker publication
+  ---
+  duration_ms: 40.9418
+  type: 'test'
+  ...
+# Subtest: support and novelty cannot be promoted without matching explicit evidence
+ok 189 - support and novelty cannot be promoted without matching explicit evidence
+  ---
+  duration_ms: 31.0568
+  type: 'test'
+  ...
+# Subtest: C2: numerical checks and open obligations cannot be labelled as verified proof
+ok 190 - C2: numerical checks and open obligations cannot be labelled as verified proof
+  ---
+  duration_ms: 48.0729
+  type: 'test'
+  ...
+# Subtest: C3: confirmatory plans need predictions and failed runs are not scientific counterevidence
+ok 191 - C3: confirmatory plans need predictions and failed runs are not scientific counterevidence
+  ---
+  duration_ms: 48.569
+  type: 'test'
+  ...
+# Subtest: contrary evidence is retained and conflicts require a recorded review
+ok 192 - contrary evidence is retained and conflicts require a recorded review
+  ---
+  duration_ms: 72.5187
+  type: 'test'
+  ...
+# Subtest: changed artifacts and task revisions make research require review
+ok 193 - changed artifacts and task revisions make research require review
+  ---
+  duration_ms: 78.2823
+  type: 'test'
+  ...
+# Subtest: targeted context includes reverse counterevidence and cannot silently truncate it
+ok 194 - targeted context includes reverse counterevidence and cannot silently truncate it
+  ---
+  duration_ms: 39.8756
+  type: 'test'
+  ...
+# Subtest: small citation tasks do not load discovery references or create extra workers
+ok 195 - small citation tasks do not load discovery references or create extra workers
+  ---
+  duration_ms: 32.5834
+  type: 'test'
+  ...
+# Subtest: C4: checkpoint and handoff preserve pinned obligations through takeover and pause
+ok 196 - C4: checkpoint and handoff preserve pinned obligations through takeover and pause
+  ---
+  duration_ms: 70.2334
+  type: 'test'
+  ...
+# Subtest: research namespace stays additive and export works through the v4 CLI
+ok 197 - research namespace stays additive and export works through the v4 CLI
+  ---
+  duration_ms: 86.9831
+  type: 'test'
+  ...
+# Subtest: declared inputs and upstream task revisions invalidate research even if raw outputs remain unchanged
+ok 198 - declared inputs and upstream task revisions invalidate research even if raw outputs remain unchanged
+  ---
+  duration_ms: 61.1519
+  type: 'test'
+  ...
+# Subtest: unknown workers cannot publish and snapshots detect corrupted pinned records
+ok 199 - unknown workers cannot publish and snapshots detect corrupted pinned records
+  ---
+  duration_ms: 36.3572
+  type: 'test'
+  ...
+# Subtest: historical subject references cannot bypass evidence dependency invalidation
+ok 200 - historical subject references cannot bypass evidence dependency invalidation
+  ---
+  duration_ms: 44.9791
+  type: 'test'
+  ...
+# Subtest: real fixture process records result, logs, context and configuration snapshot
+ok 201 - real fixture process records result, logs, context and configuration snapshot
+  ---
+  duration_ms: 439.1468
+  type: 'test'
+  ...
+# Subtest: missing, malformed and failed-check outputs do not pass on exit code zero
+ok 202 - missing, malformed and failed-check outputs do not pass on exit code zero
+  ---
+  duration_ms: 536.7734
+  type: 'test'
+  ...
+# Subtest: cancel a running branch without stopping an independent branch
+ok 203 - cancel a running branch without stopping an independent branch
+  ---
+  duration_ms: 861.6232
+  type: 'test'
+  ...
+# Subtest: pause reaches task checkpoint and resume uses saved result without rerun
+ok 204 - pause reaches task checkpoint and resume uses saved result without rerun
+  ---
+  duration_ms: 404.0046
+  type: 'test'
+  ...
+# Subtest: status and steer preserve original objective, steer acknowledgement is distinct
+ok 205 - status and steer preserve original objective, steer acknowledgement is distinct
+  ---
+  duration_ms: 642.2088
+  type: 'test'
+  ...
+# Subtest: timeout requests cancellation and does not report success
+ok 206 - timeout requests cancellation and does not report success
+  ---
+  duration_ms: 188.9415
+  type: 'test'
+  ...
+# Subtest: a second CLI process can cancel while the runner is occupied
+ok 207 - a second CLI process can cancel while the runner is occupied
+  ---
+  duration_ms: 471.2369
+  type: 'test'
+  ...
+# Subtest: prepare-task and default run-task do not dispatch
+ok 208 - prepare-task and default run-task do not dispatch
+  ---
+  duration_ms: 39.4902
+  type: 'test'
+  ...
+# Subtest: one-shot adapters do not claim native steer/resume; commands bypass the shell
+ok 209 - one-shot adapters do not claim native steer/resume; commands bypass the shell
+  ---
+  duration_ms: 29.118
+  type: 'test'
+  ...
+# Subtest: Antigravity accepts one terminal result, rejects failed or ambiguous streams and uses terminal usage only
+ok 210 - Antigravity accepts one terminal result, rejects failed or ambiguous streams and uses terminal usage only
+  ---
+  duration_ms: 1.2536
+  type: 'test'
+  ...
+# Subtest: Codex and Claude parsers use reported usage and reject transport errors
+ok 211 - Codex and Claude parsers use reported usage and reject transport errors
+  ---
+  duration_ms: 0.2404
+  type: 'test'
+  ...
+# Subtest: emergency control still works when the configuration file is broken
+ok 212 - emergency control still works when the configuration file is broken
+  ---
+  duration_ms: 60.575
+  type: 'test'
+  ...
+# Subtest: cancelled external command reports unknown descendants instead of false stopped
+ok 213 - cancelled external command reports unknown descendants instead of false stopped
+  ---
+  duration_ms: 109.0021
+  type: 'test'
+  ...
+# Subtest: usage report labels fixture tokens and does not invent human active time
+ok 214 - usage report labels fixture tokens and does not invent human active time
+  ---
+  duration_ms: 413.415
+  type: 'test'
+  ...
+# Subtest: snapshot roots exclude the control DB, preserve immutable inputs and pin publication bytes
+ok 215 - snapshot roots exclude the control DB, preserve immutable inputs and pin publication bytes
+  ---
+  duration_ms: 150.245
+  type: 'test'
+  ...
+# Subtest: independent writers publish separately while conflicting baselines preserve the losing candidate
+ok 216 - independent writers publish separately while conflicting baselines preserve the losing candidate
+  ---
+  duration_ms: 249.6236
+  type: 'test'
+  ...
+# Subtest: partial publication is fenced from dispatch and recovers without another worker attempt
+ok 217 - partial publication is fenced from dispatch and recovers without another worker attempt
+  ---
+  duration_ms: 218.3452
+  type: 'test'
+  ...
+# Subtest: publication rollback restores baseline but retains reservations until executor reconciliation
+ok 218 - publication rollback restores baseline but retains reservations until executor reconciliation
+  ---
+  duration_ms: 163.6185
+  type: 'test'
+  ...
+# Subtest: recovery refuses third-party edits and stale owners without replacing their bytes
+ok 219 - recovery refuses third-party edits and stale owners without replacing their bytes
+  ---
+  duration_ms: 90.5106
+  type: 'test'
+  ...
+# Subtest: isolated checkpoint artifacts are pinned and rematerialized without publishing partial work
+ok 220 - isolated checkpoint artifacts are pinned and rematerialized without publishing partial work
+  ---
+  duration_ms: 131.0802
+  type: 'test'
+  ...
+# Subtest: execution paths reject control aliases, traversal, Windows devices and junctions
+ok 221 - execution paths reject control aliases, traversal, Windows devices and junctions
+  ---
+  duration_ms: 37.0538
+  type: 'test'
+  ...
+# Subtest: snapshot byte caps reject materialization before a worker can run
+ok 222 - snapshot byte caps reject materialization before a worker can run
+  ---
+  duration_ms: 47.1111
+  type: 'test'
+  ...
+# Subtest: preparation failure before spawn settles known zero model usage
+ok 223 - preparation failure before spawn settles known zero model usage
+  ---
+  duration_ms: 48.7735
+  type: 'test'
+  ...
+# Subtest: failed spawn transaction cannot hide a possibly launched OS process behind an empty job list
+ok 224 - failed spawn transaction cannot hide a possibly launched OS process behind an empty job list
+  ---
+  duration_ms: 71.3446
+  type: 'test'
+  ...
+# Subtest: v4 migration backs up history, fences old SQLite writers, and blocks active v2 migration
+ok 225 - v4 migration backs up history, fences old SQLite writers, and blocks active v2 migration
+  ---
+  duration_ms: 85.5723
+  type: 'test'
+  ...
+# Subtest: runner supplies separate execution/control roots and validates actual worker-created files
+ok 226 - runner supplies separate execution/control roots and validates actual worker-created files
+  ---
+  duration_ms: 226.0442
+  type: 'test'
+  ...
+# Subtest: isolated tool reads use the execution baseline and immutable primary changes block acceptance
+ok 227 - isolated tool reads use the execution baseline and immutable primary changes block acceptance
+  ---
+  duration_ms: 74.9081
+  type: 'test'
+  ...
+# Subtest: isolated undeclared artifacts and generated evidence cannot escape publication scope
+ok 228 - isolated undeclared artifacts and generated evidence cannot escape publication scope
+  ---
+  duration_ms: 87.2573
+  type: 'test'
+  ...
+# Subtest: multiple isolated units may update the same logical artifact without invalidating historical receipts
+ok 229 - multiple isolated units may update the same logical artifact without invalidating historical receipts
+  ---
+  duration_ms: 193.1048
+  type: 'test'
+  ...
+# Subtest: pause during snapshot preparation stops before dispatch with zero model usage
+ok 230 - pause during snapshot preparation stops before dispatch with zero model usage
+  ---
+  duration_ms: 469.7324
+  type: 'test'
+  ...
+# Subtest: cancel during snapshot preparation stops before dispatch with zero model usage
+ok 231 - cancel during snapshot preparation stops before dispatch with zero model usage
+  ---
+  duration_ms: 57.298
+  type: 'test'
+  ...
+1..231
+# tests 231
+# suites 0
+# pass 218
+# fail 13
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 29936.2319

@@ -1,0 +1,133 @@
+{
+  "type": "object",
+  "properties": {
+    "enabled": {
+      "type": "boolean"
+    },
+    "manifest": {
+      "type": "string",
+      "minLength": 1
+    },
+    "lock": {
+      "type": "string",
+      "minLength": 1
+    },
+    "profiles": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "roles": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "backends": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "operations": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "network": {
+            "type": "boolean"
+          },
+          "limits": {
+            "type": "object",
+            "properties": {
+              "http_calls": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 1000
+              },
+              "max_records": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 1000
+              },
+              "max_papers": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 1000
+              },
+              "max_bytes": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 104857600
+              },
+              "timeout_ms": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 300000
+              },
+              "max_calls": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 1000
+              }
+            },
+            "required": [],
+            "additionalProperties": false
+          },
+          "native_policy": {
+            "type": "object",
+            "properties": {
+              "skills": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "hooks": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "mcp_servers": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            },
+            "required": [
+              "skills",
+              "hooks",
+              "mcp_servers"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "roles",
+          "backends",
+          "operations",
+          "network",
+          "limits",
+          "native_policy"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "enabled",
+    "manifest",
+    "lock",
+    "profiles"
+  ],
+  "additionalProperties": false
+}

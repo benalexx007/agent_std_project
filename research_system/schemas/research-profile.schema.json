@@ -1,0 +1,58 @@
+{
+  "type": "object",
+  "properties": {
+    "goal": {
+      "type": "string",
+      "enum": [
+        "discovery",
+        "extension",
+        "reproduction",
+        "synthesis"
+      ]
+    },
+    "reasoning_modes": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "hypothesis",
+          "mathematical",
+          "experimental",
+          "verification"
+        ]
+      }
+    },
+    "output": {
+      "type": "object",
+      "properties": {
+        "format": {
+          "type": "string",
+          "enum": [
+            "paper",
+            "proof",
+            "report",
+            "artifact"
+          ]
+        },
+        "language": {
+          "type": "string",
+          "minLength": 1
+        },
+        "venue": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "format"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "goal",
+    "reasoning_modes",
+    "output"
+  ],
+  "additionalProperties": false
+}

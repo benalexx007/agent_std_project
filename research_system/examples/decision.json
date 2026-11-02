@@ -1,0 +1,25 @@
+{
+  "decision_id": "approve_question_change",
+  "question": "Approve the proposed change to the main research question?",
+  "reason": "This changes the scientific objective and is outside the existing local-review grant.",
+  "options": [
+    {
+      "label": "Approve",
+      "impact": "Use the scoped revision."
+    },
+    {
+      "label": "Decline",
+      "impact": "Keep the existing question; task needs revision."
+    }
+  ],
+  "recommendation": "Review the concrete revised question before approval.",
+  "affected_tasks": [
+    "review_scope"
+  ],
+  "task_revisions": {
+    "review_scope": 1
+  },
+  "grant_actions": [
+    "change_main_question"
+  ]
+}

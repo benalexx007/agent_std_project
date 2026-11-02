@@ -1,0 +1,7 @@
+{
+  "remaining_tokens": 5000,
+  "observed_at": "2026-10-25T00:00:00.000Z",
+  "source": "example-only-replace-with-actual-observation",
+  "precision": "reported_tokens",
+  "resets_at": null
+}

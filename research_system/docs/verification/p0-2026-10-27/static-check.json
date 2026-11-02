@@ -1,0 +1,27 @@
+{
+  "status": 0,
+  "result": {
+    "valid": true,
+    "syntax_checked_files": 51,
+    "skills": [
+      "research-scope",
+      "research-literature",
+      "research-design",
+      "research-experiment",
+      "research-evaluate",
+      "research-write"
+    ],
+    "example_tasks": [
+      "task-small.json",
+      "task-long.json",
+      "task-recovery.json"
+    ],
+    "example_research_records": [
+      "hypothesis.json"
+    ],
+    "external_execution_enabled": false,
+    "limitations": [
+      "Static/schema checks only; no model invocation or scientific evaluation."
+    ]
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "repository": "https://github.com/K-Dense-AI/scientific-agent-skills",
+  "commit": "5f2bc0341354fd5590aef76a533ada1e1e5b4e62",
+  "subtree": "skills/paper-lookup/scripts",
+  "files": [
+    "arxiv_atom.py",
+    "openalex_abstract.py",
+    "_common.py"
+  ],
+  "adaptation": "Read-only parser subset; bounded transport and pagination owned by the harness."
+}

@@ -1,0 +1,35 @@
+{
+  "task_id": "review_scope",
+  "domain": "research",
+  "study_type": "reproduction",
+  "task_revision": 1,
+  "role": "researcher",
+  "skills": [
+    "research-scope"
+  ],
+  "objective": "Review a synthetic scope fixture to verify task dispatch and result recording.",
+  "inputs": [],
+  "dependencies": [],
+  "acceptance": [
+    "A schema-valid synthetic result is recorded; no research claim is inferred."
+  ],
+  "expected_artifacts": [],
+  "protocol_version": "fixture-v1",
+  "capabilities": [],
+  "budget": {
+    "max_attempts": 2,
+    "timeout_ms": 5000,
+    "reservation_tokens": 500,
+    "reservation_cost_usd": 0
+  },
+  "stop_conditions": [
+    "Stop on timeout or cancellation; no automatic retry."
+  ],
+  "required_actions": [
+    "local_review"
+  ],
+  "writes_workspace": false,
+  "mock": {
+    "duration_ms": 250
+  }
+}

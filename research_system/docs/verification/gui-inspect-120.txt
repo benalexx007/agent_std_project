@@ -1,0 +1,65 @@
+PROJECT INSPECT
+Snapshot: 2026-10-29T14:15:00.711Z
+local configuration and persisted observations only; no backend discovery
+
+PROJECT
+  Workspace             D:\Code\AI\agentic_std_proccess\research_system\examples\workspace
+  Project / domain      ["research-review","research"]
+  State / source        [null,"validated_candidate_not_active"]
+
+CONFIG
+  Registered hash       null
+  Candidate file        D:\Code\AI\agentic_std_proccess\research_system\examples\research.json
+  Valid / drift         [true,null]
+  Provenance            snapshot-level; granular field provenance is not recorded in v4
+
+MODELS
+  Orchestrator config   {"backend":"manual","model":null}
+  GUI model             unknown
+  codex/highest         gpt-6-astra / high
+  codex/medium          gpt-6.1-sol / high
+  codex/low             gpt-6.1-sol / medium
+  claude                mapping not configured
+  antigravity           mapping not configured
+
+ROLES
+  researcher            backend=mock; allowed skills=research-scope, research-literature, research-design, research-eval
+uate, research-write
+  implementer           backend=mock; allowed skills=research-experiment, research-evaluate
+  evaluator             backend=mock; allowed skills=research-evaluate, research-design
+
+SKILLS
+  research-scope        allowed: researcher; selected tasks: 0; native loaded: unknown
+  research-literature   allowed: researcher; selected tasks: 0; native loaded: unknown
+  research-design       allowed: researcher, evaluator; selected tasks: 0; native loaded: unknown
+  research-experiment   allowed: implementer; selected tasks: 0; native loaded: unknown
+  research-evaluate     allowed: researcher, implementer, evaluator; selected tasks: 0; native loaded: unknown
+  research-write        allowed: researcher; selected tasks: 0; native loaded: unknown
+
+CAPABILITIES
+  mock                  mock; execute=true; live verified=false
+  manual                manual; execute=false; live verified=false
+  codex                 codex-cli; execute=false; live verified=false
+  claude                claude-cli; execute=false; live verified=false
+  antigravity           agy-cli; execute=false; live verified=false
+  Extensions            disabled
+  GUI inventory         unknown
+  Worker receipts       0 historical; see --section capabilities
+
+POLICY
+  External execution    false
+  Concurrency / tokens  [2,100000]
+  Workspace policy      null
+  Fallback              {"automatic":false,"candidates":[],"max_same_backend_retries":1,"max_transfers":2,"max_segments_
+per_unit":4,"cooldown_ms":1000,"max_no_progress_recoveries":1}
+  Decision required     ["change_main_question","change_success_criteria","increase_budget","publish"]
+
+RUNTIME
+  Project desired state null
+  Usage                 null
+  Pending decisions     0
+  Publication pending   false
+  Tasks / omitted       [0,0]
+  Attempts / omitted    [0,0]
+
+Details: --section config|skills|capabilities|policy|runtime | --full | --format json

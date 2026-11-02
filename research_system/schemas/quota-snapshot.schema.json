@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "remaining_tokens": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "observed_at": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source": {
+      "type": "string",
+      "minLength": 1
+    },
+    "precision": {
+      "type": "string",
+      "enum": [
+        "reported_tokens",
+        "unknown"
+      ]
+    },
+    "resets_at": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "limit_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "quota_exhausted": {
+      "type": "boolean"
+    },
+    "ordinary_usage_allowed": {
+      "type": "boolean"
+    },
+    "native_windows": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "used_percent": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "window_minutes": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "resets_at": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "used_percent",
+          "window_minutes",
+          "resets_at"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "remaining_tokens",
+    "observed_at",
+    "source",
+    "precision",
+    "resets_at"
+  ],
+  "additionalProperties": false
+}

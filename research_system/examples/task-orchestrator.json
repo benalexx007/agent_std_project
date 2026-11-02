@@ -1,0 +1,39 @@
+{
+  "task_id": "coordinate_research",
+  "domain": "research",
+  "study_type": "reproduction",
+  "task_revision": 1,
+  "role": "orchestrator",
+  "skills": [
+    "research-design"
+  ],
+  "objective": "Coordinate the research team: clarify the user's goal, gather bounded analysis and original evidence, and delegate scientific synthesis and detailed planning to a separate researcher task with task_class synthesis_planning. Use the returned plan to register/run only authorized workers and track progress, dependencies, budget and user decisions. Return substantive scientific changes to the advisor; preserve open proof obligations and counterevidence.",
+  "inputs": [],
+  "dependencies": [],
+  "acceptance": [
+    "Coordination decisions reference available analysis, advisor plan and evidence; missing scientific planning is reported as unresolved rather than replaced by an unaudited plan.",
+    "No unauthorized worker or experiment is run; execution completion does not establish scientific support."
+  ],
+  "expected_artifacts": [],
+  "protocol_version": "fixture-v1",
+  "capabilities": [],
+  "budget": {
+    "max_attempts": 2,
+    "timeout_ms": 900000,
+    "reservation_tokens": 12000,
+    "reservation_cost_usd": 0,
+    "max_total_tokens": 80000
+  },
+  "stop_conditions": [
+    "Stop on timeout or cancellation; no automatic retry."
+  ],
+  "required_actions": [
+    "local_review"
+  ],
+  "writes_workspace": false,
+  "mock": {
+    "duration_ms": 250
+  },
+  "backend": "codex_native",
+  "task_class": "analysis"
+}
