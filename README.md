@@ -43,4 +43,3 @@ Tests use deterministic local worker fixtures and make no model or network calls
 3. **Agent transport layer** — a separate MCP-based sub-agent hub (detached runner, single-writer journal, lease fencing) proposed in its own pull request; integrating it with harness policy is an open design question.
 4. **Live backend verification** — staged, human-authorized runs against real providers to replace mock-only evidence.
 5. **Benchmarks** — protocol-first campaigns (scope, models, grading, budget, stopping rules), each run confirmed separately by a human.
-6. **Public release** — once history, documentation and examples are reviewed for publication.
