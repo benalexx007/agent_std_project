@@ -89,7 +89,7 @@ Giới hạn còn giữ rõ:
 
 Sáu skill, role profiles, domain/capability/acceptance plans cùng workflow đã đồng bộ task classes theo model policy; không cố định role vào một tier. Planning reference chỉ nạp cho synthesis_planning, sources trong audit đưa vào evidence_refs để source drift làm kết quả cần review. Context điều phối hiển thị selection của task. Software verification có regression cho nguồn ngoài inputs, manifest tamper và superseded requests.
 
-B01 cũ chưa chạy được giữ lịch sử; [protocol v2](../benchmark-runs/b01_20261025_02/protocol.md) mới pending separate approval. Bốn closed cases, analysis → independent plan → calculate → review, C3 thêm update: 4 Astra High + 13 Sol High, tối đa 380.000 reservation tokens/65 phút. Driver script không dùng LLM; không đo Sol Medium hay open literature research. Manifest/source/config/input/executable pin bằng hash, derived inputs có journal; C2 release probe của final planner. Chưa có kết quả model/benchmark và chưa thay đổi trạng thái nghiệm thu.
+B01 cũ chưa chạy được giữ lịch sử; protocol v2 (local, not committed) mới pending separate approval. Bốn closed cases, analysis → independent plan → calculate → review, C3 thêm update: 4 Astra High + 13 Sol High, tối đa 380.000 reservation tokens/65 phút. Driver script không dùng LLM; không đo Sol Medium hay open literature research. Manifest/source/config/input/executable pin bằng hash, derived inputs có journal; C2 release probe của final planner. Chưa có kết quả model/benchmark và chưa thay đổi trạng thái nghiệm thu.
 
 ## Sửa lỗi sau review vận hành
 

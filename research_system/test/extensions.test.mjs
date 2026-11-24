@@ -16,7 +16,16 @@ import { nativeToolHandler } from '../src/native-tools.mjs';
 import { nativeThreadParams } from '../src/codex-native.mjs';
 import { main } from '../scripts/harness.mjs';
 
-const available = fs.existsSync(path.join(ROOT, '.research-environment/environment.json')) && fs.existsSync(path.join(ROOT, 'extensions/research/lock.json'));
+// The pinned extension environment is machine-specific (absolute interpreter paths). Tests that need it run only when
+// a locally provisioned environment matches the committed lock; otherwise they are skipped.
+// Provision with `npm run extensions:provision`, then relock with `npm run extensions:lock`.
+const available = (() => {
+  try {
+    const environmentFile = path.join(ROOT, '.research-environment/environment.json');
+    const lock = readJSON(path.join(ROOT, 'extensions/research/lock.json'));
+    return fileHash(path.join(ROOT, lock.environment)) === lock.environment_sha256 && fileHash(environmentFile) === lock.environment_sha256;
+  } catch { return false; }
+})();
 const operations = Object.keys(readJSON(path.join(ROOT, 'extensions/research/manifest.json')).operations);
 after(closeExtensionObservers);
 function setup(t, modify = () => {}) {

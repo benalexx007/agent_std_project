@@ -49,7 +49,7 @@ Xem [runtime](runtime.md), [hướng dẫn research](research-workflow.md), [ver
 
 Đồng bộ model policy ngày 25/10/2026: cả sáu skill, bốn role, domain, capability/acceptance plans và workflow dùng cùng ba task classes. Planning reference chỉ nạp khi cần; audited sources theo dõi drift kể cả ngoài task inputs. Context điều phối giữ model selection; runtime từ chối bỏ effort hoặc mượn mapping chưa có. Software tests gồm routing, stale planning sources, manifest tamper, pending/superseded requests và release probe từ final planner.
 
-B01 chuẩn bị lại tại [b01_20261025_02](../benchmark-runs/b01_20261025_02/protocol.md): 17 calls dự kiến, 4 Astra High + 13 Sol High, 380.000 reservation tokens, 65 phút; script driver không gọi model low. Request mới pending, 0 attempts; request cũ superseded và giữ nguyên protocol/history. Chưa có benchmark/model call trong đợt cập nhật này.
+B01 chuẩn bị lại tại b01_20261025_02 (local, not committed): 17 calls dự kiến, 4 Astra High + 13 Sol High, 380.000 reservation tokens, 65 phút; script driver không gọi model low. Request mới pending, 0 attempts; request cũ superseded và giữ nguyên protocol/history. Chưa có benchmark/model call trong đợt cập nhật này.
 
 Sau review: [operational-review-fixes.md](operational-review-fixes.md) ghi từng finding, hành vi đã sửa, regression và giới hạn. Bộ test hiện gồm 110 ca nền cùng regression mới; lấy số cuối từ verification/v1-evidence.json. Ở bản 0.3.1, state v2 được mở rộng có tương thích đọc lịch sử; bản 0.5.0 cần migration explicit sang v3; không reset budgets hoặc scientific evidence khi reopen.
 

@@ -2,7 +2,7 @@
 
 Status: proposal only; a filled run appendix and explicit human approval are required before execution.
 
-The template below is not the concrete campaign. The prepared [B01 v2 appendix](../../benchmark-runs/b01_20261025_02/protocol.md) uses four cases/one trial each and 17 tiered stages; its explicit limits replace template suggestions for that request only. It remains pending separate confirmation.
+The template below is not the concrete campaign. The prepared B01 v2 appendix (local, not committed) uses four cases/one trial each and 17 tiered stages; its explicit limits replace template suggestions for that request only. It remains pending separate confirmation.
 
 Purpose: inspect whether an agent can maintain alternatives, design a discriminating check, incorporate contradictory evidence and avoid unsupported certainty. Use cases with known evidence so the results can be reviewed; this is not a measure of global novelty.
 

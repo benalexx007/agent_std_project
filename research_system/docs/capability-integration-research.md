@@ -20,7 +20,7 @@ Không thể suy ra latest eligible trên máy từ nhãn latest của một cha
 
 [App Server](https://learn.chatgpt.com/docs/app-server) cung cấp lifecycle thread/turn và control. Resume hội thoại dùng lại lịch sử cho turn sau; không chứng minh tự tiếp tục side effect của turn bị ngắt. WebSocket hiện được tài liệu đánh dấu experimental: chưa chọn làm nền bắt buộc cho reconnect production.
 
-[Schema pin P0](verification/p0-2026-10-27/protocol/) cho thấy ThreadResumeParams không có cùng bộ trường như ThreadStartParams, gồm khác biệt dynamicTools và allowProviderModelFallback. Vì vậy cần renderer và kiểm policy riêng cho resume. Có clientUserMessageId không đủ để suy ra submit exactly-once.
+Schema pin P0 (local, not committed) cho thấy ThreadResumeParams không có cùng bộ trường như ThreadStartParams, gồm khác biệt dynamicTools và allowProviderModelFallback. Vì vậy cần renderer và kiểm policy riêng cho resume. Có clientUserMessageId không đủ để suy ra submit exactly-once.
 
 [SDK](https://learn.chatgpt.com/docs/codex-sdk) là lựa chọn thay driver khi giảm code mà giữ đầy đủ controls. Python SDK điều khiển App Server và có CLI dependency được pin; phải tính thêm Python và quyền chọn executable. Không chuyển Node core sang Python chỉ để bọc lớp RPC hiện đang nhỏ.
 

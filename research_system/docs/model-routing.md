@@ -96,7 +96,7 @@ Planning có reference hướng dẫn riêng chỉ nạp theo task class; source
 
 ## Benchmark đang chờ
 
-B01 b01_20261025_01 giữ nguyên protocol và lịch sử, được thay bằng request mới [b01_20261025_02](../benchmark-runs/b01_20261025_02/protocol.md), pending và chưa chạy. Scope mới: analysis → plan → calculate → review, C3 thêm update; 4 Astra High + 13 Sol High, 380.000 reservation tokens, 65 phút. Planner tự verify/research raw inputs trước khi cấp probe/replication; script automation không gọi LLM. Manifest/source/input hashes và cách chấm nằm trong protocol. Cần xác nhận riêng cho request mới; yêu cầu cập nhật model tiers không là quyền execute.
+B01 b01_20261025_01 giữ nguyên protocol và lịch sử, được thay bằng request mới b01_20261025_02 (local, not committed), pending và chưa chạy. Scope mới: analysis → plan → calculate → review, C3 thêm update; 4 Astra High + 13 Sol High, 380.000 reservation tokens, 65 phút. Planner tự verify/research raw inputs trước khi cấp probe/replication; script automation không gọi LLM. Manifest/source/input hashes và cách chấm nằm trong protocol. Cần xác nhận riêng cho request mới; yêu cầu cập nhật model tiers không là quyền execute.
 
 ## Điều chỉnh provenance trong v0.3.1
 

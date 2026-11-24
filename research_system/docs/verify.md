@@ -113,7 +113,7 @@ Ghi lại các vấn đề cần sửa, hoàn thiện các gate còn thiếu và
 
 Dùng resolve-model để xem ba cặp Astra High / Sol High / Sol Medium mà không gọi model. Kiểm tra context chỉ nạp planning reference/audit schema cho synthesis_planning, có analysis_input_paths khi nhận handoff analysis. Completed plan cần audit mới; nguồn audit đổi phải làm currentTaskResult=false, kể cả nguồn ngoài inputs. Đọc fixtures model-routing/planning thay vì coi schema pass là nội dung đã đúng.
 
-B01 preparation tests chỉ tạo workspace tạm/pending request, kiểm hashes/mappings/release và từ chối chạy unapproved. [Protocol B01 v2](../benchmark-runs/b01_20261025_02/protocol.md) là tài liệu xin duyệt cho một lần chạy cụ thể; việc đọc protocol/chạy software tests không phê duyệt benchmark. execution_manifest phải giữ nguyên sau approval. supersede-benchmark chỉ dùng với request pending chưa có attempt và không kế thừa approval.
+B01 preparation tests chỉ tạo workspace tạm/pending request, kiểm hashes/mappings/release và từ chối chạy unapproved. Protocol B01 v2 (local, not committed) là tài liệu xin duyệt cho một lần chạy cụ thể; việc đọc protocol/chạy software tests không phê duyệt benchmark. execution_manifest phải giữ nguyên sau approval. supersede-benchmark chỉ dùng với request pending chưa có attempt và không kế thừa approval.
 
 ## Review các bản sửa v0.3.1
 
