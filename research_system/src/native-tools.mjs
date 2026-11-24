@@ -22,7 +22,7 @@ export const ORCHESTRATOR_TOOLS = [
   { name: 'harness_control_task', description: 'Steer, pause or cancel a worker owned by this orchestration attempt. This tool cannot approve decisions or change policy.', inputSchema: object({ task_id: string, action: { type: 'string', enum: ['steer', 'pause', 'cancel'] }, message: { type: 'string' } }, ['task_id', 'action']) }
 ].map((tool) => ({ type: 'function', ...tool }));
 export const WORKER_TOOLS = [
-  { type: 'function', name: 'harness_extension', description: 'A scoped finite research helper. Omit arguments to inspect its exact input contract; supply arguments to execute. Read large outputs using harness_read.', inputSchema: object({ operation: string, arguments: { type: 'object' } }, ['operation']) },ORCHESTRATOR_TOOLS.find((t) => t.name === 'harness_read'),
+  { type: 'function', name: 'harness_extension', description: 'A scoped finite helper. Omit arguments to inspect its exact input contract; supply arguments to execute. Read large outputs using harness_read.', inputSchema: object({ operation: string, arguments: { type: 'object' } }, ['operation']) },ORCHESTRATOR_TOOLS.find((t) => t.name === 'harness_read'),
   { type: 'function', name: 'harness_checkpoint', description: 'Save bounded progress for this assignment. Include summary, remaining_actions, artifacts, checks and uncertainties; keep assumptions/open obligations in the summary or pinned artifacts. This does not complete the unit.',
     inputSchema: object({ progress: { type: 'object' } }) }];
 

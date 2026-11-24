@@ -7,6 +7,7 @@ import { spawnSync } from 'node:child_process';
 import { fixture, task, resultFor } from './helpers.mjs';
 import { ROOT, readJSON, fileHash, hash } from '../src/util.mjs';
 import { extensionDocuments, resolveExtensions, verifyExtensionEnvironment, closeExtensionObservers } from '../src/extensions.mjs';
+import { recoverExtensionReceipt, recoverCompletedExtensions } from '../src/extension-recovery.mjs';
 import { runExtension, reconcileExtensionCall } from '../src/extension-runner.mjs';
 import { verifyExtensionNativeScope, inspectExtensionNativeScope, checkExtensionStartupScope } from '../src/extension-native.mjs';
 import { beginAttempt, finishAttempt, hasLiveJobs, control, observeJob, handoff } from '../src/engine.mjs';
@@ -273,4 +274,96 @@ test('terminal job observation is required to reconcile a lost extension reply',
   observeJob(store, a.attempt_id, 'extjob', { status: 'failed', evidence: [{ path: 'stopped.txt', sha256: fileHash(path.join(directory, 'stopped.txt')) }] });
   const reconciled = reconcileExtensionCall(store, 'lost', 'local', 1);
   assert.equal(reconciled.http_calls, 4); assert.equal(reconciled.usage_precision, 'conservative_envelope');
+});
+
+
+async function lostReceiptFixture(t) {
+  const f = await start(t), callId = 'extension_receipt_fixture', jobId = callId + '_job';
+  const folder = path.join(f.store.directory, 'extension-work', callId), relative = 'research-artifacts/' + callId;
+  fs.mkdirSync(folder, { recursive: true });
+  const input = { operation: 'paper.read', arguments: { path: 'paper.pdf', pages: [1] } };
+  fs.writeFileSync(path.join(folder, 'input.json'), JSON.stringify(input));
+  fs.writeFileSync(path.join(folder, 'result.json'), JSON.stringify({ status: 'completed', pages: [{ page: 1, text: 'fixture' }] }));
+  const payload = hash(JSON.stringify({ operation: input.operation, args: input.arguments }));
+  const receipt = { call_id: callId, operation: input.operation, status: 'completed', result_status: 'completed', error: null,
+    observation: 'trusted_finite_helper', binding_sha256: f.a.extension_binding.fingerprint, payload_sha256: payload,
+    http_calls: 0, artifacts: ['input.json','result.json'].map(name => ({ path: relative+'/'+name, sha256: fileHash(path.join(folder,name)) })),
+    completed_at: new Date().toISOString() };
+  fs.writeFileSync(path.join(folder,'receipt.json'),JSON.stringify(receipt));
+  fs.mkdirSync(path.join(f.root,relative),{recursive:true});
+  for(const name of ['input.json','result.json','receipt.json'])fs.copyFileSync(path.join(folder,name),path.join(f.root,relative,name));
+  f.store.transaction(s => { s.extension_calls[callId] = { call_id: callId, attempt_id: f.a.attempt_id, job_id: jobId,
+    task_revision: f.a.task_revision, owner_epoch: f.a.owner_epoch, assignment_generation: f.a.assignment_generation,
+    operation:'paper.read', status:'running', payload_sha256:payload, binding_sha256:f.a.extension_binding.fingerprint, artifacts:[] };
+    s.attempts[f.a.attempt_id].job_refs.push({ job_id:jobId,kind:'extension',owner_attempt:f.a.attempt_id,observed_state:'running',child_coverage:'unverified',pid:null }); });
+  return { ...f, callId, folder };
+}
+
+test('durable receipt recovery repairs terminal commit loss while paused without rerunning helper', { skip: !available }, async t => {
+  const { store, a, root, folder, callId } = await lostReceiptFixture(t);
+  control(store, { event_id: 'pause-receipt-repair', action: 'pause', target: 'project', payload: {} });
+  const before = fileHash(path.join(folder, 'receipt.json'));
+  await recoverCompletedExtensions(store, a.attempt_id, 'local', 1);
+  const c = store.read().extension_calls[callId];
+  assert.equal(c.status, 'completed'); assert.equal(c.integratable, true); assert.equal(c.http_calls, 0);
+  assert.equal(store.read().desired_state, 'paused'); assert.equal(hasLiveJobs(store.read().attempts[a.attempt_id]), false);
+  assert.equal(fileHash(path.join(folder, 'receipt.json')), before);
+  assert(c.artifacts.every(r => fileHash(path.join(root, r.path)) === r.sha256));
+  assert.equal((await recoverExtensionReceipt(store, callId, 'local', 1)).receipt_recovery.sha256, before);
+});
+
+test('durable receipt recovery rejects changed hash, identity, live helper and stale owner', { skip: !available }, async t => {
+  const f = await lostReceiptFixture(t), file = path.join(f.folder, 'receipt.json'), original = fs.readFileSync(file);
+  const r = JSON.parse(original); r.payload_sha256 = 'wrong'; fs.writeFileSync(file, JSON.stringify(r));
+  await assert.rejects(recoverExtensionReceipt(f.store, f.callId, 'local', 1), /identity mismatch/);
+  fs.writeFileSync(file, original);
+  const result = path.join(f.folder, 'result.json'), bytes = fs.readFileSync(result); fs.writeFileSync(result, 'tampered');
+  await assert.rejects(recoverExtensionReceipt(f.store, f.callId, 'local', 1), /hash mismatch/); fs.writeFileSync(result, bytes);
+  f.store.transaction(s => { s.attempts[f.a.attempt_id].job_refs[0].pid = process.pid; });
+  await assert.rejects(recoverExtensionReceipt(f.store, f.callId, 'local', 1), /still live/);
+  await assert.rejects(recoverExtensionReceipt(f.store, f.callId, 'other-owner', 1), /owner/);
+  assert.equal(f.store.read().extension_calls[f.callId].status, 'running');
+});
+
+test('durable receipt recovery rejects failed receipts and conflicting workspace materialization', { skip: !available }, async t => {
+  const f = await lostReceiptFixture(t), file = path.join(f.folder, 'receipt.json'), bytes = fs.readFileSync(file), r = JSON.parse(bytes);
+  r.status = 'failed'; fs.writeFileSync(file, JSON.stringify(r));
+  await assert.rejects(recoverExtensionReceipt(f.store, f.callId, 'local', 1), /successful terminal/);
+  fs.writeFileSync(file, bytes);
+  fs.writeFileSync(path.join(f.root, 'research-artifacts', f.callId, 'result.json'), 'conflict');
+  await assert.rejects(recoverExtensionReceipt(f.store, f.callId, 'local', 1), /materialization conflict/);
+  assert.equal(f.store.read().extension_calls[f.callId].status, 'running');
+});
+
+test('terminal commit retries SQLite contention without repeating network retrieval', { skip: !available }, async t => {
+  const { store, a } = await start(t); const original = store.transaction.bind(store); let failures = 0, requests = 0;
+  store.transaction = fn => {
+    if (fn.toString().includes('c.integratable') && failures++ < 2) throw Object.assign(new Error('database is locked'), { code: 'SQLITE_BUSY' });
+    return original(fn);
+  };
+  const r = await runExtension(store, a.attempt_id, 'commit-retry', 'scholarly.download', { id: '2404.13628v1', format: 'pdf' }, async () => { requests++; return body('%PDF-fixture', 200, { 'content-type': 'application/pdf' }); });
+  assert.equal(r.status, 'completed'); assert.equal(requests, 1); assert.equal(failures, 3);
+});
+
+
+test('durable receipt recovery rejects namespace escape, stale assignment and nonterminal receipt', { skip: !available }, async t => {
+  const f = await lostReceiptFixture(t), file = path.join(f.folder, 'receipt.json'), original = fs.readFileSync(file);
+  let r = JSON.parse(original); r.artifacts[0].path = '../escape/input.json'; fs.writeFileSync(file, JSON.stringify(r));
+  await assert.rejects(recoverExtensionReceipt(f.store, f.callId, 'local', 1), /namespace mismatch/);
+  r = JSON.parse(original); r.helper_terminal = false; fs.writeFileSync(file, JSON.stringify(r));
+  await assert.rejects(recoverExtensionReceipt(f.store, f.callId, 'local', 1), /successful terminal/);
+  fs.writeFileSync(file, original);
+  f.store.transaction(s => { s.attempts[f.a.attempt_id].assignment_generation++; });
+  await assert.rejects(recoverExtensionReceipt(f.store, f.callId, 'local', 1), /Stale extension recovery assignment/);
+  assert.equal(f.store.read().extension_calls[f.callId].status, 'running');
+});
+
+test('historical receipt mode requires exact digest and preserves unchanged grant checks', { skip: !available }, async t => {
+  const f = await lostReceiptFixture(t), digest = fileHash(path.join(f.folder, 'receipt.json'));
+  await assert.rejects(recoverExtensionReceipt(f.store, f.callId, 'local', 1, {historicalReceipt:true, receiptSha256:'wrong'}), /exact receipt digest/);
+  assert.equal(f.store.read().extension_calls[f.callId].status, 'running');
+  const c = await recoverExtensionReceipt(f.store, f.callId, 'local', 1, {historicalReceipt:true, receiptSha256:digest});
+  assert.equal(c.status, 'completed');
+  assert.equal(c.receipt_recovery.validation_mode, 'explicit_historical_grant');
+  assert.equal(c.receipt_recovery.sha256, digest);
 });

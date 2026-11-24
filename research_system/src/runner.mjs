@@ -2,6 +2,8 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { spawn } from 'node:child_process';
 import { StringDecoder } from 'node:string_decoder';
+import { sqliteContention, monitorRetryWindow } from './control-monitor.mjs';
+import { executionContext } from './context.mjs';
 import { now, id, requireThat, writeJSON, hash, clone } from './util.mjs';
 import { beginAttempt, dispatchAllowed, finishAttempt, control, validateResult, hasLiveJobs } from './engine.mjs';
 import { capabilities, invocation, parseOutput, usageEvidence, validateInvocation } from '../adapters/index.mjs';
@@ -9,6 +11,7 @@ import { getUnit, assignmentCurrent, workKey } from './work.mjs';
 import { saveCheckpoint, saveFinalCheckpoint } from './checkpoints.mjs';
 import { prepareWorkspace, executionRoot, publicationPending } from './workspaces.mjs';
 import { completeAttempt } from './publication.mjs';
+import { recoverCompletedExtensions } from './extension-recovery.mjs';
 import { budgetAdmission } from './resources.mjs';
 import { benchmarkAdmission } from './benchmarks.mjs';
 import { recordTelemetry } from './resources.mjs';
@@ -31,11 +34,7 @@ export async function runAttempt(store, taskId, owner, epoch, dispatchKey, optio
     if (attempt.workspace) await prepareWorkspace(store, attempt.attempt_id);
     const prepared = store.read().attempts[attempt.attempt_id];
     if (prepared.workspace) {
-      context.packet.control_root = store.read().project.workspace;
-      context.packet.workspace = prepared.workspace.root;
-      context.packet.workspace_mode = prepared.workspace.mode;
-      context.text = JSON.stringify(context.packet, null, 2);
-      context.characters = context.text.length; context.sha256 = hash(context.text);
+      executionContext(context, store.read().project.workspace, prepared.workspace, store.read().config.context.max_chars);
       store.transaction((s) => {
         requireThat(dispatchAllowed(s, attempt.attempt_id, attempt.runner_token) && !publicationPending(s), 'Dispatch blocked after workspace preparation');
         requireThat(context.characters <= s.config.context.max_chars, 'Execution context exceeds max_chars');
@@ -89,6 +88,8 @@ export async function runAttempt(store, taskId, owner, epoch, dispatchKey, optio
       let yieldSent = false;
       let poll;
       let heartbeatAt = Date.now();
+      let contentionAt = null;
+      const monitorLog = (event) => fs.appendFileSync(path.join(directory, 'control-monitor.jsonl'), JSON.stringify({ at: now(), ...event }) + '\n');
       const stdoutFile = path.join(directory, 'stdout.log');
       const stderrFile = path.join(directory, 'stderr.log');
       const stdoutLog = fs.createWriteStream(stdoutFile, { highWaterMark: 65536 });
@@ -176,6 +177,7 @@ export async function runAttempt(store, taskId, owner, epoch, dispatchKey, optio
             attempt_id: attempt.attempt_id, pid: child.pid || null, at: now(), ...rootExit,
             descendants: caps.external_jobs_verified || !child.pid ? 'none' : 'unknown'
           });
+          await recoverCompletedExtensions(store, attempt.attempt_id, owner, epoch);
           stdout += decoder.end();
           let parsed = null;
           let parseError = null;
@@ -191,13 +193,14 @@ export async function runAttempt(store, taskId, owner, epoch, dispatchKey, optio
           const successfulResult = parsed?.result && !parseError;
           const currentState = store.read().attempts[attempt.attempt_id];
           const structured = failureEvidence(command.protocol, stdout);
+          if (!successfulResult && structured?.message) parseError = structured.message;
           const classified = backendFailure || (structured ? classifyFailure({ ...structured, pool_ids: attempt.quota_pool_ids }) : null);
           const status = successfulResult ? (parsed.result.status === 'completed' ? 'completed' : 'failed') :
             backend.kind === 'codex-app-server' && currentState.native?.phase === 'unknown' ? 'unknown' :
             backend.kind === 'codex-app-server' && hasLiveJobs(currentState) ? 'unknown' :
             currentState.desired_state === 'yielding' && currentState.checkpoint_id && caps.external_jobs_verified ? 'yielded' :
             cancelledAt !== null ? (caps.external_jobs_verified ? 'cancelled' : 'unknown') : 'failed';
-          const jobs = terminationJobs = store.read().attempts[attempt.attempt_id].job_refs.map((j) => j.kind === 'external' ? j : ({
+          const jobs = terminationJobs = store.read().attempts[attempt.attempt_id].job_refs.map((j) => ['external', 'extension'].includes(j.kind) ? j : ({
             ...j, observed_state: 'exited', exit_code: code, signal: signal || null,
             descendants_state: caps.external_jobs_verified ? 'none' : 'unknown'
           }));
@@ -214,11 +217,11 @@ export async function runAttempt(store, taskId, owner, epoch, dispatchKey, optio
       child.once('close', (code, signal) => complete(code, signal, null));
       const startedAt = Date.now();
       poll = setInterval(() => {
+        const tickAt = Date.now();
         try {
           const snapshot = store.read();
           const current = snapshot.attempts[attempt.attempt_id];
           if (Date.now() - heartbeatAt >= Math.max(20, Math.min(10000, snapshot.config.checkpoint_policy.lease_ms / 3))) {
-            heartbeatAt = Date.now();
             store.transaction((state) => {
             const assignment = state.assignments[attempt.assignment_id];
             if (assignmentCurrent(state, state.attempts[attempt.attempt_id]) && assignment.status === 'active') {
@@ -226,6 +229,7 @@ export async function runAttempt(store, taskId, owner, epoch, dispatchKey, optio
               assignment.lease_expires_at = new Date(Date.now() + state.config.checkpoint_policy.lease_ms).toISOString();
             }
             });
+            heartbeatAt = Date.now();
           }
           if (current.desired_state === 'yielding' && !yieldSent) {
             yieldSent = true;
@@ -269,11 +273,34 @@ export async function runAttempt(store, taskId, owner, epoch, dispatchKey, optio
               e.status = 'deferred';
             });
           }
-        } catch (error) { stop('Control monitor error: ' + error.message); }
+          if (contentionAt !== null) { monitorLog({ event: 'sqlite_contention_recovered', elapsed_ms: Date.now() - contentionAt }); contentionAt = null; }
+        } catch (error) {
+          if (sqliteContention(error) && !closed && cancelledAt === null) {
+            const first = contentionAt === null;
+            contentionAt ??= tickAt;
+            const elapsed = Date.now() - contentionAt;
+            const retryMs = monitorRetryWindow(limits.checkpoint_policy.lease_ms);
+            try { if (first || elapsed >= retryMs) monitorLog({ event: elapsed >= retryMs ? 'sqlite_contention_exhausted' : 'sqlite_contention_retry', code: error.code, errcode: error.errcode, elapsed_ms: elapsed, retry_ms: retryMs }); }
+            catch (logFailure) { stop('Control monitor logging failed: ' + logFailure.message); }
+            if (elapsed >= retryMs) stop('Control monitor contention limit: ' + error.message);
+          } else stop('Control monitor error: ' + error.message);
+        } finally {
+          // Local deadlines still apply when the database cannot be read.
+          if (!closed && Date.now() - startedAt >= task.budget.timeout_ms) stop('timeout');
+          if (!closed && cancelledAt !== null && Date.now() - cancelledAt >= limits.control.cancel_grace_ms) {
+            if (limits.control.force_kill) child.kill('SIGKILL');
+            else {
+              closed = true; cleanup(); child.unref();
+              child.stdout.destroy(); child.stderr.destroy(); child.stdin.destroy();
+              if (child.connected) child.disconnect();
+              finalize({ status: 'unknown', error: 'Stop not confirmed; reconciliation required' });
+            }
+          }
+        }
       }, limits.execution.poll_ms);
       child.stdin.end(command.stdin);
     });
-    if (result.result?.validity === 'current' && result.observed_state === 'completed') {
+    if (result.settled && result.result?.validity === 'current' && result.observed_state === 'completed') {
       saveFinalCheckpoint(store, attempt.attempt_id);
     }
     const finalized = store.read().attempts[attempt.attempt_id];
@@ -306,11 +333,11 @@ export async function runAttempt(store, taskId, owner, epoch, dispatchKey, optio
         if (!observedJobs.length) observedJobs = [{ job_id: id('uncommitted_spawn'), pid: child.pid || null,
           kind: backend.kind, owner_attempt: attempt.attempt_id, observed_state: 'unknown', child_coverage: 'unverified' }];
       }
-      const jobs = observedJobs.map((j) => j.kind === 'external' || !rootTerminated ? j : ({
+      const jobs = observedJobs.map((j) => ['external', 'extension'].includes(j.kind) || !rootTerminated ? j : ({
         ...j, ...rootExit, observed_state: 'exited',
         descendants_state: j.child_coverage === 'verified_no_children' || !j.pid ? 'none' : 'unknown'
       }));
-      const unresolved = spawnAttempted && !rootTerminated || jobs.some((j) => j.kind === 'external' ? !['completed', 'failed', 'cancelled'].includes(j.observed_state) :
+      const unresolved = spawnAttempted && !rootTerminated || jobs.some((j) => ['external', 'extension'].includes(j.kind) ? !['completed', 'failed', 'cancelled', 'stopped'].includes(j.observed_state) :
         !rootTerminated || j.child_coverage === 'unverified' && j.pid !== null);
       return finishAttempt(store, attempt.attempt_id, { status: unresolved ? 'unknown' : 'failed', jobs, error: error.message,
         ...(!spawnAttempted ? { usage: { input_tokens: 0, output_tokens: 0, cached_input_tokens: 0, cost_usd: 0 } } : {}) });

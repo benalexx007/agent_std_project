@@ -269,3 +269,26 @@ for (const action of ['pause', 'cancel']) test(action + ' during snapshot prepar
     assert.equal((await runTask(store, 'review_scope', 'local', 1, 'after-pause')).observed_state, 'completed');
   } else assert.equal(store.read().tasks.review_scope.status, 'cancelled');
 });
+
+
+test('accepted publication recovery reuses journal and actual usage without republishing', async (t) => {
+  const { store, directory } = setup(t);
+  const a = await start(store);
+  let outcome = output(a, { 'out.txt': 'accepted bytes' });
+  const accepted = await completeAttempt(store, a.attempt_id, outcome);
+  outcome=structuredClone(store.read().publications[accepted.publication_id].outcome);
+  // Reproduce post-publication runner corruption while retaining the accepted journal.
+  store.transaction(s => { const a=s.attempts[accepted.attempt_id]; a.observed_state='unknown'; a.settled=false; });
+  await assert.rejects(completeAttempt(store, a.attempt_id, outcome), /verified recovered/);
+  store.transaction(s => { s.attempts[a.attempt_id].recovered_result_termination={trust:'fixture'}; });
+  const changed=structuredClone(outcome); changed.result.summary='different';
+  await assert.rejects(completeAttempt(store, a.attempt_id, changed), /result changed/);
+  fs.writeFileSync(path.join(directory,'out.txt'),'third party');
+  await assert.rejects(completeAttempt(store, a.attempt_id, outcome), /output changed/);
+  fs.writeFileSync(path.join(directory,'out.txt'),'accepted bytes');
+  const done=await completeAttempt(store,a.attempt_id,outcome);
+  assert.equal(done.observed_state,'completed'); assert.equal(done.settled,true);
+  assert.equal(done.publication_id,accepted.publication_id);
+  assert.equal(Object.keys(store.read().publications).length,1);
+  assert.deepEqual(done.result.usage,outcome.result.usage);
+});

@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { contract } from './schema.mjs';
 import { artifactCheck, confined, clone, hash, now, requireThat, writeJSON, fileHash } from './util.mjs';
-import { researchEntry, researchValidity } from './research.mjs';
+import { projectDomain } from './domains.mjs';
 
 const ownership = (s, owner, epoch) => requireThat(owner === s.owner.id && Number(epoch) === s.owner.epoch, 'Stale improvement owner/epoch');
 const active = (s) => s.improvements?.active ? s.improvements.changes[s.improvements.active] : null;
@@ -25,8 +25,9 @@ export function proposeImprovement(store, input, owner, epoch) {
     s.improvements ||= { active: null, changes: {}, events: [] };
     requireThat(!Object.hasOwn(s.improvements.changes, input.change_id), 'Improvement ID is immutable');
     for (const ref of input.feedback_refs) {
-      const e = researchEntry(s, ref.record_id, ref.revision);
-      requireThat(e.sha256 === ref.sha256 && e.record.kind === 'feedback' && researchValidity(s, e).current, 'Feedback reference must be current');
+      const domain = projectDomain(s), e = domain.entry(s, ref.record_id, ref.revision);
+      requireThat(e.sha256 === ref.sha256 && domain.accepted_feedback_kinds.includes(e.record.kind) && domain.validity(s, e).current,
+        'Feedback reference must be current');
     }
     for (const check of input.checks) check.evidence.forEach((ref) => artifactCheck(s.project.workspace, ref));
     const files = new Map((active(s)?.files || []).map((f) => [f.target, clone(f)]));

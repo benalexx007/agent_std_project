@@ -5,6 +5,7 @@ import { AsyncLocalStorage } from 'node:async_hooks';
 import { clone, now, requireThat, writeJSON, id, hash } from './util.mjs';
 import { resourceDefaults, initialPools } from './resources.mjs';
 import { installUnits, workKey } from './work.mjs';
+import { projectDomain } from './domains.mjs';
 
 export class Store {
   constructor(workspace, create = false) {
@@ -59,9 +60,11 @@ export class Store {
       const state = this.read();
       this.writeGuards.getStore()?.(state);
       requireThat([4, 5].includes(state.schema_version) || this.migrating || this.legacyControl && state.schema_version === 3, 'State requires explicit v4 migration before writes; GUI services additionally require upgrade-gui');
+      if (!this.migrating && !this.legacyControl) projectDomain(state);
       const priorConfig = state.config_hash;
       const result = fn(state);
       requireThat(!result || typeof result.then !== 'function', 'State transactions must be synchronous');
+      if (!this.migrating && !this.legacyControl) projectDomain(state);
       if (this.legacyControl) requireThat(state.schema_version === 3 && state.config_hash === priorConfig && !Object.keys(state.extension_calls || {}).length,
         'Legacy control cannot migrate, change configuration or introduce extensions');
       this.db.prepare('UPDATE state SET payload=? WHERE id=1').run(JSON.stringify(state));

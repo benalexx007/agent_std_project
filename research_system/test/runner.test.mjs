@@ -4,7 +4,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { spawn, execFileSync } from 'node:child_process';
 import { fixture, task, spec } from './helpers.mjs';
-import { runTask } from '../src/runner.mjs';
+import { runTask, runAttempt } from '../src/runner.mjs';
 import { control, beginAttempt, finishAttempt } from '../src/engine.mjs';
 import { ROOT } from '../src/util.mjs';
 import { parseOutput, invocation, usageEvidence } from '../adapters/index.mjs';
@@ -187,3 +187,23 @@ test('usage report labels fixture tokens and does not invent human active time',
   assert.equal(report.tokens_per_structurally_accepted_task, 30);
   assert.match(report.limitations.join(' '), /not a scientifically accepted/);
 });
+
+// Parent exit must not overwrite independently observed helper lifecycle/receipts.
+for (const helperState of ['completed', 'failed', 'running']) {
+ test('root exit preserves extension job '+helperState+' and gates final checkpoint', async (t) => {
+  const { store } = fixture(t); task(store);
+  const transaction=store.transaction.bind(store);let injected=false;
+  store.transaction=(fn)=>transaction(state=>{
+   const value=fn(state);
+   const a=Object.values(state.attempts).find(a=>a.job_refs.some(j=>j.kind!=='extension'));
+   if(a&&!injected){injected=true;a.job_refs.push({job_id:'independent_helper',kind:'extension',owner_attempt:a.attempt_id,observed_state:helperState,pid:null,child_coverage:'verified_no_children',descendants_state:'none',receipt_sha256:'receipt-marker'});}
+   return value;
+  });
+  const a=await runAttempt(store,'review_scope','local',1,'preserve-helper');
+  const job=a.job_refs.find(j=>j.job_id==='independent_helper');
+  assert.equal(job.observed_state,helperState);assert.equal(job.descendants_state,'none');assert.equal(job.receipt_sha256,'receipt-marker');
+  assert.equal(a.settled,helperState!=='running');
+  assert.equal(Boolean(a.final_checkpoint_id),helperState!=='running');
+  assert.notEqual(a.error,'Final checkpoint requires a current validated completed result');
+ });
+}

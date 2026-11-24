@@ -1,16 +1,16 @@
 import fs from 'node:fs';
-import { executionRoot, isolated, reserveWorkspace, publicationPending } from './workspaces.mjs';
+import { executionRoot, isolated, reserveWorkspace, publicationPending, currentHash } from './workspaces.mjs';
 import path from 'node:path';
 import { id, now, clone, requireThat, artifactCheck, confined, hash, fileHash } from './util.mjs';
 import { contract } from './schema.mjs';
 import { resolveTask } from './config.mjs';
-import { buildContext } from './context.mjs';
+import { buildContext, executionContext } from './context.mjs';
 import { capabilities } from '../adapters/index.mjs';
 import { installUnits, getUnit, workKey, assignmentCurrent, completeUnit, publicationOrder } from './work.mjs';
 import { estimateUnit, budgetAdmission, poolIds, settleUsage } from './resources.mjs';
 import { loadCheckpoint } from './checkpoints.mjs';
 import { classifyFailure } from './failures.mjs';
-import { researchState } from './research.mjs';
+import { projectDomain } from './domains.mjs';
 import { benchmarkAdmission, benchmarkDispatchAllowed, benchmarkFinished } from './benchmarks.mjs';
 import { modelForBackend } from './models.mjs';
 import { validatePlanningReview } from './planning.mjs';
@@ -72,6 +72,7 @@ export function scopeTasks(state, target) {
 }
 export function registerTask(store, input, override = {}, options = {}) {
   return store.transaction((state) => {
+    projectDomain(state);
     if (options.parentAttemptId) {
       const parent = state.attempts[options.parentAttemptId];
       requireThat(parent && !parent.settled && parent.effective_config.role === 'orchestrator' && dispatchAllowed(state, parent.attempt_id, parent.runner_token), 'Stale orchestration parent');
@@ -88,6 +89,7 @@ export function registerTask(store, input, override = {}, options = {}) {
 }
 export function reviseTask(store, input, owner, epoch) {
   return store.transaction((state) => {
+    projectDomain(state);
     checkOwner(state, owner, epoch);
     const existing = taskAt(state, input.task_id);
     requireThat(!existing.attempts.some((aid) => ACTIVE.has(state.attempts[aid].observed_state) || state.attempts[aid].observed_state === 'unknown'), 'Resolve active/unknown attempts before revising');
@@ -274,7 +276,7 @@ export function beginAttempt(store, taskId, owner, epoch, dispatchKey, options =
         model_tier: task.model_tier || null, model_selection: task.model_selection, skills: task.skills, budget: task.budget },
       ...(task.extension_profile && task.extension_profile !== 'none' ? { extension_binding: resolveExtensions(state.config, task) } : {}),
       config_hash: state.config_hash, work_unit_id: unit.spec.work_unit_id,
-      research_refs: (context.packet.research?.records || []).map((e) => ({ record_id: e.record.record_id, revision: e.record.revision, sha256: e.sha256 })),
+      [projectDomain(state).snapshot_key]: (context.packet[projectDomain(state).packet_key]?.records || []).map((e) => ({ record_id: e.record.record_id, revision: e.record.revision, sha256: e.sha256 })),
       bundle_refs: context.packet.bundle_refs,
       ...(benchmark ? { benchmark_request_id: benchmark.request_id } : {}),
       assignment_id: assignmentId, assignment_generation: unit.generation + 1,
@@ -287,9 +289,7 @@ export function beginAttempt(store, taskId, owner, epoch, dispatchKey, options =
       created_at: attempt.timestamps.created_at,
       protocol_version: attempt.protocol_version, owner_epoch: attempt.owner_epoch,
       assignment_generation: attempt.assignment_generation, work_unit_id: attempt.work_unit_id };
-    context.text = JSON.stringify(context.packet, null, 2);
-    requireThat(context.text.length <= state.config.context.max_chars, 'Context with dispatch identity exceeds max_chars');
-    context.sha256 = hash(context.text); context.characters = context.text.length;
+    executionContext(context, state.project.workspace, attempt.workspace, state.config.context.max_chars);
     attempt.context_hash = context.sha256; attempt.context_characters = context.characters;
     const admission = budgetAdmission(state, { ...record, spec: task }, unit, backendName, context, Boolean(recovery));
     if (!admission.allowed) throw Object.assign(new Error(admission.message), { code: 'RESOURCE_ADMISSION', admission });
@@ -318,6 +318,13 @@ export function beginAttempt(store, taskId, owner, epoch, dispatchKey, options =
     record.attempts.push(attempt.attempt_id); record.status = 'running';
     return { attempt, context, task: clone(task), backend: clone(backend), duplicate: false };
   });
+}
+// Full admission preview on a private clone; creates no reservation, workspace or worker.
+// Its identity is provisional. Actual dispatch must recheck all barriers and input hashes.
+export function previewAttempt(state, taskId, options = {}) {
+  const snapshot = clone(state);
+  const memory = { transaction: (fn) => fn(snapshot) };
+  return beginAttempt(memory, taskId, snapshot.owner.id, snapshot.owner.epoch, id('preview'), options);
 }
 export function dispatchAllowed(state, attemptId, runnerToken) {
   const a = state.attempts[attemptId];
@@ -401,7 +408,9 @@ export function finishAttempt(store, attemptId, outcome) {
     if (outcome.result) {
       if (isolated(attempt) && outcome.result.status === 'completed') {
         const j = state.publications?.[attempt.publication_id];
-        requireThat(j?.status === 'pending' && j.phase === 'files_installed' && state.publication === j.publication_id &&
+        requireThat(j?.phase === 'files_installed' && (j.status === 'pending' && state.publication === j.publication_id ||
+          j.status === 'accepted' && attempt.recovered_result_termination && !hasLiveJobs(attempt) &&
+          j.outputs.every((r) => currentHash(state.project.workspace, r.path) === r.sha256)) &&
           hash(JSON.stringify(j.outcome.result)) === hash(JSON.stringify(outcome.result)), 'Isolated result requires journaled publication');
       }
       validateResult(state, attempt, outcome.result);
@@ -609,7 +618,7 @@ export function handoff(state) {
     work_units: clone(state.work_units), assignments: clone(state.assignments), checkpoints: clone(state.checkpoints),
     extension_calls: clone(state.extension_calls), extension_usage: clone(state.extension_usage),
     recoveries: clone(state.recoveries), pools: clone(state.pools),
-    research: clone(researchState(state)), improvements: clone(state.improvements || {}), benchmarks: clone(state.benchmarks || {}),
+    [projectDomain(state).handoff_key]: clone(projectDomain(state).state(state)), improvements: clone(state.improvements || {}), benchmarks: clone(state.benchmarks || {}),
     next_actions: Object.values(state.tasks).filter((t) => t.status !== 'completed').map((t) => t.spec.task_id + ': ' + t.status) });
 }
 export function reconcile(store, observations = []) {
@@ -623,8 +632,9 @@ export function reconcile(store, observations = []) {
         requireThat(observation.descendants_verified === true, 'Reconciliation must explicitly verify untracked descendants, not only the parent process');
       }
       requireThat(['cancelled', 'failed'].includes(observation.status), 'Use import-result for completed output');
+      requireThat(!hasLiveJobs(attempt), 'Reconciliation requires terminal external/extension job observations');
       attempt.observed_state = observation.status;
-      attempt.job_refs = attempt.job_refs.map((job) => job.kind === 'external' ? job : {
+      attempt.job_refs = attempt.job_refs.map((job) => ['external', 'extension'].includes(job.kind) ? job : {
         ...job, observed_state: 'exited', descendants_state: 'verified_terminal', reconciled_at: now()
       });
       attempt.reconciliation = { at: now(), evidence: clone(observation.evidence) };

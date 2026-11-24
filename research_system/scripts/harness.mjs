@@ -7,6 +7,7 @@ import { loadConfig, resolveTask } from '../src/config.mjs';
 import { Store } from '../src/store.mjs';
 import { buildContext, buildOrchestratorContext } from '../src/context.mjs';
 import { runTask } from '../src/runner.mjs';
+import { previewAttempt } from '../src/engine.mjs';
 import { registerTask, reviseTask, control, requestDecision, answerDecision, takeOwnership,
   handoff, reconcile, recordRun, recordClaim, finishAttempt, reopenTask, validateResult, checkOwner, adoptResult, registerJob, observeJob, ACTIVE } from '../src/engine.mjs';
 import { getUnit } from '../src/work.mjs';
@@ -17,6 +18,7 @@ import { capabilities } from '../adapters/index.mjs';
 import { collectResults, checkEvidence, verifyArtifacts } from '../src/artifacts.mjs';
 import { usageReport } from '../src/report.mjs';
 import { recordResearch, researchEntry, researchValidity, researchReview, renderResearch } from '../src/research.mjs';
+import { projectDomain, availableDomains } from '../src/domains.mjs';
 import { proposeImprovement, activateImprovement } from '../src/improvements.mjs';
 import { requestBenchmark, confirmBenchmark, supersedeBenchmark } from '../src/benchmarks.mjs';
 import { selectModel } from '../src/models.mjs';
@@ -29,6 +31,7 @@ import { ROOT, id, now, readJSON, writeJSON, writeText, requireThat, clone, hash
 
 import { extensionDocuments } from '../src/extensions.mjs';
 import { runExtension, reconcileExtensionCall } from '../src/extension-runner.mjs';
+import { recoverExtensionReceipt } from '../src/extension-recovery.mjs';
 import { inspectProject, renderInspection, INSPECT_SECTIONS } from '../src/inspection.mjs';
 import { GuiService, GUI_ACTIONS, GUI_REQUEST_SCHEMA, GUI_DATA_FIELDS } from '../src/gui-service.mjs';
 import { connectGui, disconnectGui } from '../src/gui-connect.mjs';
@@ -87,6 +90,7 @@ export const HELP = [
   'record-research --file record.json --owner ID --epoch N [--attempt ID]',
   'read-research --record ID [--revision N] | review-research [--task ID]',
   'export-research --task ID [--format json|markdown] [--out FILE]',
+  'record-domain/read-domain/review-domain/export-domain: domain-neutral aliases for the matching record commands',
   'hash-artifact --file WORKSPACE_RELATIVE_PATH',
   'propose-improvement --file change.json --owner ID --epoch N',
   'activate-improvement --change ID|original --owner ID --epoch N | list-improvements',
@@ -108,18 +112,19 @@ export async function main(argv = process.argv.slice(2)) {
     attempt: { type: 'string' }, unit: { type: 'string' }, pool: { type: 'string' }, job: { type: 'string' }, help: { type: 'boolean', default: false },
     record: { type: 'string' }, change: { type: 'string' }, request: { type: 'string' }, format: { type: 'string' },
     full: { type: 'boolean', default: false }, section: { type: 'string' },
-    auth: { type: 'string' },
-    backend: { type: 'string' }, 'task-class': { type: 'string' }, 'model-tier': { type: 'string' }, tasks: { type: 'string' }
+    auth: { type: 'string' }, 'historical-receipt': { type: 'boolean', default: false }, 'receipt-sha256': { type: 'string' },
+    backend: { type: 'string' }, domain: { type: 'string' }, 'task-class': { type: 'string' }, 'model-tier': { type: 'string' }, tasks: { type: 'string' }
   } });
   const command = parsed.positionals[0];
   const o = parsed.values;
   if (!command || o.help) return HELP;
   if (command === 'gui-catalog') return { request_schema: GUI_REQUEST_SCHEMA, actions: GUI_ACTIONS, data_fields: GUI_DATA_FIELDS,
+    domains: availableDomains(),
     transport: 'project-bound CLI; no extra runtime or MCP required', human_only: ['confirm-gui-change', 'answer-decision', 'confirm-benchmark'],
     documentation: path.join(ROOT, 'docs/gui-integration.md') };
   if (['connect-gui', 'disconnect-gui'].includes(command)) {
     requireThat(o.workspace && !o.config && o.backend, 'Connection requires --workspace and --backend');
-    return command === 'connect-gui' ? connectGui(o.workspace, o.backend) : disconnectGui(o.workspace, o.backend);
+    return command === 'connect-gui' ? connectGui(o.workspace, o.backend, o.domain) : disconnectGui(o.workspace, o.backend);
   }
   if (['upgrade-gui', 'gui-attach', 'gui-action', 'confirm-gui-change'].includes(command)) {
     requireThat(o.workspace && !o.config, 'GUI commands require one fixed --workspace');
@@ -148,7 +153,7 @@ export async function main(argv = process.argv.slice(2)) {
     if (report.errors.length) process.exitCode = 1;
     return o.format === 'json' ? report : renderInspection(report, { full: o.full || Boolean(o.section), width: process.stdout.columns || 100 });
   }
-  const emergencyCommands = ['status', 'control-task', 'reconcile-state', 'observe-job', 'create-handoff', 'migrate-state', 'recover-publication', 'reconcile-extension', 'extension-calls'];
+  const emergencyCommands = ['status', 'control-task', 'reconcile-state', 'observe-job', 'create-handoff', 'migrate-state', 'recover-publication', 'reconcile-extension', 'recover-extension', 'extension-calls'];
   requireThat(o.config || o.workspace, '--config or --workspace is required');
   let store;
   const loaded = o.workspace ? (() => {
@@ -181,6 +186,7 @@ export async function main(argv = process.argv.slice(2)) {
     const legacyControl = store.read.bind(store);
     if (command !== 'init' && legacyControl().schema_version === 3 && ['control-task', 'reconcile-state', 'observe-job', 'recover-publication'].includes(command)) store.enableLegacyControl();
     if (command === 'extension-calls') return Object.values(store.read().extension_calls || {}).filter((c) => !o.attempt || c.attempt_id === o.attempt);
+    if (command === 'recover-extension') return await recoverExtensionReceipt(store, o.request, o.owner, Number(o.epoch), { historicalReceipt: o['historical-receipt'] === true, receiptSha256: o['receipt-sha256'] });
     if (command === 'reconcile-extension') return reconcileExtensionCall(store, o.request, o.owner, Number(o.epoch));
     if (command === 'extension-call') {
       requireThat(o.execute, 'Use --execute for an explicitly scoped extension call');
@@ -235,13 +241,7 @@ export async function main(argv = process.argv.slice(2)) {
         if (['run-task', 'run-orchestrator'].includes(command) && o.execute) return await runTask(store, o.task, o.owner, o.epoch, o.key);
         const state = store.read();
         requireThat(Object.hasOwn(state.tasks, o.task), 'Unknown task');
-        const unit = getUnit(state, o.task, o.unit);
-        const task = { ...state.tasks[o.task].spec, objective: unit.spec.objective, expected_artifacts: unit.spec.expected_artifacts };
-        const context = buildContext(state.config, task, Object.values(state.decisions), state.tasks[o.task].notes || [], state);
-        context.packet.work_unit = unit.spec;
-        if (unit.checkpoint_id) context.packet.checkpoint = loadCheckpoint(state, unit.checkpoint_id);
-        context.text = JSON.stringify(context.packet, null, 2); context.characters = context.text.length; context.sha256 = hash(context.text);
-        requireThat(context.characters <= state.config.context.max_chars, 'Context with work unit/checkpoint exceeds max_chars');
+        const context = previewAttempt(state, o.task, { unitId: o.unit }).context;
         if (o.out) writeJSON(path.resolve(o.out), context.packet);
         return { executed: false, sha256: context.sha256, characters: context.characters, packet: context.packet };
       }
@@ -325,14 +325,26 @@ export async function main(argv = process.argv.slice(2)) {
       case 'reconcile-state': return reconcile(store, o.file ? readJSON(o.file) : []);
       case 'record-run': return recordRun(store, readJSON(o.file));
       case 'record-claim': return recordClaim(store, readJSON(o.file));
-      case 'record-research': return recordResearch(store, readJSON(o.file), o.owner, o.epoch, o.attempt);
-      case 'read-research': {
-        const s = store.read(), entry = researchEntry(s, o.record, o.revision ? Number(o.revision) : undefined);
-        return { ...entry, validity: researchValidity(s, entry) };
+      case 'record-research': case 'record-domain': {
+        const domain = projectDomain(store.read());
+        requireThat(command === 'record-domain' || domain.id === 'research', 'Research command requires a Research project');
+        return domain.record(store, readJSON(o.file), o.owner, o.epoch, o.attempt);
       }
-      case 'review-research': return researchReview(store.read(), o.task);
-      case 'export-research': {
-        const result = renderResearch(store.read(), o.task);
+      case 'read-research': case 'read-domain': {
+        const s = store.read(), domain = projectDomain(s);
+        requireThat(command === 'read-domain' || domain.id === 'research', 'Research command requires a Research project');
+        const entry = domain.entry(s, o.record, o.revision ? Number(o.revision) : undefined);
+        return { ...entry, validity: domain.validity(s, entry) };
+      }
+      case 'review-research': case 'review-domain': {
+        const s = store.read(), domain = projectDomain(s);
+        requireThat(command === 'review-domain' || domain.id === 'research', 'Research command requires a Research project');
+        return domain.review(s, o.task);
+      }
+      case 'export-research': case 'export-domain': {
+        const s = store.read(), domain = projectDomain(s);
+        requireThat(command === 'export-domain' || domain.id === 'research', 'Research command requires a Research project');
+        const result = domain.render(s, o.task);
         requireThat(!o.format || ['json', 'markdown'].includes(o.format), 'Unknown export format');
         if (o.out) {
           if (o.format === 'markdown') writeText(path.resolve(o.out), result.markdown);

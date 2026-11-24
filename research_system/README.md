@@ -6,6 +6,10 @@ README này là điểm bắt đầu để hiểu và review domain Research. To
 
 **Dành cho người dùng:** đọc [hướng dẫn sử dụng từng bước](docs/user-guide.md) để chuẩn bị project, kết nối GUI, giao việc qua orchestrator, tùy chỉnh cấu hình, xem tiến độ và xử lý lỗi. Có prompt mẫu và phần terminal tùy chọn.
 
+**Foundation 02/11/2026 — trên nhánh `feat/multi-domain-foundation`:** [plan refactor đa domain Research/Application](docs/multi-domain-integration-plan.md) và [báo cáo kiểm thử](docs/verification/multi-domain-foundation-2026-11-02.md). Shared harness gọi qua Research façade và chặn sai domain; Application chưa được kích hoạt. Phần writer isolation, hợp đồng và nghiệm thu Application thuộc đợt sau.
+
+Đợt implementation hiện tại chỉ hoàn thiện **shared harness và Research façade**. [Bản nháp hợp đồng Application](docs/application-domain-contract-draft.md) để dành cho đợt kích hoạt sau; chưa có Application runtime.
+
 **Implementation 0.7.0, 29/10/2026:** [kết nối GUI, cấu hình qua hội thoại và inspect](docs/gui-integration.md), [plan và trạng thái](docs/plugin-integration-plan.md), [nghiên cứu xác minh](docs/gui-integration-validation.md) và [nghiệm thu tối thiểu](docs/plugin-acceptance-plan.md). GUI làm orchestrator, shared core giữ managed workers liên backend. Chọn entry skill + bound CLI; không cần runtime ngoài/plugin/MCP. State v4 tương thích; GUI services cần explicit upgrade v5. Live GUI/backend acceptance còn pending.
 
 Đã có project connections cho Codex/Claude/Antigravity, attachment fencing, config preview/CAS/rollback và immutable overlays, async managed handles, native-observed result bridge, bounded reads/redacted logs và terminal inspect. [Evidence 0.7.0](docs/verification/gui-evidence.json) là software checks; generation/fixtures không chứng nhận host loader, model hoặc native permissions. Không có live benchmark trong đợt implementation này.
@@ -268,7 +272,7 @@ V1 nghiệm thu tính đúng vận hành, cơ chế hỗ trợ nghiên cứu, wa
 
 | Benchmark | Mục đích | Trạng thái |
 |---|---|---|
-| [B01](docs/benchmarks/B01-research-updates.md) | Hypotheses, phản chứng và kết luận có mức độ chắc chắn phù hợp | Có [protocol/campaign v2 lịch sử](benchmark-runs/b01_20261025_02/protocol.md); chưa duyệt/chạy; source/path fingerprints đã cũ, cần chuẩn bị request mới trước khi sử dụng |
+| [B01](docs/benchmarks/B01-research-updates.md) | Hypotheses, phản chứng và kết luận có mức độ chắc chắn phù hợp | Có protocol/campaign v2 lịch sử (local, not committed); chưa duyệt/chạy; source/path fingerprints đã cũ, cần chuẩn bị request mới trước khi sử dụng |
 | [B02](docs/benchmarks/B02-mathematical-reasoning.md) | Suy dẫn, giả định, phản ví dụ và calibration của proof | Template; chưa chốt campaign, instances/verifier/model stages |
 | [B03](docs/benchmarks/B03-experimental-design.md) | Chọn phép thử, fidelity phép đo và empirical falsification | Template; chưa chốt campaign, simulator/reference/model stages |
 

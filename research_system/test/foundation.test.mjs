@@ -79,3 +79,17 @@ test('unknown recovered output requires owner and descendant evidence and does n
   assert.equal(verified.observed_state, 'unknown');
   assert(verified.recovered_result_termination);
 });
+
+
+test('recovered termination preserves extension receipts and refuses unresolved helper jobs', (t) => {
+  const {store,directory}=fixture(t); task(store);
+  const a=beginAttempt(store,'review_scope','local',1,'helper-recovery').attempt;
+  finishAttempt(store,a.attempt_id,{status:'unknown'});
+  fs.writeFileSync(path.join(directory,'proof.txt'),'terminal helper receipt');
+  const observation={attempt_id:a.attempt_id,evidence:[{path:'proof.txt',sha256:fileHash(path.join(directory,'proof.txt'))}],descendants_verified:true};
+  store.transaction(s=>s.attempts[a.attempt_id].job_refs.push({job_id:'helper',kind:'extension',observed_state:'running'}));
+  assert.throws(()=>verifyResultTermination(store,a.attempt_id,observation,'local',1),/Resolve registered/);
+  store.transaction(s=>s.attempts[a.attempt_id].job_refs[0].observed_state='completed');
+  const recovered=verifyResultTermination(store,a.attempt_id,observation,'local',1);
+  assert.equal(recovered.job_refs[0].observed_state,'completed');
+});

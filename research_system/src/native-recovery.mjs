@@ -30,9 +30,9 @@ export function verifyResultTermination(store, attemptId, observation, owner, ep
     requireThat(observation.attempt_id === attemptId && observation.evidence?.length && observation.descendants_verified === true,
       'Recovered output needs attempt-scoped termination evidence including descendants');
     observation.evidence.forEach((r) => artifactCheck(s.project.workspace, r));
-    requireThat(a.job_refs.every((j) => j.kind !== 'external' || ['completed', 'failed', 'cancelled'].includes(j.observed_state)),
+    requireThat(a.job_refs.every((j) => !['external', 'extension'].includes(j.kind) || ['completed', 'failed', 'cancelled', 'stopped'].includes(j.observed_state)),
       'Resolve registered external jobs individually before importing output');
-    a.job_refs = a.job_refs.map((j) => j.kind === 'external' ? j :
+    a.job_refs = a.job_refs.map((j) => ['external', 'extension'].includes(j.kind) ? j :
       { ...j, observed_state: 'exited', descendants_state: 'verified_terminal', reconciled_at: now() });
     a.recovered_result_termination = { evidence: clone(observation.evidence), at: now(), owner, epoch: Number(epoch),
       trust: 'operator_attestation_not_automatic_process_verification' };

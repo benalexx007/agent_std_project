@@ -1,15 +1,18 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { confined, hash, requireThat, fileHash } from './util.mjs';
-import { researchProfile, researchPacket, researchState, REFERENCE_FILES } from './research.mjs';
 import { bundleResource } from './improvements.mjs';
 import { orchestratorModel } from './models.mjs';
-import { isPlanning, PLANNING_REQUIREMENTS } from './planning.mjs';
+import { isPlanning } from './planning.mjs';
 import { readBundleText } from './bundle-cache.mjs';
 
 import { resolveExtensions } from './extensions.mjs';
+import { activeDomain, projectDomain } from './domains.mjs';
 
 export function buildContext(config, task, decisions = [], updates = [], state = null) {
+  const domain = activeDomain(config.project.domain);
+  requireThat(task.domain === domain.id, 'Task domain differs from project');
+  if (state) projectDomain(state);
   const role = config.roles[task.role];
   const bundleRefs = new Map();
   const readBundle = (ref) => {
@@ -18,15 +21,8 @@ export function buildContext(config, task, decisions = [], updates = [], state =
     bundleRefs.set(ref, resource.ref);
     return content;
   };
-  const profile = researchProfile(config, task);
+  const { profile, guidance } = domain.guidance(config, task, readBundle, isPlanning(task));
   const extensions = resolveExtensions(config, task);
-  const needsReasoning = task.skills.some((name) => ['research-design', 'research-experiment', 'research-evaluate'].includes(name));
-  const modes = needsReasoning ? (profile?.reasoning_modes || (task.study_type === 'theoretical' ? ['mathematical', 'verification'] : [])) : [];
-  const guidance = [...new Set(modes)].map((mode) => ({ mode, path: REFERENCE_FILES[mode], instructions: readBundle(REFERENCE_FILES[mode]) }));
-  if (isPlanning(task)) {
-    const ref = 'skills/research-design/references/planning-verification.md';
-    guidance.push({ mode: 'planning_verification', path: ref, instructions: readBundle(ref) });
-  }
   const skills = task.skills.map((name) => ({ name, instructions: readBundle(path.join(config.skills[name], 'SKILL.md')) }));
   const inputs = task.inputs.map((ref) => {
     const file = confined(config.project.workspace, ref.path);
@@ -48,14 +44,11 @@ export function buildContext(config, task, decisions = [], updates = [], state =
     role_instructions: readBundle(role.profile),
     task,
     task_output_requirements: state?.tasks[task.task_id]?.spec.expected_artifacts || task.expected_artifacts,
-    ...(isPlanning(task) ? { planning_requirements: PLANNING_REQUIREMENTS } : {}),
-    research_profile: profile,
-    research_guidance: guidance,
-    research: state ? researchPacket(state, task) : null,
-    research_contract: 'schemas/research-record.schema.json; record-research / review-research / export-research. A stored verdict is an attestation, not a proof.',
+    ...(isPlanning(task) ? { planning_requirements: domain.planning_requirements } : {}),
+    ...domain.workerFields(config, task, state, profile, guidance),
     skill_catalog: Object.keys(config.skills),
     active_skills: skills,
-    study_guidance: readBundle('domains/research/rubrics/' + task.study_type + '.md'),
+    study_guidance: readBundle(domain.rubric(task)),
     inputs,
     user_updates: updates,
     decisions: decisions.filter((d) => d.status === 'answered' && d.affected_tasks.includes(task.task_id) && d.task_revisions[task.task_id] === task.task_revision),
@@ -73,7 +66,15 @@ export function buildContext(config, task, decisions = [], updates = [], state =
   requireThat(text.length <= config.context.max_chars, 'Context exceeds max_chars; narrow inputs or skill selection (no silent truncation)');
   return { packet, text, sha256: hash(text), characters: text.length, tokenizer_tokens: null };
 }
+export function executionContext(context, controlRoot, workspace, maxChars) {
+  if (workspace) Object.assign(context.packet, { control_root: controlRoot, workspace: workspace.root, workspace_mode: workspace.mode });
+  context.text = JSON.stringify(context.packet, null, 2);
+  context.characters = context.text.length; context.sha256 = hash(context.text);
+  requireThat(context.characters <= maxChars, 'Execution context exceeds max_chars (includes work unit, checkpoint, dispatch identity and workspace metadata)');
+  return context;
+}
 export function buildOrchestratorContext(state, taskClass, options = {}) {
+  const domain = projectDomain(state);
   const config = state.config;
   const selected = orchestratorModel(config, taskClass);
   const ids = options.taskIds || Object.keys(state.tasks).filter((tid) => !['completed', 'cancelled'].includes(state.tasks[tid].status));
@@ -88,22 +89,22 @@ export function buildOrchestratorContext(state, taskClass, options = {}) {
     reasoning_effort: selected.reasoning_effort,
     model_selection: selected.model_selection,
     model_policy: config.model_policy || null,
-    ...(selected.model_selection.task_class === 'synthesis_planning' ? { planning_requirements: PLANNING_REQUIREMENTS } : {}),
+    ...(selected.model_selection.task_class === 'synthesis_planning' ? { planning_requirements: domain.planning_requirements } : {}),
     objective: config.project.objective,
     owner: state.owner,
     desired_state: state.desired_state,
     selection: { task_ids: [...scope], omitted_tasks: Object.keys(state.tasks).filter((tid) => !visible(tid)),
       mode: options.taskIds ? 'explicit_scope_with_dependencies' : 'active_frontier_with_dependencies',
       lookup: 'harness_status(task_ids) or prepare-orchestrator --tasks; no silent truncation' },
-    instructions: fs.readFileSync(bundleResource(config, state, 'domains/research/roles/orchestrator.md').file, 'utf8'),
+    instructions: fs.readFileSync(bundleResource(config, state, domain.orchestrator_profile).file, 'utf8'),
     config_hash: state.config_hash,
     roles: config.roles,
     extension_policy: config.extensions ? { enabled: config.extensions.enabled,
       profiles: Object.fromEntries(Object.entries(config.extensions.profiles).map(([name, p]) => [name, {
         roles: p.roles, backends: p.backends, operations: p.operations, network: p.network }])),
       selection: 'Set worker extension_profile explicitly; coordinator has no helper execution permission.' } : null,
-    research_profile: config.research_profile || null,
-    research_index: Object.values(researchState(state).records).filter((history) => visible(history.at(-1).record.task_id)).map((history) => {
+    ...domain.orchestratorFields(config),
+    [domain.index_key]: Object.values(domain.state(state).records).filter((history) => visible(history.at(-1).record.task_id)).map((history) => {
       const e = history.at(-1); return { record_id: e.record.record_id, revision: e.record.revision, task_id: e.record.task_id, kind: e.record.kind, sha256: e.sha256 };
     }),
     improvement_index: state.improvements ? { active: state.improvements.active, changes: Object.keys(state.improvements.changes) } : null,

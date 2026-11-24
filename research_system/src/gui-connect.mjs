@@ -1,21 +1,27 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { ROOT, requireThat, confined, hash, readJSON } from './util.mjs';
+import { readProjectState } from './inspection.mjs';
+import { activeDomain } from './domains.mjs';
 
 // Project-local entry, not a package installation or a claim about a running GUI loader.
-export function connectGui(workspace, host) {
+export function connectGui(workspace, host, requestedDomain) {
   requireThat(['codex', 'claude', 'antigravity'].includes(host), 'Unsupported GUI host');
   const root = fs.realpathSync(workspace);
-  const base = host === 'claude' ? '.claude/skills/research-project' : host === 'antigravity' ? '.agents/skills/research-project-antigravity' : '.agents/skills/research-project';
+  const state = readProjectState(root);
+  requireThat(!state || state.project?.domain === state.config?.project?.domain, 'GUI connection state/config domain mismatch');
+  requireThat(!state || !requestedDomain || requestedDomain === state.project.domain, 'GUI connection domain differs from state');
+  const domain = activeDomain(state?.project?.domain || requestedDomain || 'research');
+  const base = host === 'claude' ? '.claude/skills/' + domain.gui_name : host === 'antigravity' ? '.agents/skills/' + domain.gui_name + '-antigravity' : '.agents/skills/' + domain.gui_name;
   const manifestPath = '.agentic/gui-connections/' + host + '.json';
-  const entry = fs.readFileSync(path.join(ROOT, 'integrations/research-project/SKILL.md'), 'utf8').replace('name: research-project\n', 'name: ' + path.basename(base) + '\n');
-  const connection = { version: 1, host, workspace: root, node: process.execPath, harness: path.join(ROOT, 'scripts/harness.mjs'),
+  const entry = fs.readFileSync(path.join(ROOT, domain.gui_entry), 'utf8').replace('name: ' + domain.gui_name + '\n', 'name: ' + path.basename(base) + '\n');
+  const connection = { version: domain.gui_connection_version, host, ...(domain.id !== 'research' ? { domain: domain.id } : {}), workspace: root, node: process.execPath, harness: path.join(ROOT, 'scripts/harness.mjs'),
     host_file: path.join(root, base, 'host.json'),
     loader_status: host === 'antigravity' ? 'manual_entry_required_until_exact_surface_verified' : 'project_skill_requires_host_discovery_and_trust',
     limitations: 'Generation does not verify GUI loading, identity, model, permissions or native inventory' };
   const contents = { [base + '/SKILL.md']: entry, [base + '/connection.json']: JSON.stringify(connection, null, 2) + '\n',
     [base + '/host.json']: JSON.stringify({ host, surface: host === 'claude' ? 'code-desktop' : 'desktop' }, null, 2) + '\n' };
-  const manifest = { host, version: 1, files: Object.entries(contents).map(([p, text]) => ({ path: p, sha256: hash(text) })) };
+  const manifest = { host, version: domain.gui_connection_version, ...(domain.id !== 'research' ? { domain: domain.id } : {}), files: Object.entries(contents).map(([p, text]) => ({ path: p, sha256: hash(text) })) };
   contents[manifestPath] = JSON.stringify(manifest, null, 2) + '\n';
   const targets = Object.entries(contents).map(([relative, text]) => ({ file: confined(root, relative, false), relative, text }));
   // Preflight all conflicts before the first write. Never replace a user's skill.
@@ -28,7 +34,7 @@ export function connectGui(workspace, host) {
     }
   } catch (error) { for (const file of created.reverse()) { try { fs.unlinkSync(file); } catch {} } throw error; }
   return { ...connection, files: manifest.files, manifest: manifestPath, generated: true, loader_verified: false,
-    next: 'Open/trust this project in the chosen GUI; invoke research-project or read its entry explicitly. Initialize and upgrade state before attaching.' };
+    next: 'Open/trust this project in the chosen GUI; invoke ' + domain.gui_name + ' or read its entry explicitly. Initialize and upgrade state before attaching.' };
 }
 
 export function disconnectGui(workspace, host) {

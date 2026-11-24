@@ -2,7 +2,7 @@ import { checkAttemptRef } from './receipts.mjs';
 import fs from 'node:fs';
 import { artifactCheck, confined, hash } from './util.mjs';
 import { currentTaskResult } from './engine.mjs';
-import { researchReview } from './research.mjs';
+import { projectDomain } from './domains.mjs';
 
 export function verifyArtifacts(state, artifacts) {
   const findings = artifacts.map((ref) => {
@@ -13,7 +13,7 @@ export function verifyArtifacts(state, artifacts) {
 }
 export function checkEvidence(state) {
   const findings = [];
-  for (const entry of researchReview(state).records) findings.push({ record_id: entry.record.record_id,
+  for (const entry of projectDomain(state).review(state).records) findings.push({ record_id: entry.record.record_id,
     revision: entry.record.revision, passed: entry.validity.current, reasons: entry.validity.reasons });
   for (const claim of Object.values(state.claims)) {
     const checked = verifyArtifacts(state, [...claim.supporting, ...claim.contradicting]);
@@ -26,7 +26,7 @@ export function checkEvidence(state) {
     findings.push({ run_id: run.run_id, ...checked });
   }
   return { passed: findings.every((f) => f.passed), findings,
-    limitations: ['Verifies existence, hashes and structural links; does not judge scientific support, novelty, citations or statistical validity.'] };
+    limitations: [projectDomain(state).evidence_limitation] };
 }
 export function collectResults(state) {
   const results = Object.values(state.attempts).map((a) => {
@@ -45,5 +45,6 @@ export function collectResults(state) {
     return { attempt_id: a.attempt_id, task_id: a.task_id, status: a.result.status,
       validity: current ? 'current' : 'stale_or_changed', result: a.result, artifact_checks: checked };
   });
-  return { results, research: researchReview(state), usage: state.usage, limitations: ['Task completion is a transport/check result, not a scientific verdict.'] };
+  const domain = projectDomain(state);
+  return { results, [domain.results_key]: domain.review(state), usage: state.usage, limitations: [domain.result_limitation] };
 }

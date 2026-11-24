@@ -126,7 +126,14 @@ export function parseOutput(protocol, stdout) {
 export function usageEvidence(protocol, stdout) {
   try {
     let usage, cost = null;
-    if (protocol === 'claude-json') {
+    if (protocol === 'result-json') {
+      const envelope = JSON.parse(stdout);
+      if (envelope.adapter_failure?.version !== 1 || typeof envelope.adapter_failure?.code !== 'string' || typeof envelope.adapter_failure?.message !== 'string' || !envelope.usage) return null;
+      const u = envelope.usage;
+      usage = { input_tokens: u.input_tokens ?? null, output_tokens: u.output_tokens ?? null, cached_input_tokens: u.cached_input_tokens ?? null };
+      if (usage.cached_input_tokens !== null && (usage.input_tokens === null || usage.cached_input_tokens > usage.input_tokens)) return null;
+      cost = u.cost_usd ?? null;
+    } else if (protocol === 'claude-json') {
       const envelope = JSON.parse(stdout);
       const u = envelope.usage;
       if (!u) return null;

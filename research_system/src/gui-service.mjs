@@ -6,9 +6,10 @@ import { attachGui, checkedAttachment, attachmentInState, checkGuiTaskPaths } fr
 import { proposeGuiChange, applyGuiChange } from './gui-changes.mjs';
 import { dispatchGuiWork, publicOperation, assessNative, prepareNativeWork, observeNativeWork } from './gui-work.mjs';
 import { inspectProject, redactInspection } from './inspection.mjs';
-import { registerTask, reviseTask, reopenTask, control, requestDecision, handoff } from './engine.mjs';
+import { registerTask, reviseTask, reopenTask, control, requestDecision, handoff, previewAttempt } from './engine.mjs';
 import { buildContext, buildOrchestratorContext } from './context.mjs';
 import { recordResearch, researchReview, renderResearch } from './research.mjs';
+import { projectDomain, availableDomains } from './domains.mjs';
 import { runExtension } from './extension-runner.mjs';
 import { extensionDocuments } from './extensions.mjs';
 import { saveCheckpoint } from './checkpoints.mjs';
@@ -21,6 +22,7 @@ export const GUI_ACTIONS = {
   change: ['prepare', 'inspect', 'apply', 'rollback', 'overlay'],
   work: ['register', 'revise', 'reopen', 'prepare', 'dispatch', 'operation', 'operation_reconcile', 'control', 'native_assess', 'native_prepare', 'native_observe', 'checkpoint'],
   research: ['record', 'review', 'export'],
+  domain: ['record', 'review', 'export'],
   evidence: ['read', 'hash'], capability: ['list', 'describe', 'execute'],
   decision: ['request', 'pending'], diagnostic: ['inspect', 'handoff']
 };
@@ -43,6 +45,7 @@ export const GUI_DATA_FIELDS = {
   'work.native_observe': [['attempt_id', 'event_id', 'state', 'handle'], ['result', 'descendants_terminal', 'evidence', 'error']],
   'work.checkpoint': [['attempt_id', 'progress'], []],
   'research.record': [['record'], ['attempt_id']], 'research.review': [[], ['task_id']], 'research.export': [[], ['task_id']],
+  'domain.record': [['record'], ['attempt_id']], 'domain.review': [[], ['task_id']], 'domain.export': [[], ['task_id']],
   'evidence.read': [['root', 'path'], ['offset_bytes', 'max_bytes']], 'evidence.hash': [['path'], []],
   'capability.list': [[], []], 'capability.describe': [['operation'], []],
   'capability.execute': [['attempt_id', 'key', 'operation', 'arguments'], []],
@@ -62,7 +65,7 @@ function validateData(key, data) {
     requireThat(typeof data[field] === 'string' && data[field].length > 0 && data[field].length <= 256 && !['__proto__', 'constructor', 'prototype'].includes(data[field]), 'Invalid GUI identifier: ' + field);
 }
 const WRITE = new Set(['project.detach', 'project.observe', 'change.prepare', 'change.apply', 'change.rollback', 'change.overlay',
-  'work.register', 'work.revise', 'work.reopen', 'work.dispatch', 'work.operation_reconcile', 'work.control', 'work.native_prepare', 'work.native_observe', 'work.checkpoint', 'research.record', 'capability.execute', 'decision.request']);
+  'work.register', 'work.revise', 'work.reopen', 'work.dispatch', 'work.operation_reconcile', 'work.control', 'work.native_prepare', 'work.native_observe', 'work.checkpoint', 'research.record', 'domain.record', 'capability.execute', 'decision.request']);
 function readResource(s, data) {
   requireThat(data.root === 'workspace' || data.root === 'bundle', 'Read root must be workspace or bundle');
   if (data.root === 'bundle') {
@@ -108,7 +111,7 @@ export class GuiService {
     validateData(key, d);
     let result;
     switch (key) {
-      case 'project.status': result = { project: s.project, revision: s.gui.revision, owner: s.owner, binding: { ...a, token_hash: undefined }, pending: Object.values(s.decisions).filter((x) => x.status === 'pending') }; break;
+      case 'project.status': result = { project: s.project, domains: availableDomains(), revision: s.gui.revision, owner: s.owner, binding: { ...a, token_hash: undefined }, pending: Object.values(s.decisions).filter((x) => x.status === 'pending') }; break;
       case 'project.detach': result = store.transaction((next) => { checkedAttachment(store, auth, true); next.gui.attachments[a.attachment_id].detached_at = now(); return { detached: true, jobs_stopped: false }; }); break;
       case 'project.frontier': result = buildOrchestratorContext(s, d.task_class, { taskIds: d.task_ids }).packet; break;
       case 'project.observe': {
@@ -132,7 +135,7 @@ export class GuiService {
       case 'work.register': requireThat(resolveTask(s.config, d.task, d.override || {}).role !== 'orchestrator', 'GUI is already the orchestrator'); checkGuiTaskPaths(s, d.task); result = registerTask(store, d.task, d.override || {}); break;
       case 'work.revise': requireThat(d.task?.role !== 'orchestrator', 'GUI is already the orchestrator'); checkGuiTaskPaths(s, d.task); result = reviseTask(store, d.task, s.owner.id, s.owner.epoch); break;
       case 'work.reopen': result = reopenTask(store, d.task_id, d.review, s.owner.id, s.owner.epoch); break;
-      case 'work.prepare': { const t = Object.hasOwn(s.tasks, d.task_id) ? s.tasks[d.task_id] : null; requireThat(t, 'Unknown task'); checkGuiTaskPaths(s, t.spec); result = buildContext(s.config, t.spec, Object.values(s.decisions), t.notes || [], s).packet; break; }
+      case 'work.prepare': { const t = Object.hasOwn(s.tasks, d.task_id) ? s.tasks[d.task_id] : null; requireThat(t, 'Unknown task'); checkGuiTaskPaths(s, t.spec); result = previewAttempt(s, d.task_id).context.packet; break; }
       case 'work.dispatch': result = await dispatchGuiWork(store, auth, d); break;
       case 'work.operation': requireThat(s.gui.operations[d.operation_id], 'Unknown operation'); result = publicOperation(s.gui.operations[d.operation_id]); break;
       case 'work.operation_reconcile': {
@@ -151,9 +154,21 @@ export class GuiService {
       case 'work.native_prepare': result = await prepareNativeWork(store, auth, d); break;
       case 'work.native_observe': result = await observeNativeWork(store, auth, d); break;
       case 'work.checkpoint': requireThat(s.attempts[d.attempt_id]?.gui_provider?.attachment_id === a.attachment_id, 'Checkpoint binding mismatch'); result = saveCheckpoint(store, d.attempt_id, d.progress); break;
-      case 'research.record': result = recordResearch(store, d.record, s.owner.id, s.owner.epoch, d.attempt_id); break;
-      case 'research.review': result = researchReview(s, d.task_id); break;
-      case 'research.export': result = renderResearch(s, d.task_id); break;
+      case 'research.record': case 'domain.record': {
+        const domain = projectDomain(s);
+        requireThat(key === 'domain.record' || domain.id === 'research', 'Research action requires a Research project');
+        result = domain.record(store, d.record, s.owner.id, s.owner.epoch, d.attempt_id); break;
+      }
+      case 'research.review': case 'domain.review': {
+        const domain = projectDomain(s);
+        requireThat(key === 'domain.review' || domain.id === 'research', 'Research action requires a Research project');
+        result = domain.review(s, d.task_id); break;
+      }
+      case 'research.export': case 'domain.export': {
+        const domain = projectDomain(s);
+        requireThat(key === 'domain.export' || domain.id === 'research', 'Research action requires a Research project');
+        result = domain.render(s, d.task_id); break;
+      }
       case 'evidence.read': result = readResource(s, d); break;
       case 'evidence.hash': { const file = confined(s.project.workspace, d.path); result = { path: d.path, sha256: fileHash(file) }; break; }
       case 'capability.list': result = inspectProject({ workspace: s.project.workspace, section: 'capabilities' }); break;
