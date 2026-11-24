@@ -272,7 +272,7 @@ V1 nghiệm thu tính đúng vận hành, cơ chế hỗ trợ nghiên cứu, wa
 
 | Benchmark | Mục đích | Trạng thái |
 |---|---|---|
-| [B01](docs/benchmarks/B01-research-updates.md) | Hypotheses, phản chứng và kết luận có mức độ chắc chắn phù hợp | Có [protocol/campaign v2 lịch sử](benchmark-runs/b01_20261025_02/protocol.md); chưa duyệt/chạy; source/path fingerprints đã cũ, cần chuẩn bị request mới trước khi sử dụng |
+| [B01](docs/benchmarks/B01-research-updates.md) | Hypotheses, phản chứng và kết luận có mức độ chắc chắn phù hợp | Có protocol/campaign v2 lịch sử (local, not committed); chưa duyệt/chạy; source/path fingerprints đã cũ, cần chuẩn bị request mới trước khi sử dụng |
 | [B02](docs/benchmarks/B02-mathematical-reasoning.md) | Suy dẫn, giả định, phản ví dụ và calibration của proof | Template; chưa chốt campaign, instances/verifier/model stages |
 | [B03](docs/benchmarks/B03-experimental-design.md) | Chọn phép thử, fidelity phép đo và empirical falsification | Template; chưa chốt campaign, simulator/reference/model stages |
 

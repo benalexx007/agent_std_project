@@ -1,10 +1,10 @@
 import fs from 'node:fs';
-import { executionRoot, isolated, reserveWorkspace, publicationPending } from './workspaces.mjs';
+import { executionRoot, isolated, reserveWorkspace, publicationPending, currentHash } from './workspaces.mjs';
 import path from 'node:path';
 import { id, now, clone, requireThat, artifactCheck, confined, hash, fileHash } from './util.mjs';
 import { contract } from './schema.mjs';
 import { resolveTask } from './config.mjs';
-import { buildContext } from './context.mjs';
+import { buildContext, executionContext } from './context.mjs';
 import { capabilities } from '../adapters/index.mjs';
 import { installUnits, getUnit, workKey, assignmentCurrent, completeUnit, publicationOrder } from './work.mjs';
 import { estimateUnit, budgetAdmission, poolIds, settleUsage } from './resources.mjs';
@@ -289,9 +289,7 @@ export function beginAttempt(store, taskId, owner, epoch, dispatchKey, options =
       created_at: attempt.timestamps.created_at,
       protocol_version: attempt.protocol_version, owner_epoch: attempt.owner_epoch,
       assignment_generation: attempt.assignment_generation, work_unit_id: attempt.work_unit_id };
-    context.text = JSON.stringify(context.packet, null, 2);
-    requireThat(context.text.length <= state.config.context.max_chars, 'Context with dispatch identity exceeds max_chars');
-    context.sha256 = hash(context.text); context.characters = context.text.length;
+    executionContext(context, state.project.workspace, attempt.workspace, state.config.context.max_chars);
     attempt.context_hash = context.sha256; attempt.context_characters = context.characters;
     const admission = budgetAdmission(state, { ...record, spec: task }, unit, backendName, context, Boolean(recovery));
     if (!admission.allowed) throw Object.assign(new Error(admission.message), { code: 'RESOURCE_ADMISSION', admission });
@@ -320,6 +318,13 @@ export function beginAttempt(store, taskId, owner, epoch, dispatchKey, options =
     record.attempts.push(attempt.attempt_id); record.status = 'running';
     return { attempt, context, task: clone(task), backend: clone(backend), duplicate: false };
   });
+}
+// Full admission preview on a private clone; creates no reservation, workspace or worker.
+// Its identity is provisional. Actual dispatch must recheck all barriers and input hashes.
+export function previewAttempt(state, taskId, options = {}) {
+  const snapshot = clone(state);
+  const memory = { transaction: (fn) => fn(snapshot) };
+  return beginAttempt(memory, taskId, snapshot.owner.id, snapshot.owner.epoch, id('preview'), options);
 }
 export function dispatchAllowed(state, attemptId, runnerToken) {
   const a = state.attempts[attemptId];
@@ -403,7 +408,9 @@ export function finishAttempt(store, attemptId, outcome) {
     if (outcome.result) {
       if (isolated(attempt) && outcome.result.status === 'completed') {
         const j = state.publications?.[attempt.publication_id];
-        requireThat(j?.status === 'pending' && j.phase === 'files_installed' && state.publication === j.publication_id &&
+        requireThat(j?.phase === 'files_installed' && (j.status === 'pending' && state.publication === j.publication_id ||
+          j.status === 'accepted' && attempt.recovered_result_termination && !hasLiveJobs(attempt) &&
+          j.outputs.every((r) => currentHash(state.project.workspace, r.path) === r.sha256)) &&
           hash(JSON.stringify(j.outcome.result)) === hash(JSON.stringify(outcome.result)), 'Isolated result requires journaled publication');
       }
       validateResult(state, attempt, outcome.result);
@@ -625,8 +632,9 @@ export function reconcile(store, observations = []) {
         requireThat(observation.descendants_verified === true, 'Reconciliation must explicitly verify untracked descendants, not only the parent process');
       }
       requireThat(['cancelled', 'failed'].includes(observation.status), 'Use import-result for completed output');
+      requireThat(!hasLiveJobs(attempt), 'Reconciliation requires terminal external/extension job observations');
       attempt.observed_state = observation.status;
-      attempt.job_refs = attempt.job_refs.map((job) => job.kind === 'external' ? job : {
+      attempt.job_refs = attempt.job_refs.map((job) => ['external', 'extension'].includes(job.kind) ? job : {
         ...job, observed_state: 'exited', descendants_state: 'verified_terminal', reconciled_at: now()
       });
       attempt.reconciliation = { at: now(), evidence: clone(observation.evidence) };

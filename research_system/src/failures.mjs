@@ -17,7 +17,12 @@ export function classifyFailure({ code, message = '', retry_after_ms = null, poo
 }
 export function failureEvidence(protocol, stdout) {
   try {
-    if (protocol === 'codex-jsonl') {
+    if (protocol === 'result-json') {
+      const value = JSON.parse(stdout);
+      const failure = value.adapter_failure;
+      if (failure?.version === 1 && typeof failure.code === 'string' && typeof failure.message === 'string')
+        return { code: failure.code, message: failure.message };
+    } else if (protocol === 'codex-jsonl') {
       const events = stdout.split(/\r?\n/).filter(Boolean).map((line) => JSON.parse(line));
       const error = events.findLast((e) => e.type === 'turn.failed' || e.type === 'error');
       if (error) return { code: error.error?.codexErrorInfo || error.error?.code || error.code, message: error.error?.message || 'Codex turn failed' };

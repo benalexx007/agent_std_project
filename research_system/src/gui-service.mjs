@@ -6,7 +6,7 @@ import { attachGui, checkedAttachment, attachmentInState, checkGuiTaskPaths } fr
 import { proposeGuiChange, applyGuiChange } from './gui-changes.mjs';
 import { dispatchGuiWork, publicOperation, assessNative, prepareNativeWork, observeNativeWork } from './gui-work.mjs';
 import { inspectProject, redactInspection } from './inspection.mjs';
-import { registerTask, reviseTask, reopenTask, control, requestDecision, handoff } from './engine.mjs';
+import { registerTask, reviseTask, reopenTask, control, requestDecision, handoff, previewAttempt } from './engine.mjs';
 import { buildContext, buildOrchestratorContext } from './context.mjs';
 import { recordResearch, researchReview, renderResearch } from './research.mjs';
 import { projectDomain, availableDomains } from './domains.mjs';
@@ -135,7 +135,7 @@ export class GuiService {
       case 'work.register': requireThat(resolveTask(s.config, d.task, d.override || {}).role !== 'orchestrator', 'GUI is already the orchestrator'); checkGuiTaskPaths(s, d.task); result = registerTask(store, d.task, d.override || {}); break;
       case 'work.revise': requireThat(d.task?.role !== 'orchestrator', 'GUI is already the orchestrator'); checkGuiTaskPaths(s, d.task); result = reviseTask(store, d.task, s.owner.id, s.owner.epoch); break;
       case 'work.reopen': result = reopenTask(store, d.task_id, d.review, s.owner.id, s.owner.epoch); break;
-      case 'work.prepare': { const t = Object.hasOwn(s.tasks, d.task_id) ? s.tasks[d.task_id] : null; requireThat(t, 'Unknown task'); checkGuiTaskPaths(s, t.spec); result = buildContext(s.config, t.spec, Object.values(s.decisions), t.notes || [], s).packet; break; }
+      case 'work.prepare': { const t = Object.hasOwn(s.tasks, d.task_id) ? s.tasks[d.task_id] : null; requireThat(t, 'Unknown task'); checkGuiTaskPaths(s, t.spec); result = previewAttempt(s, d.task_id).context.packet; break; }
       case 'work.dispatch': result = await dispatchGuiWork(store, auth, d); break;
       case 'work.operation': requireThat(s.gui.operations[d.operation_id], 'Unknown operation'); result = publicOperation(s.gui.operations[d.operation_id]); break;
       case 'work.operation_reconcile': {

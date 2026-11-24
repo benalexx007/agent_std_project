@@ -66,6 +66,13 @@ export function buildContext(config, task, decisions = [], updates = [], state =
   requireThat(text.length <= config.context.max_chars, 'Context exceeds max_chars; narrow inputs or skill selection (no silent truncation)');
   return { packet, text, sha256: hash(text), characters: text.length, tokenizer_tokens: null };
 }
+export function executionContext(context, controlRoot, workspace, maxChars) {
+  if (workspace) Object.assign(context.packet, { control_root: controlRoot, workspace: workspace.root, workspace_mode: workspace.mode });
+  context.text = JSON.stringify(context.packet, null, 2);
+  context.characters = context.text.length; context.sha256 = hash(context.text);
+  requireThat(context.characters <= maxChars, 'Execution context exceeds max_chars (includes work unit, checkpoint, dispatch identity and workspace metadata)');
+  return context;
+}
 export function buildOrchestratorContext(state, taskClass, options = {}) {
   const domain = projectDomain(state);
   const config = state.config;

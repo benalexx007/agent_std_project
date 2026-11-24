@@ -30,6 +30,19 @@ export async function completeAttempt(store, attemptId, outcome, hooks = {}) {
   if (a.settled) return finishAttempt(store, attemptId, outcome);
   requireThat(!publicationPending(initial), 'Recover pending publication before accepting another result');
   guard(initial, a);
+  const accepted = initial.publications?.[a.publication_id];
+  if (accepted?.status === 'accepted') {
+    requireThat(a.observed_state === 'unknown' && a.recovered_result_termination,
+      'Accepted publication replay needs verified recovered-result termination');
+    requireThat(accepted.phase === 'files_installed' && accepted.attempt_id === attemptId &&
+      JSON.stringify(accepted.outcome.result) === JSON.stringify(outcome.result), 'Accepted publication result changed');
+    validateResult(initial, a, outcome.result);
+    for (const ref of accepted.outputs) {
+      requireThat(currentHash(initial.project.workspace, ref.path) === ref.sha256, 'Accepted publication output changed: ' + ref.path);
+      verifiedBlob(initial, ref);
+    }
+    return finishAttempt(store, attemptId, outcome);
+  }
   const result = clone(outcome.result);
   validateResult(initial, a, result);
   const baseline = workspaceManifest(initial, a);

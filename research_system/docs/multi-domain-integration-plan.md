@@ -23,7 +23,7 @@ Không gọi F là hệ thống đa domain hoàn chỉnh. Chỉ A mới có hai 
 - Giữ managed delegation liên backend và native delegation theo năng lực đã xác minh. Thêm Application không có nghĩa phải bổ sung adapter mới hoặc kiểm thử lại mọi tổ hợp model.
 - Giữ task revision, assignment fencing, checkpoint, reconciliation, publication journal, approval/CAS/rollback và provenance.
 - Hoàn thành execution, cấu trúc hợp lệ, nội dung được evaluator chấp nhận và tính đúng khoa học/sản phẩm là các kết luận khác nhau.
-- Không sửa project MoLE, không tự migrate project đang dùng, không bật extension/model execution hoặc chạy benchmark trong đợt lập plan.
+- Không sửa project pilot, không tự migrate project đang dùng, không bật extension/model execution hoặc chạy benchmark trong đợt lập plan.
 
 ## 2. Căn cứ nghiên cứu và kiểm tra source
 
@@ -283,7 +283,7 @@ Quy tắc thực hiện:
 
 - Trong từng slice: chạy focused tests ảnh hưởng. Trước Gate F và A: full suite + `node scripts/check-project.mjs` theo AGENTS; chỉ lặp lại khi có sửa đổi/failure mới đáng kiểm tra.
 - Có thể gộp nhiều assertions vào một fixture workflow, nhưng các negative cases phải cô lập failure để biết guard nào thực sự được kiểm tra.
-- Thực hiện trên workspace tạm, seed dữ liệu tổng hợp; không dùng live MoLE làm vật thử.
+- Thực hiện trên workspace tạm, seed dữ liệu tổng hợp; không dùng project pilot đang chạy làm vật thử.
 - Đo context bytes là proxy regression, không gọi đó là token billed hoặc phần trăm quota. Native usage không quan sát được vẫn ghi unknown.
 - Không đặt một ngưỡng latency/RSS tùy tiện. Nếu đường nóng thay thuật toán, đo offline có baseline và điều kiện cố định để điều tra; chỉ dùng làm gate sau khi có ngưỡng có căn cứ.
 - Không tạo benchmark B04 để “chứng minh đa domain”. Chất lượng planning, research novelty, lợi ích sản phẩm, model routing tối ưu và UX thật được ghi nhận qua sử dụng. Nếu phát sinh benchmark riêng, vẫn cần protocol và người dùng duyệt từng run.

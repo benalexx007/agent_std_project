@@ -33,7 +33,7 @@ Tests use deterministic local worker fixtures and make no model or network calls
 ## Status
 
 - The runtime, Research workflow, model routing and planning audit are implemented and covered by local software tests.
-- A second domain is the stated goal (see the roadmap). The multi-domain foundation (domain registry, Research facade) and a set of recovery fixes are developed in open pull requests and are not part of this branch yet.
+- A domain registry and a Research façade exist so a second domain can share the harness. The Application domain is declared but **disabled**.
 - Real backend/model runs are not yet live-verified, and research quality and token savings have not been measured. Passing mock tests does not establish either.
 
 ## Roadmap

@@ -7,7 +7,7 @@
     "node": ">=24.0.0"
   },
   "scripts": {
-    "test": "node --test --test-concurrency=1 test/contracts.test.mjs test/engine.test.mjs test/runner.test.mjs test/recovery.test.mjs test/research.test.mjs test/improvements.test.mjs test/benchmark-policy.test.mjs test/benchmark-preparation.test.mjs test/model-routing.test.mjs test/planning.test.mjs test/operational-review.test.mjs test/native.test.mjs test/workspaces.test.mjs test/foundation.test.mjs test/extensions.test.mjs test/inspection.test.mjs test/gui.test.mjs test/domains.test.mjs",
+    "test": "node --test --test-concurrency=1 test/contracts.test.mjs test/engine.test.mjs test/runner.test.mjs test/mechanisms-repair.test.mjs test/permission-root-repair.test.mjs test/recovery.test.mjs test/research.test.mjs test/improvements.test.mjs test/benchmark-policy.test.mjs test/benchmark-preparation.test.mjs test/model-routing.test.mjs test/planning.test.mjs test/operational-review.test.mjs test/native.test.mjs test/workspaces.test.mjs test/foundation.test.mjs test/extensions.test.mjs test/inspection.test.mjs test/gui.test.mjs test/domains.test.mjs",
     "check": "node scripts/check-project.mjs",
     "harness": "node scripts/harness.mjs",
     "verify:v1": "node scripts/verify-v1.mjs",

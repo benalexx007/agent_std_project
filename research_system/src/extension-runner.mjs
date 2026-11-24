@@ -7,6 +7,7 @@ import { assignmentCurrent } from './work.mjs';
 import { executionRoot, workspacePath, currentHash } from './workspaces.mjs';
 import { pinFile } from './blobs.mjs';
 import { projectDomain } from './domains.mjs';
+import { sqliteContention } from './control-monitor.mjs';
 
 function active(s, a) {
   requireThat(a && !a.settled && assignmentCurrent(s, a) && a.owner_epoch === s.owner.epoch &&
@@ -242,7 +243,7 @@ export async function runExtension(store, attemptId, callKey, operation, args, t
     artifacts.push({ path: relative + '/' + e.name, sha256: blob.sha256, blob: blob.path, bytes: blob.bytes });
   }
   const receipt = { call_id: callId, operation, status: failure ? 'failed' : 'completed', result_status: result?.status || null,
-    error: failure, observation: 'trusted_finite_helper', binding_sha256: binding.fingerprint,
+    error: failure, observation: 'trusted_finite_helper', helper_terminal: terminal, binding_sha256: binding.fingerprint,
     payload_sha256: payloadHash, http_calls: httpCalls, usage_precision: 'observed_requests', external_cost_usd: null,
     sources, artifacts: artifacts.map(({ path, sha256 }) => ({ path, sha256 })), completed_at: now(),
     result: result && Buffer.byteLength(JSON.stringify(result)) <= 4096 ? result : { preview: 'Read result.json using bounded harness_read', status: result?.status } };
@@ -261,7 +262,7 @@ export async function runExtension(store, attemptId, callKey, operation, args, t
     }
     materialized = true;
   } catch (error) { failure ||= error.message; receipt.status = 'failed'; receipt.error = failure; }
-  return store.transaction((s) => {
+  const commit = () => store.transaction((s) => {
     const c = s.extension_calls[callId], a = s.attempts[attemptId];
     let valid = true; try { active(s, a); } catch { valid = false; }
     c.integratable = valid && terminal && materialized;
@@ -275,4 +276,12 @@ export async function runExtension(store, attemptId, callKey, operation, args, t
     receipt.receipt = artifacts.find((r) => r.path === receiptPath) ? { path: receiptPath, sha256: artifacts.find((r) => r.path === receiptPath).sha256 } : null;
     return reply(receipt);
   });
+  for (let retry = 0; ; retry++) {
+    try { return commit(); }
+    catch (error) {
+      if (!sqliteContention(error) || retry >= 2) throw error;
+      // Only retry the idempotent terminal state commit, never the helper work.
+      await new Promise(resolve => setTimeout(resolve, 100 * (retry + 1)));
+    }
+  }
 }
