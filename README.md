@@ -44,7 +44,3 @@ Tests use deterministic local worker fixtures and make no model or network calls
 4. **Live backend verification** — staged, human-authorized runs against real providers to replace mock-only evidence.
 5. **Benchmarks** — protocol-first campaigns (scope, models, grading, budget, stopping rules), each run confirmed separately by a human.
 6. **Public release** — once history, documentation and examples are reviewed for publication.
-
-## License
-
-[MIT](LICENSE). Vendored third-party code keeps its own license.
