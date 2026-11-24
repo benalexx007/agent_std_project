@@ -1,0 +1,15 @@
+{
+  "name": "subagent-hub",
+  "version": "0.3.1-r3.1",
+  "description": "Ban nhap: hub dieu phoi subagent da backend (Claude Code, Codex, Antigravity) - task store/journal, lease named pipe, adapter, runner tach roi, MCP facade.",
+  "type": "module",
+  "private": true,
+  "engines": { "node": ">=22" },
+  "bin": {
+    "orch": "bin/orch.mjs",
+    "orch-mcp": "bin/mcp-server.mjs"
+  },
+  "scripts": {
+    "test": "node --test \"test/*.test.mjs\""
+  }
+}
